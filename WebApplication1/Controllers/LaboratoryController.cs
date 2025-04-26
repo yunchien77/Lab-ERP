@@ -12,7 +12,7 @@ namespace WebApplication1.Controllers
     {
         private AccountController _accountController;
         private NotificationService _notificationService;
-        private static List<Laboratory> _laboratories = new List<Laboratory>();
+        public static List<Laboratory> _laboratories = new List<Laboratory>();
 
         public LaboratoryController(AccountController accountController)
         {

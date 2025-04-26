@@ -4,6 +4,8 @@
     ViewData["Title"] = "儀表板";
 }
 
+<link rel="stylesheet" href="~/css/site.css" />
+
 <h2>歡迎，@Model.Username!</h2>
 <partial name="_LoginPartial" />
 
@@ -17,7 +19,15 @@
                 <p><strong>用戶名稱:</strong> @Model.Username</p>
                 <p><strong>電子郵件:</strong> @Model.Email</p>
                 <p><strong>角色:</strong> @Model.Role</p>
-                <a asp-controller="User" asp-action="ChangePassword" class="btn btn-primary">修改密碼</a>
+
+                @if (Model is WebApplication1.Models.Core.Student student)
+                {
+                    <p><strong>學號:</strong> @(string.IsNullOrEmpty(student.StudentID) ? "尚未設定" : student.StudentID)</p>
+                    <p><strong>手機號碼:</strong> @(string.IsNullOrEmpty(student.PhoneNumber) ? "尚未設定" : student.PhoneNumber)</p>
+                    <a asp-controller="User" asp-action="EditProfile" class="btn btn-info">編輯個人資料</a>
+                }
+
+                <a asp-controller="User" asp-action="ChangePassword" class="btn btn-primary mt-2">修改密碼</a>
             </div>
         </div>
     </div>
@@ -51,14 +61,38 @@
                 </div>
             </div>
         }
-        else if (User.IsInRole("Student"))
+        @if (User.IsInRole("Student"))
         {
             <div class="card">
                 <div class="card-header">
-                    學生功能
+                    學生資訊
                 </div>
                 <div class="card-body">
-                    <p>您目前沒有可用的功能。</p>
+                    @{
+                        var studentLabs = ViewBag.StudentLaboratories as List<WebApplication1.Models.Core.Laboratory>
+                        ?? new List<WebApplication1.Models.Core.Laboratory>();
+                    }
+
+                    @if (studentLabs.Any())
+                    {
+                        <h4>我所屬的實驗室</h4>
+                        <ul class="list-group">
+                            @foreach (var lab in studentLabs)
+                            {
+                                <li class="list-group-item">
+                                    <div><strong>實驗室名稱:</strong> @lab.Name</div>
+                                    <div><strong>指導教授:</strong> @lab.Creator.Username</div>
+                                    <div class="mt-2">
+                                        <a asp-controller="Laboratory" asp-action="Details" asp-route-id="@lab.LabID" class="btn btn-sm btn-info">查看詳細資訊</a>
+                                    </div>
+                                </li>
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        <p>您目前不屬於任何實驗室。</p>
+                    }
                 </div>
             </div>
         }

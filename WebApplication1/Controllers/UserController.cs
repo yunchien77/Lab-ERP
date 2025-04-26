@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using WebApplication1.Models.Core;
+using WebApplication1.Models.ViewModels;
 
 namespace WebApplication1.Controllers
 {
@@ -23,6 +24,11 @@ namespace WebApplication1.Controllers
             // 獲取用戶資料
             var user = _accountController.GetUser(userID);
 
+            // 如果是學生，則獲取其實驗室資訊
+            if (User.IsInRole("Student"))
+            {
+                ViewBag.StudentLaboratories = GetStudentLaboratories(userID);
+            }
             return View(user);
         }
 
@@ -57,6 +63,62 @@ namespace WebApplication1.Controllers
             }
 
             return View();
+        }
+
+        // 顯示修改個人資料頁面
+        [Authorize(Roles = "Student")]
+        public IActionResult EditProfile()
+        {
+            // 獲取當前用戶ID
+            var userID = User.FindFirstValue("UserID");
+            // 獲取用戶資料
+            var student = _accountController.GetUser(userID) as Student;
+
+            if (student == null)
+                return NotFound();
+
+            var model = new EditProfileViewModel
+            {
+                StudentID = student.StudentID,
+                PhoneNumber = student.PhoneNumber
+            };
+
+            return View(model);
+        }
+
+        // 處理修改個人資料
+        [HttpPost]
+        [Authorize(Roles = "Student")]
+        public IActionResult EditProfile(EditProfileViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                // 獲取當前用戶ID
+                var userID = User.FindFirstValue("UserID");
+                // 獲取用戶資料
+                var student = _accountController.GetUser(userID) as Student;
+
+                if (student != null)
+                {
+                    // 更新學生資料
+                    student.StudentID = model.StudentID;
+                    student.PhoneNumber = model.PhoneNumber;
+
+                    ViewBag.Message = "個人資料已成功更新。";
+                    return View(model);
+                }
+            }
+
+            return View(model);
+        }
+
+        // 取得學生所屬的實驗室
+        private List<Laboratory> GetStudentLaboratories(string studentID)
+        {
+            // 從所有實驗室中找出包含此學生的實驗室
+            return LaboratoryController._laboratories.Where(
+                lab => lab.Members.Any(m => m.UserID == studentID)
+            ).ToList();
         }
     }
 }

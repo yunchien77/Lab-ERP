@@ -1,7 +1,11 @@
-﻿namespace WebApplication1.Models.Core
+﻿// Models/Core/Student.cs
+namespace WebApplication1.Models.Core
 {
     public class Student : User
     {
+        // Add new attributes
+        public string StudentID { get; set; }
+        public string PhoneNumber { get; set; }
         public List<BorrowRecord> BorrowRecords { get; set; }
 
         public Student()
@@ -9,11 +13,9 @@
             Role = "Student";
             BorrowRecords = new List<BorrowRecord>();
         }
-
-        // 這裡應該有其他 Student 特有的方法，但目前為了登入功能我們只需要基本資訊
     }
 
-    // 為了讓程式能編譯，加入一個簡單的 BorrowRecord 類別
+    // Keep the BorrowRecord class as is
     public class BorrowRecord
     {
         public string RecordID { get; set; }

@@ -50,6 +50,10 @@
                             <th>用戶名稱</th>
                             <th>電子郵件</th>
                             <th>角色</th>
+                            @if (User.IsInRole("Professor") && User.FindFirst("UserID").Value == Model.Creator.UserID)
+                            {
+                                <th>操作</th>
+                            }
                         </tr>
                     </thead>
                     <tbody>
@@ -59,6 +63,16 @@
                                 <td>@member.Username</td>
                                 <td>@member.Email</td>
                                 <td>@member.Role</td>
+                                @if (User.IsInRole("Professor") && User.FindFirst("UserID").Value == Model.Creator.UserID)
+                                {
+                                    <td>
+                                        <form asp-controller="Laboratory" asp-action="RemoveMember" method="post">
+                                            <input type="hidden" name="labID" value="@Model.LabID" />
+                                            <input type="hidden" name="memberID" value="@member.UserID" />
+                                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('確定要刪除此成員嗎？');">刪除</button>
+                                        </form>
+                                    </td>
+                                }
                             </tr>
                         }
                     </tbody>

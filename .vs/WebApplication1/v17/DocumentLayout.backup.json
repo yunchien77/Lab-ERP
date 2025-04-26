@@ -1,0 +1,241 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\cherr\\Desktop\\Lab-ERP\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{7B207C6E-32A6-453C-94EC-765630A7C4F5}|WebApplication1\\WebApplication1.csproj|c:\\users\\cherr\\desktop\\lab-erp\\webapplication1\\views\\laboratory\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{7B207C6E-32A6-453C-94EC-765630A7C4F5}|WebApplication1\\WebApplication1.csproj|solutionrelative:webapplication1\\views\\laboratory\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7B207C6E-32A6-453C-94EC-765630A7C4F5}|WebApplication1\\WebApplication1.csproj|c:\\users\\cherr\\desktop\\lab-erp\\webapplication1\\controllers\\laboratorycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7B207C6E-32A6-453C-94EC-765630A7C4F5}|WebApplication1\\WebApplication1.csproj|solutionrelative:webapplication1\\controllers\\laboratorycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7B207C6E-32A6-453C-94EC-765630A7C4F5}|WebApplication1\\WebApplication1.csproj|c:\\users\\cherr\\desktop\\lab-erp\\webapplication1\\models\\core\\professor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7B207C6E-32A6-453C-94EC-765630A7C4F5}|WebApplication1\\WebApplication1.csproj|solutionrelative:webapplication1\\models\\core\\professor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7B207C6E-32A6-453C-94EC-765630A7C4F5}|WebApplication1\\WebApplication1.csproj|c:\\users\\cherr\\desktop\\lab-erp\\webapplication1\\views\\shared\\_loginpartial.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{7B207C6E-32A6-453C-94EC-765630A7C4F5}|WebApplication1\\WebApplication1.csproj|solutionrelative:webapplication1\\views\\shared\\_loginpartial.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7B207C6E-32A6-453C-94EC-765630A7C4F5}|WebApplication1\\WebApplication1.csproj|c:\\users\\cherr\\desktop\\lab-erp\\webapplication1\\models\\core\\laboratory.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7B207C6E-32A6-453C-94EC-765630A7C4F5}|WebApplication1\\WebApplication1.csproj|solutionrelative:webapplication1\\models\\core\\laboratory.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7B207C6E-32A6-453C-94EC-765630A7C4F5}|WebApplication1\\WebApplication1.csproj|c:\\users\\cherr\\desktop\\lab-erp\\webapplication1\\views\\user\\dashboard.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{7B207C6E-32A6-453C-94EC-765630A7C4F5}|WebApplication1\\WebApplication1.csproj|solutionrelative:webapplication1\\views\\user\\dashboard.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7B207C6E-32A6-453C-94EC-765630A7C4F5}|WebApplication1\\WebApplication1.csproj|c:\\users\\cherr\\desktop\\lab-erp\\webapplication1\\views\\laboratory\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{7B207C6E-32A6-453C-94EC-765630A7C4F5}|WebApplication1\\WebApplication1.csproj|solutionrelative:webapplication1\\views\\laboratory\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7B207C6E-32A6-453C-94EC-765630A7C4F5}|WebApplication1\\WebApplication1.csproj|c:\\users\\cherr\\desktop\\lab-erp\\webapplication1\\views\\laboratory\\addmember.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{7B207C6E-32A6-453C-94EC-765630A7C4F5}|WebApplication1\\WebApplication1.csproj|solutionrelative:webapplication1\\views\\laboratory\\addmember.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7B207C6E-32A6-453C-94EC-765630A7C4F5}|WebApplication1\\WebApplication1.csproj|c:\\users\\cherr\\desktop\\lab-erp\\webapplication1\\views\\account\\logout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{7B207C6E-32A6-453C-94EC-765630A7C4F5}|WebApplication1\\WebApplication1.csproj|solutionrelative:webapplication1\\views\\account\\logout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7B207C6E-32A6-453C-94EC-765630A7C4F5}|WebApplication1\\WebApplication1.csproj|c:\\users\\cherr\\desktop\\lab-erp\\webapplication1\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{7B207C6E-32A6-453C-94EC-765630A7C4F5}|WebApplication1\\WebApplication1.csproj|solutionrelative:webapplication1\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7B207C6E-32A6-453C-94EC-765630A7C4F5}|WebApplication1\\WebApplication1.csproj|c:\\users\\cherr\\desktop\\lab-erp\\webapplication1\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7B207C6E-32A6-453C-94EC-765630A7C4F5}|WebApplication1\\WebApplication1.csproj|solutionrelative:webapplication1\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Details.cshtml",
+              "DocumentMoniker": "C:\\Users\\cherr\\Desktop\\Lab-ERP\\WebApplication1\\Views\\Laboratory\\Details.cshtml",
+              "RelativeDocumentMoniker": "WebApplication1\\Views\\Laboratory\\Details.cshtml",
+              "ToolTip": "C:\\Users\\cherr\\Desktop\\Lab-ERP\\WebApplication1\\Views\\Laboratory\\Details.cshtml",
+              "RelativeToolTip": "WebApplication1\\Views\\Laboratory\\Details.cshtml",
+              "ViewState": "AgIAADIAAAAAAAAAAAAswE4AAAAYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-04-26T14:36:15.432Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "LaboratoryController.cs",
+              "DocumentMoniker": "C:\\Users\\cherr\\Desktop\\Lab-ERP\\WebApplication1\\Controllers\\LaboratoryController.cs",
+              "RelativeDocumentMoniker": "WebApplication1\\Controllers\\LaboratoryController.cs",
+              "ToolTip": "C:\\Users\\cherr\\Desktop\\Lab-ERP\\WebApplication1\\Controllers\\LaboratoryController.cs",
+              "RelativeToolTip": "WebApplication1\\Controllers\\LaboratoryController.cs",
+              "ViewState": "AgIAAD4AAAAAAAAAAAA/wFIAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-26T14:35:46.423Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Professor.cs",
+              "DocumentMoniker": "C:\\Users\\cherr\\Desktop\\Lab-ERP\\WebApplication1\\Models\\Core\\Professor.cs",
+              "RelativeDocumentMoniker": "WebApplication1\\Models\\Core\\Professor.cs",
+              "ToolTip": "C:\\Users\\cherr\\Desktop\\Lab-ERP\\WebApplication1\\Models\\Core\\Professor.cs",
+              "RelativeToolTip": "WebApplication1\\Models\\Core\\Professor.cs",
+              "ViewState": "AgIAADEAAAAAAAAAAAAswEQAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-26T14:35:30.325Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Laboratory.cs",
+              "DocumentMoniker": "C:\\Users\\cherr\\Desktop\\Lab-ERP\\WebApplication1\\Models\\Core\\Laboratory.cs",
+              "RelativeDocumentMoniker": "WebApplication1\\Models\\Core\\Laboratory.cs",
+              "ToolTip": "C:\\Users\\cherr\\Desktop\\Lab-ERP\\WebApplication1\\Models\\Core\\Laboratory.cs",
+              "RelativeToolTip": "WebApplication1\\Models\\Core\\Laboratory.cs",
+              "ViewState": "AgIAABkAAAAAAAAAAAAgwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-26T14:33:43.286Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "_LoginPartial.cshtml",
+              "DocumentMoniker": "C:\\Users\\cherr\\Desktop\\Lab-ERP\\WebApplication1\\Views\\Shared\\_LoginPartial.cshtml",
+              "RelativeDocumentMoniker": "WebApplication1\\Views\\Shared\\_LoginPartial.cshtml",
+              "ToolTip": "C:\\Users\\cherr\\Desktop\\Lab-ERP\\WebApplication1\\Views\\Shared\\_LoginPartial.cshtml",
+              "RelativeToolTip": "WebApplication1\\Views\\Shared\\_LoginPartial.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAOAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-04-26T14:03:35.29Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Create.cshtml",
+              "DocumentMoniker": "C:\\Users\\cherr\\Desktop\\Lab-ERP\\WebApplication1\\Views\\Laboratory\\Create.cshtml",
+              "RelativeDocumentMoniker": "WebApplication1\\Views\\Laboratory\\Create.cshtml",
+              "ToolTip": "C:\\Users\\cherr\\Desktop\\Lab-ERP\\WebApplication1\\Views\\Laboratory\\Create.cshtml",
+              "RelativeToolTip": "WebApplication1\\Views\\Laboratory\\Create.cshtml",
+              "ViewState": "AgIAABsAAAAAAAAAAAAAACMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-04-26T14:16:34.065Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "AddMember.cshtml",
+              "DocumentMoniker": "C:\\Users\\cherr\\Desktop\\Lab-ERP\\WebApplication1\\Views\\Laboratory\\AddMember.cshtml",
+              "RelativeDocumentMoniker": "WebApplication1\\Views\\Laboratory\\AddMember.cshtml",
+              "ToolTip": "C:\\Users\\cherr\\Desktop\\Lab-ERP\\WebApplication1\\Views\\Laboratory\\AddMember.cshtml",
+              "RelativeToolTip": "WebApplication1\\Views\\Laboratory\\AddMember.cshtml",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAAABoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-04-26T14:17:19.11Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Dashboard.cshtml",
+              "DocumentMoniker": "C:\\Users\\cherr\\Desktop\\Lab-ERP\\WebApplication1\\Views\\User\\Dashboard.cshtml",
+              "RelativeDocumentMoniker": "WebApplication1\\Views\\User\\Dashboard.cshtml",
+              "ToolTip": "C:\\Users\\cherr\\Desktop\\Lab-ERP\\WebApplication1\\Views\\User\\Dashboard.cshtml",
+              "RelativeToolTip": "WebApplication1\\Views\\User\\Dashboard.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-04-26T14:11:21.308Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "Logout.cshtml",
+              "DocumentMoniker": "C:\\Users\\cherr\\Desktop\\Lab-ERP\\WebApplication1\\Views\\Account\\Logout.cshtml",
+              "RelativeDocumentMoniker": "WebApplication1\\Views\\Account\\Logout.cshtml",
+              "ToolTip": "C:\\Users\\cherr\\Desktop\\Lab-ERP\\WebApplication1\\Views\\Account\\Logout.cshtml",
+              "RelativeToolTip": "WebApplication1\\Views\\Account\\Logout.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-04-26T14:07:32.806Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "AccountController.cs",
+              "DocumentMoniker": "C:\\Users\\cherr\\Desktop\\Lab-ERP\\WebApplication1\\Controllers\\AccountController.cs",
+              "RelativeDocumentMoniker": "WebApplication1\\Controllers\\AccountController.cs",
+              "ToolTip": "C:\\Users\\cherr\\Desktop\\Lab-ERP\\WebApplication1\\Controllers\\AccountController.cs",
+              "RelativeToolTip": "WebApplication1\\Controllers\\AccountController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAGAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-26T14:03:53.306Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "_Layout.cshtml",
+              "DocumentMoniker": "C:\\Users\\cherr\\Desktop\\Lab-ERP\\WebApplication1\\Views\\Shared\\_Layout.cshtml",
+              "RelativeDocumentMoniker": "WebApplication1\\Views\\Shared\\_Layout.cshtml",
+              "ToolTip": "C:\\Users\\cherr\\Desktop\\Lab-ERP\\WebApplication1\\Views\\Shared\\_Layout.cshtml",
+              "RelativeToolTip": "WebApplication1\\Views\\Shared\\_Layout.cshtml",
+              "ViewState": "AgIAACQAAAAAAAAAAAAIwDkAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-04-26T14:03:29.863Z",
+              "EditorCaption": ""
+            }
+          ]
+        },
+        {
+          "DockedWidth": 223,
+          "SelectedChildIndex": -1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
+            }
+          ]
+        },
+        {
+          "DockedWidth": 1095,
+          "SelectedChildIndex": -1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{e1b7d1f8-9b3c-49b1-8f4f-bfc63a88835d}"
+            }
+          ]
+        },
+        {
+          "DockedWidth": 1095,
+          "SelectedChildIndex": -1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{320fd13f-632f-4b16-9527-a1adfe555f6c}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

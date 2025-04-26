@@ -56,6 +56,18 @@
             return laboratory.AddMember(student);
         }
 
+        // 從實驗室刪除成員
+        public bool RemoveMember(string labID, string memberID)
+        {
+            // 查找實驗室
+            var laboratory = Laboratories.Find(lab => lab.LabID == labID);
+            if (laboratory == null)
+                return false;
+
+            // 刪除成員
+            return laboratory.RemoveMember(memberID);
+        }
+
         // 生成隨機密碼
         private string GenerateRandomPassword()
         {

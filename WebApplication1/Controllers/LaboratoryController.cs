@@ -60,6 +60,28 @@ namespace WebApplication1.Controllers
             return View(model);
         }
 
+        public IActionResult RemoveMember(string labID, string memberID)
+        {
+            // 獲取當前用戶ID
+            var userID = User.FindFirstValue("UserID");
+            // 獲取用戶資料
+            var professor = _accountController.GetUser(userID) as Professor;
+
+            if (professor != null)
+            {
+                // 檢查是否為該實驗室的創建者
+                var lab = _laboratories.Find(l => l.LabID == labID);
+                if (lab != null && lab.Creator.UserID == userID)
+                {
+                    // 刪除成員
+                    professor.RemoveMember(labID, memberID);
+                    return RedirectToAction("Details", new { id = labID });
+                }
+            }
+
+            return Forbid();
+        }
+
         // 顯示實驗室詳情
         public IActionResult Details(string id)
         {

@@ -1,0 +1,69 @@
+﻿@model WebApplication1.Models.Core.Laboratory
+
+@{
+    ViewData["Title"] = "實驗室詳情";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <h2>@Model.Name</h2>
+        <hr />
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                基本資訊
+            </div>
+            <div class="card-body">
+                <p><strong>實驗室名稱:</strong> @Model.Name</p>
+                <p><strong>描述:</strong> @Model.Description</p>
+                @if (!string.IsNullOrEmpty(Model.Website))
+                {
+                    <p><strong>網站:</strong> @Model.Website</p>
+                }
+                @if (!string.IsNullOrEmpty(Model.ContactInfo))
+                {
+                    <p><strong>聯絡資訊:</strong> @Model.ContactInfo</p>
+                }
+                <p><strong>創建者:</strong> @Model.Creator.Username</p>
+
+                @if (User.IsInRole("Professor") && User.FindFirst("UserID").Value == Model.Creator.UserID)
+                {
+                    <a asp-controller="Laboratory" asp-action="AddMember" asp-route-id="@Model.LabID" class="btn btn-primary">添加成員</a>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                成員列表
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>用戶名稱</th>
+                            <th>電子郵件</th>
+                            <th>角色</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var member in Model.Members)
+                        {
+                            <tr>
+                                <td>@member.Username</td>
+                                <td>@member.Email</td>
+                                <td>@member.Role</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

@@ -16,12 +16,17 @@
             // 從 labInfo 解包實驗室資訊
             string name = (labInfo as dynamic)?.Name;
             string description = (labInfo as dynamic)?.Description;
+            string website = (labInfo as dynamic)?.Website;
+            string contactInfo = (labInfo as dynamic)?.ContactInfo;
+
 
             // 建立新實驗室
             var laboratory = new Laboratory
             {
                 Name = name,
                 Description = description,
+                Website = website,
+                ContactInfo = contactInfo,
                 Creator = this
             };
 
@@ -42,6 +47,7 @@
             // 從 memberInfo 解包成員資訊
             string username = (memberInfo as dynamic)?.Username;
             string email = (memberInfo as dynamic)?.Email;
+
 
             // 建立新學生
             var student = new Student

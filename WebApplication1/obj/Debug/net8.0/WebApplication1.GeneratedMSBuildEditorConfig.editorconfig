@@ -9,83 +9,83 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = WebApplication1
 build_property.RootNamespace = WebApplication1
-build_property.ProjectDir = C:\Users\user\Desktop\Lab-ERP\WebApplication1\
+build_property.ProjectDir = C:\Users\user\source\repos\WebApplication1\WebApplication1\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 8.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = C:\Users\user\Desktop\Lab-ERP\WebApplication1
+build_property.MSBuildProjectDirectory = C:\Users\user\source\repos\WebApplication1\WebApplication1
 build_property._RazorSourceGeneratorDebug = 
 
-[C:/Users/user/Desktop/Lab-ERP/WebApplication1/Pages/Error.cshtml]
+[C:/Users/user/source/repos/WebApplication1/WebApplication1/Pages/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXJyb3IuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/Desktop/Lab-ERP/WebApplication1/Pages/Index.cshtml]
+[C:/Users/user/source/repos/WebApplication1/WebApplication1/Pages/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/Desktop/Lab-ERP/WebApplication1/Pages/Privacy.cshtml]
+[C:/Users/user/source/repos/WebApplication1/WebApplication1/Pages/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJpdmFjeS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/Desktop/Lab-ERP/WebApplication1/Pages/Shared/_ValidationScriptsPartial.cshtml]
+[C:/Users/user/source/repos/WebApplication1/WebApplication1/Pages/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/Desktop/Lab-ERP/WebApplication1/Pages/_ViewImports.cshtml]
+[C:/Users/user/source/repos/WebApplication1/WebApplication1/Pages/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/Desktop/Lab-ERP/WebApplication1/Pages/_ViewStart.cshtml]
+[C:/Users/user/source/repos/WebApplication1/WebApplication1/Pages/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/Desktop/Lab-ERP/WebApplication1/Views/Account/Login.cshtml]
+[C:/Users/user/source/repos/WebApplication1/WebApplication1/Views/Account/Login.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxMb2dpbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/Desktop/Lab-ERP/WebApplication1/Views/Account/Logout.cshtml]
+[C:/Users/user/source/repos/WebApplication1/WebApplication1/Views/Account/Logout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxMb2dvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/Desktop/Lab-ERP/WebApplication1/Views/Home/Index.cshtml]
+[C:/Users/user/source/repos/WebApplication1/WebApplication1/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/Desktop/Lab-ERP/WebApplication1/Views/Laboratory/AddMember.cshtml]
+[C:/Users/user/source/repos/WebApplication1/WebApplication1/Views/Laboratory/AddMember.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGFib3JhdG9yeVxBZGRNZW1iZXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/Desktop/Lab-ERP/WebApplication1/Views/Laboratory/Create.cshtml]
+[C:/Users/user/source/repos/WebApplication1/WebApplication1/Views/Laboratory/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGFib3JhdG9yeVxDcmVhdGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/Desktop/Lab-ERP/WebApplication1/Views/Laboratory/Details.cshtml]
+[C:/Users/user/source/repos/WebApplication1/WebApplication1/Views/Laboratory/Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGFib3JhdG9yeVxEZXRhaWxzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/Desktop/Lab-ERP/WebApplication1/Views/Shared/_Layout.cshtml]
+[C:/Users/user/source/repos/WebApplication1/WebApplication1/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/Desktop/Lab-ERP/WebApplication1/Views/Shared/_LoginPartial.cshtml]
+[C:/Users/user/source/repos/WebApplication1/WebApplication1/Views/Shared/_LoginPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9Mb2dpblBhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/Desktop/Lab-ERP/WebApplication1/Views/User/ChangePassword.cshtml]
+[C:/Users/user/source/repos/WebApplication1/WebApplication1/Views/User/ChangePassword.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclxDaGFuZ2VQYXNzd29yZC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/Desktop/Lab-ERP/WebApplication1/Views/User/Dashboard.cshtml]
+[C:/Users/user/source/repos/WebApplication1/WebApplication1/Views/User/Dashboard.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclxEYXNoYm9hcmQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/Desktop/Lab-ERP/WebApplication1/Views/_ViewImports.cshtml]
+[C:/Users/user/source/repos/WebApplication1/WebApplication1/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/Desktop/Lab-ERP/WebApplication1/Pages/Shared/_Layout.cshtml]
+[C:/Users/user/source/repos/WebApplication1/WebApplication1/Pages/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-g6ltozs93r

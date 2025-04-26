@@ -33,6 +33,7 @@
                 @if (User.IsInRole("Professor") && User.FindFirst("UserID").Value == Model.Creator.UserID)
                 {
                     <a asp-controller="Laboratory" asp-action="AddMember" asp-route-id="@Model.LabID" class="btn btn-primary">添加成員</a>
+                    <a asp-controller="Laboratory" asp-action="Edit" asp-route-id="@Model.LabID" class="btn btn-info">編輯實驗室</a>
                 }
             </div>
         </div>

@@ -7,8 +7,16 @@
       "RelativeMoniker": "D:0:0:{7B207C6E-32A6-453C-94EC-765630A7C4F5}|WebApplication1\\WebApplication1.csproj|solutionrelative:webapplication1\\views\\laboratory\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{7B207C6E-32A6-453C-94EC-765630A7C4F5}|WebApplication1\\WebApplication1.csproj|c:\\users\\cherr\\desktop\\lab-erp\\webapplication1\\views\\laboratory\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{7B207C6E-32A6-453C-94EC-765630A7C4F5}|WebApplication1\\WebApplication1.csproj|solutionrelative:webapplication1\\views\\laboratory\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{7B207C6E-32A6-453C-94EC-765630A7C4F5}|WebApplication1\\WebApplication1.csproj|c:\\users\\cherr\\desktop\\lab-erp\\webapplication1\\controllers\\laboratorycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{7B207C6E-32A6-453C-94EC-765630A7C4F5}|WebApplication1\\WebApplication1.csproj|solutionrelative:webapplication1\\controllers\\laboratorycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7B207C6E-32A6-453C-94EC-765630A7C4F5}|WebApplication1\\WebApplication1.csproj|c:\\users\\cherr\\desktop\\lab-erp\\webapplication1\\models\\viewmodels\\editlabviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7B207C6E-32A6-453C-94EC-765630A7C4F5}|WebApplication1\\WebApplication1.csproj|solutionrelative:webapplication1\\models\\viewmodels\\editlabviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{7B207C6E-32A6-453C-94EC-765630A7C4F5}|WebApplication1\\WebApplication1.csproj|c:\\users\\cherr\\desktop\\lab-erp\\webapplication1\\models\\core\\professor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -54,11 +62,24 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Edit.cshtml",
+              "DocumentMoniker": "C:\\Users\\cherr\\Desktop\\Lab-ERP\\WebApplication1\\Views\\Laboratory\\Edit.cshtml",
+              "RelativeDocumentMoniker": "WebApplication1\\Views\\Laboratory\\Edit.cshtml",
+              "ToolTip": "C:\\Users\\cherr\\Desktop\\Lab-ERP\\WebApplication1\\Views\\Laboratory\\Edit.cshtml",
+              "RelativeToolTip": "WebApplication1\\Views\\Laboratory\\Edit.cshtml",
+              "ViewState": "AgIAABEAAAAAAAAAAAAqwC0AAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-04-26T14:45:53.616Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -68,40 +89,53 @@
               "RelativeDocumentMoniker": "WebApplication1\\Views\\Laboratory\\Details.cshtml",
               "ToolTip": "C:\\Users\\cherr\\Desktop\\Lab-ERP\\WebApplication1\\Views\\Laboratory\\Details.cshtml",
               "RelativeToolTip": "WebApplication1\\Views\\Laboratory\\Details.cshtml",
-              "ViewState": "AgIAADcAAAAAAAAAAAAUwEIAAAAhAAAAAAAAAA==",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAAACQAAAARAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2025-04-26T14:36:15.432Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 3,
+              "Title": "EditLabViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\cherr\\Desktop\\Lab-ERP\\WebApplication1\\Models\\ViewModels\\EditLabViewModel.cs",
+              "RelativeDocumentMoniker": "WebApplication1\\Models\\ViewModels\\EditLabViewModel.cs",
+              "ToolTip": "C:\\Users\\cherr\\Desktop\\Lab-ERP\\WebApplication1\\Models\\ViewModels\\EditLabViewModel.cs",
+              "RelativeToolTip": "WebApplication1\\Models\\ViewModels\\EditLabViewModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-26T14:44:23.433Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
               "Title": "LaboratoryController.cs",
               "DocumentMoniker": "C:\\Users\\cherr\\Desktop\\Lab-ERP\\WebApplication1\\Controllers\\LaboratoryController.cs",
               "RelativeDocumentMoniker": "WebApplication1\\Controllers\\LaboratoryController.cs",
               "ToolTip": "C:\\Users\\cherr\\Desktop\\Lab-ERP\\WebApplication1\\Controllers\\LaboratoryController.cs",
               "RelativeToolTip": "WebApplication1\\Controllers\\LaboratoryController.cs",
-              "ViewState": "AgIAAD4AAAAAAAAAAAA/wFIAAAAJAAAAAAAAAA==",
+              "ViewState": "AgIAAH8AAAAAAAAAAAAswJgAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-04-26T14:35:46.423Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 4,
               "Title": "Professor.cs",
               "DocumentMoniker": "C:\\Users\\cherr\\Desktop\\Lab-ERP\\WebApplication1\\Models\\Core\\Professor.cs",
               "RelativeDocumentMoniker": "WebApplication1\\Models\\Core\\Professor.cs",
               "ToolTip": "C:\\Users\\cherr\\Desktop\\Lab-ERP\\WebApplication1\\Models\\Core\\Professor.cs",
               "RelativeToolTip": "WebApplication1\\Models\\Core\\Professor.cs",
-              "ViewState": "AgIAADEAAAAAAAAAAAAswEQAAAAJAAAAAAAAAA==",
+              "ViewState": "AgIAAEkAAAAAAAAAAAAswGIAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-04-26T14:35:30.325Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 6,
               "Title": "Laboratory.cs",
               "DocumentMoniker": "C:\\Users\\cherr\\Desktop\\Lab-ERP\\WebApplication1\\Models\\Core\\Laboratory.cs",
               "RelativeDocumentMoniker": "WebApplication1\\Models\\Core\\Laboratory.cs",
@@ -109,12 +143,11 @@
               "RelativeToolTip": "WebApplication1\\Models\\Core\\Laboratory.cs",
               "ViewState": "AgIAABkAAAAAAAAAAAAgwAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-26T14:33:43.286Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-26T14:33:43.286Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 5,
               "Title": "_LoginPartial.cshtml",
               "DocumentMoniker": "C:\\Users\\cherr\\Desktop\\Lab-ERP\\WebApplication1\\Views\\Shared\\_LoginPartial.cshtml",
               "RelativeDocumentMoniker": "WebApplication1\\Views\\Shared\\_LoginPartial.cshtml",
@@ -122,12 +155,11 @@
               "RelativeToolTip": "WebApplication1\\Views\\Shared\\_LoginPartial.cshtml",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAOAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-04-26T14:03:35.29Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-26T14:03:35.29Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 8,
               "Title": "Create.cshtml",
               "DocumentMoniker": "C:\\Users\\cherr\\Desktop\\Lab-ERP\\WebApplication1\\Views\\Laboratory\\Create.cshtml",
               "RelativeDocumentMoniker": "WebApplication1\\Views\\Laboratory\\Create.cshtml",
@@ -135,12 +167,11 @@
               "RelativeToolTip": "WebApplication1\\Views\\Laboratory\\Create.cshtml",
               "ViewState": "AgIAABsAAAAAAAAAAAAAACMAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-04-26T14:16:34.065Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-26T14:16:34.065Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 9,
               "Title": "AddMember.cshtml",
               "DocumentMoniker": "C:\\Users\\cherr\\Desktop\\Lab-ERP\\WebApplication1\\Views\\Laboratory\\AddMember.cshtml",
               "RelativeDocumentMoniker": "WebApplication1\\Views\\Laboratory\\AddMember.cshtml",
@@ -148,12 +179,11 @@
               "RelativeToolTip": "WebApplication1\\Views\\Laboratory\\AddMember.cshtml",
               "ViewState": "AgIAAA8AAAAAAAAAAAAAABoAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-04-26T14:17:19.11Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-26T14:17:19.11Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 7,
               "Title": "Dashboard.cshtml",
               "DocumentMoniker": "C:\\Users\\cherr\\Desktop\\Lab-ERP\\WebApplication1\\Views\\User\\Dashboard.cshtml",
               "RelativeDocumentMoniker": "WebApplication1\\Views\\User\\Dashboard.cshtml",
@@ -161,12 +191,11 @@
               "RelativeToolTip": "WebApplication1\\Views\\User\\Dashboard.cshtml",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-04-26T14:11:21.308Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-26T14:11:21.308Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 10,
               "Title": "Logout.cshtml",
               "DocumentMoniker": "C:\\Users\\cherr\\Desktop\\Lab-ERP\\WebApplication1\\Views\\Account\\Logout.cshtml",
               "RelativeDocumentMoniker": "WebApplication1\\Views\\Account\\Logout.cshtml",
@@ -174,12 +203,11 @@
               "RelativeToolTip": "WebApplication1\\Views\\Account\\Logout.cshtml",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-04-26T14:07:32.806Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-26T14:07:32.806Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 12,
               "Title": "AccountController.cs",
               "DocumentMoniker": "C:\\Users\\cherr\\Desktop\\Lab-ERP\\WebApplication1\\Controllers\\AccountController.cs",
               "RelativeDocumentMoniker": "WebApplication1\\Controllers\\AccountController.cs",
@@ -187,12 +215,11 @@
               "RelativeToolTip": "WebApplication1\\Controllers\\AccountController.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAGAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-26T14:03:53.306Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-26T14:03:53.306Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 11,
               "Title": "_Layout.cshtml",
               "DocumentMoniker": "C:\\Users\\cherr\\Desktop\\Lab-ERP\\WebApplication1\\Views\\Shared\\_Layout.cshtml",
               "RelativeDocumentMoniker": "WebApplication1\\Views\\Shared\\_Layout.cshtml",
@@ -200,8 +227,7 @@
               "RelativeToolTip": "WebApplication1\\Views\\Shared\\_Layout.cshtml",
               "ViewState": "AgIAACQAAAAAAAAAAAAIwDkAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-04-26T14:03:29.863Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-26T14:03:29.863Z"
             }
           ]
         },

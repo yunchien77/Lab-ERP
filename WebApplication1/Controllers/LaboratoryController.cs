@@ -92,6 +92,66 @@ namespace WebApplication1.Controllers
             return View(lab);
         }
 
+        // 顯示編輯實驗室頁面
+        [Authorize(Roles = "Professor")]
+        public IActionResult Edit(string id)
+        {
+            var lab = _laboratories.Find(l => l.LabID == id);
+            if (lab == null)
+                return NotFound();
+
+            // 檢查是否是實驗室的創建者
+            var userID = User.FindFirstValue("UserID");
+            if (lab.Creator.UserID != userID)
+                return Forbid();
+
+            var model = new EditLabViewModel
+            {
+                LabID = lab.LabID,
+                Name = lab.Name,
+                Description = lab.Description,
+                Website = lab.Website,
+                ContactInfo = lab.ContactInfo
+            };
+
+            return View(model);
+        }
+
+        // 處理編輯實驗室
+        [HttpPost]
+        [Authorize(Roles = "Professor")]
+        public IActionResult Edit(EditLabViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                // 獲取當前用戶ID
+                var userID = User.FindFirstValue("UserID");
+                // 獲取用戶資料
+                var professor = _accountController.GetUser(userID) as Professor;
+
+                if (professor != null)
+                {
+                    // 檢查是否是實驗室的創建者
+                    var lab = _laboratories.Find(l => l.LabID == model.LabID);
+                    if (lab != null && lab.Creator.UserID == userID)
+                    {
+                        // 更新實驗室資訊
+                        professor.UpdateLaboratory(model.LabID, new
+                        {
+                            Name = model.Name,
+                            Description = model.Description,
+                            Website = model.Website,
+                            ContactInfo = model.ContactInfo
+                        });
+
+                        return RedirectToAction("Details", new { id = model.LabID });
+                    }
+                }
+            }
+
+            return View(model);
+        }
+
         // 顯示添加成員頁面
         [Authorize(Roles = "Professor")]
         public IActionResult AddMember(string id)

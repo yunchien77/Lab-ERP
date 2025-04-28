@@ -178,6 +178,10 @@ namespace WebApplication1.Controllers
 
                 // 更新設備可用數量
                 equipment.AvailableQuantity -= model.Quantity;
+                if (equipment.AvailableQuantity == 0)
+                {
+                    equipment.Status = "Unavailable";
+                }
                 equipment.BorrowRecords.Add(record);
                 student.BorrowRecords.Add(record);
 
@@ -238,6 +242,11 @@ namespace WebApplication1.Controllers
             if (equipment != null)
             {
                 equipment.AvailableQuantity += record.Quantity;
+
+                if (equipment.Status == "Unavailable" && equipment.AvailableQuantity > 0)
+                {
+                    equipment.Status = "Available";
+                }
             }
 
             return RedirectToAction("MyEquipments");

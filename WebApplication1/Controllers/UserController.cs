@@ -21,8 +21,21 @@ namespace WebApplication1.Controllers
         {
             // 獲取當前用戶ID
             var userID = User.FindFirstValue("UserID");
+
+            if (string.IsNullOrEmpty(userID))
+            {
+                // 如果 userID 為 null，重定向到登入頁面
+                return RedirectToAction("Login", "Account");
+            }
             // 獲取用戶資料
             var user = _accountController.GetUser(userID);
+
+            // 檢查 user 是否為 null
+            if (user == null)
+            {
+                // 如果找不到用戶，重定向到登入頁面
+                return RedirectToAction("Login", "Account");
+            }
 
             // 如果是學生，則獲取其實驗室資訊
             if (User.IsInRole("Student"))

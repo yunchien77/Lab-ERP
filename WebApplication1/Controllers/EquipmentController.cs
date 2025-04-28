@@ -144,6 +144,13 @@ namespace WebApplication1.Controllers
                 if (equipment == null)
                     return NotFound();
 
+                // 查找設備所屬的實驗室
+                var lab = LaboratoryController._laboratories.Find(l => l.LabID == equipment.LaboratoryID);
+                if (lab != null)
+                {
+                    equipment.Laboratory = lab;
+                }
+
                 if (equipment.AvailableQuantity < model.Quantity)
                 {
                     ModelState.AddModelError("", "借用數量超過可用數量");
@@ -193,8 +200,14 @@ namespace WebApplication1.Controllers
             if (student == null)
                 return NotFound();
 
-            // 獲取學生的借用記錄
-            var records = student.BorrowRecords.Where(r => r.Status == "Borrowed").ToList();
+            // 獲取學生的借用記錄，包括當前和歷史記錄
+            var records = student.BorrowRecords.ToList(); // 包含所有借用記錄，不僅是"Borrowed"狀態的
+
+            // 添加實驗室信息到ViewBag
+            var labs = LaboratoryController._laboratories.Where(
+                lab => lab.Members.Any(m => m.UserID == userID)
+            ).ToList();
+            ViewBag.Laboratories = labs;
 
             return View(records);
         }

@@ -68,6 +68,9 @@
                     學生資訊
                 </div>
                 <div class="card-body">
+                    <!-- 添加直接連結到借用記錄頁面 -->
+                    <a asp-controller="Equipment" asp-action="MyEquipments" class="btn btn-primary mb-3">查看我的借用記錄</a>
+
                     @{
                         var studentLabs = ViewBag.StudentLaboratories as List<WebApplication1.Models.Core.Laboratory>
                         ?? new List<WebApplication1.Models.Core.Laboratory>();

@@ -10,14 +10,11 @@
 
 <div class="row mb-3">
     <div class="col-md-12">
-        <a asp-controller="User" asp-action="Dashboard" class="btn btn-secondary">返回儀表板</a>
+        <!--<a asp-controller="User" asp-action="Dashboard" class="btn btn-secondary">返回儀表板</a>-->
 
         @if (ViewBag.Laboratories != null && ViewBag.Laboratories.Count > 0)
         {
             <div class="dropdown d-inline-block ml-2">
-                <button class="btn btn-info dropdown-toggle" type="button" id="labDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    瀏覽可借用設備
-                </button>
                 <div class="dropdown-menu" aria-labelledby="labDropdown">
                     @foreach (var lab in ViewBag.Laboratories)
                     {

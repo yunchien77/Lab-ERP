@@ -24,11 +24,14 @@ namespace WebApplication1.Models.Core
 
         public List<User> Members { get; set; }
 
+        public List<Equipment> Equipments { get; set; }
+
         // 建構子
         public Laboratory()
         {
             LabID = Guid.NewGuid().ToString();
             Members = new List<User>();
+            Equipments = new List<Equipment>();
         }
 
         // 添加成員

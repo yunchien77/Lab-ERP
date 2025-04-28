@@ -37,6 +37,7 @@
                     <a asp-controller="Laboratory" asp-action="AddMember" asp-route-id="@Model.LabID" class="btn btn-primary">添加成員</a>
                     <a asp-controller="Laboratory" asp-action="Edit" asp-route-id="@Model.LabID" class="btn btn-info">編輯實驗室</a>
                 }
+                <a asp-controller="Equipment" asp-action="Index" asp-route-labID="@Model.LabID" class="btn btn-success mt-2">設備管理</a>
             </div>
         </div>
     </div>

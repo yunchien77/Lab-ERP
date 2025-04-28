@@ -1,0 +1,67 @@
+﻿@model List<WebApplication1.Models.Core.BorrowRecord>
+
+@{
+    ViewData["Title"] = "我的借用設備";
+}
+
+<link rel="stylesheet" href="~/css/site.css" />
+
+<h2>我的借用設備</h2>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                借用記錄
+            </div>
+            <div class="card-body">
+                @if (Model.Count > 0)
+                {
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>設備名稱</th>
+                                <th>借用數量</th>
+                                <th>借用日期</th>
+                                <th>狀態</th>
+                                <th>備註</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var record in Model)
+                            {
+                                <tr>
+                                    <td>@record.Equipment.Name</td>
+                                    <td>@record.Quantity</td>
+                                    <td>@record.BorrowDate.ToString("yyyy-MM-dd HH:mm")</td>
+                                    <td>@record.Status</td>
+                                    <td>@record.Notes</td>
+                                    <td>
+                                        @if (record.Status == "Borrowed")
+                                        {
+                                            <form asp-controller="Equipment" asp-action="Return" method="post">
+                                                <input type="hidden" name="id" value="@record.RecordID" />
+                                                <button type="submit" class="btn btn-sm btn-success">歸還</button>
+                                            </form>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    <p>您目前沒有借用任何設備。</p>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-3">
+    <div class="col-md-12">
+        <a asp-controller="User" asp-action="Dashboard" class="btn btn-secondary">返回儀表板</a>
+    </div>
+</div>

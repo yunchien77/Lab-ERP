@@ -30,6 +30,7 @@ builder.Services.AddControllersWithViews();
 // 註冊您的接口和實現
 builder.Services.AddSingleton<IUserRepository, InMemoryUserRepository>();
 builder.Services.AddSingleton<ILaboratoryRepository, InMemoryLaboratoryRepository>();
+builder.Services.AddSingleton<IEquipmentRepository, InMemoryEquipmentRepository>();
 
 // 註冊服務
 builder.Services.AddScoped<INotificationService, NotificationService>();
@@ -41,6 +42,9 @@ builder.Services.AddScoped<IUserHandler, UserHandler>(); // 請替換為您實�
 // 註冊 AccountController 為單例服務
 builder.Services.AddSingleton<AccountController>();
 builder.Services.AddSingleton<AccountHandler>();
+
+builder.Services.AddSingleton<EquipmentController>();
+builder.Services.AddSingleton<EquipmentHandler>();
 
 var app = builder.Build();
 

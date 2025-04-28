@@ -33,4 +33,20 @@
         public string Username { get; set; }
         public string Email { get; set; }
     }
+
+    public class CreateEquipmentDto
+    {
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public int TotalQuantity { get; set; }
+        public DateTime PurchaseDate { get; set; }
+        public string LaboratoryID { get; set; }
+    }
+
+    public class BorrowEquipmentDto
+    {
+        public string EquipmentID { get; set; }
+        public int Quantity { get; set; }
+        public string Notes { get; set; }
+    }
 }

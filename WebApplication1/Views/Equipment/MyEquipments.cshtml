@@ -1,0 +1,130 @@
+﻿@model List<WebApplication1.Models.Core.BorrowRecord>
+
+@{
+    ViewData["Title"] = "我的借用設備";
+}
+
+<link rel="stylesheet" href="~/css/site.css" />
+
+<h2>我的借用設備</h2>
+
+<div class="row mb-3">
+    <div class="col-md-12">
+        <a asp-controller="User" asp-action="Dashboard" class="btn btn-secondary">返回儀表板</a>
+
+        @if (ViewBag.Laboratories != null && ViewBag.Laboratories.Count > 0)
+        {
+            <div class="dropdown d-inline-block ml-2">
+                <div class="dropdown-menu" aria-labelledby="labDropdown">
+                    @foreach (var lab in ViewBag.Laboratories)
+                    {
+                        <a class="dropdown-item" asp-controller="Equipment" asp-action="Index" asp-route-labID="@lab.LabID">@lab.Name</a>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<!-- 當前借用記錄 -->
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                當前借用記錄
+            </div>
+            <div class="card-body">
+                @{
+                    var currentRecords = Model.Where(r => r.Status == "Borrowed").ToList();
+                }
+
+                @if (currentRecords.Count > 0)
+                {
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>設備名稱</th>
+                                <th>借用數量</th>
+                                <th>借用日期</th>
+                                <th>實驗室</th>
+                                <th>備註</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var record in currentRecords)
+                            {
+                                <tr>
+                                    <td>@record.Equipment.Name</td>
+                                    <td>@record.Quantity</td>
+                                    <td>@record.BorrowDate.ToString("yyyy-MM-dd HH:mm")</td>
+                                    <td>@record.Equipment.Laboratory?.Name</td>
+                                    <td>@record.Notes</td>
+                                    <td>
+                                        <form asp-controller="Equipment" asp-action="Return" method="post">
+                                            <input type="hidden" name="id" value="@record.RecordID" />
+                                            <button type="submit" class="btn btn-sm btn-success">歸還</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    <p>您目前沒有任何借用中的設備。</p>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 歷史借用記錄 -->
+<div class="row mt-4">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header bg-secondary text-white">
+                歷史借用記錄
+            </div>
+            <div class="card-body">
+                @{
+                    var historyRecords = Model.Where(r => r.Status == "Returned").ToList();
+                }
+
+                @if (historyRecords.Count > 0)
+                {
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>設備名稱</th>
+                                <th>借用數量</th>
+                                <th>借用日期</th>
+                                <th>歸還日期</th>
+                                <th>實驗室</th>
+                                <th>備註</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var record in historyRecords)
+                            {
+                                <tr>
+                                    <td>@record.Equipment.Name</td>
+                                    <td>@record.Quantity</td>
+                                    <td>@record.BorrowDate.ToString("yyyy-MM-dd HH:mm")</td>
+                                    <td>@(record.ReturnDate?.ToString("yyyy-MM-dd HH:mm") ?? "-")</td>
+                                    <td>@record.Equipment.Laboratory?.Name</td>
+                                    <td>@record.Notes</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    <p>您目前沒有任何歷史借用記錄。</p>
+                }
+            </div>
+        </div>
+    </div>
+</div>

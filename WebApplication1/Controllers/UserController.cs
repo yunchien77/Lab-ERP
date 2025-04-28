@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using WebApplication1.Interface;
 using WebApplication1.Models.Core;
 using WebApplication1.Models.ViewModels;
 
@@ -9,11 +10,11 @@ namespace WebApplication1.Controllers
     [Authorize]
     public class UserController : Controller
     {
-        private AccountController _accountController;
+        private readonly IUserHandler _userHandler;
 
-        public UserController(AccountController accountController)
+        public UserController(IUserHandler userHandler)
         {
-            _accountController = accountController;
+            _userHandler = userHandler;
         }
 
         // 用戶儀表板
@@ -21,14 +22,16 @@ namespace WebApplication1.Controllers
         {
             // 獲取當前用戶ID
             var userID = User.FindFirstValue("UserID");
+
             // 獲取用戶資料
-            var user = _accountController.GetUser(userID);
+            var user = _userHandler.GetUserById(userID);
 
             // 如果是學生，則獲取其實驗室資訊
             if (User.IsInRole("Student"))
             {
-                ViewBag.StudentLaboratories = GetStudentLaboratories(userID);
+                ViewBag.StudentLaboratories = _userHandler.GetStudentLaboratories(userID);
             }
+
             return View(user);
         }
 
@@ -46,20 +49,15 @@ namespace WebApplication1.Controllers
             {
                 // 獲取當前用戶ID
                 var userID = User.FindFirstValue("UserID");
-                // 獲取用戶資料
-                var user = _accountController.GetUser(userID);
 
-                if (user != null)
+                // 嘗試修改密碼
+                if (_userHandler.ChangePassword(userID, oldPassword, newPassword))
                 {
-                    // 嘗試修改密碼
-                    if (user.ChangePassword(oldPassword, newPassword))
-                    {
-                        ViewBag.Message = "密碼已成功修改。";
-                        return View();
-                    }
-
-                    ModelState.AddModelError("", "舊密碼不正確。");
+                    ViewBag.Message = "密碼已成功修改。";
+                    return View();
                 }
+
+                ModelState.AddModelError("", "舊密碼不正確。");
             }
 
             return View();
@@ -71,9 +69,9 @@ namespace WebApplication1.Controllers
         {
             // 獲取當前用戶ID
             var userID = User.FindFirstValue("UserID");
-            // 獲取用戶資料
-            var student = _accountController.GetUser(userID) as Student;
 
+            // 獲取用戶資料
+            var student = _userHandler.GetUserById(userID) as Student;
             if (student == null)
                 return NotFound();
 
@@ -95,30 +93,22 @@ namespace WebApplication1.Controllers
             {
                 // 獲取當前用戶ID
                 var userID = User.FindFirstValue("UserID");
-                // 獲取用戶資料
-                var student = _accountController.GetUser(userID) as Student;
 
-                if (student != null)
+                // 更新學生資料
+                var profileInfo = new StudentProfileDto
                 {
-                    // 更新學生資料
-                    student.StudentID = model.StudentID;
-                    student.PhoneNumber = model.PhoneNumber;
+                    StudentID = model.StudentID,
+                    PhoneNumber = model.PhoneNumber
+                };
 
+                if (_userHandler.UpdateStudentProfile(userID, profileInfo))
+                {
                     ViewBag.Message = "個人資料已成功更新。";
                     return View(model);
                 }
             }
 
             return View(model);
-        }
-
-        // 取得學生所屬的實驗室
-        private List<Laboratory> GetStudentLaboratories(string studentID)
-        {
-            // 從所有實驗室中找出包含此學生的實驗室
-            return LaboratoryController._laboratories.Where(
-                lab => lab.Members.Any(m => m.UserID == studentID)
-            ).ToList();
         }
     }
 }

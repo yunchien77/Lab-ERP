@@ -3,6 +3,9 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using WebApplication1.Interface;
+using WebApplication1.Models.Core;
+using WebApplication1.Models.Handlers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +24,24 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 // 註冊 AccountController 為單例服務
 builder.Services.AddSingleton<AccountController>();
 
+// 添加 services to the container.
+builder.Services.AddControllersWithViews();
+
+// 註冊您的接口和實現
+builder.Services.AddSingleton<IUserRepository, InMemoryUserRepository>();
+builder.Services.AddSingleton<ILaboratoryRepository, InMemoryLaboratoryRepository>();
+
+// 註冊服務
+builder.Services.AddScoped<INotificationService, NotificationService>();
+builder.Services.AddScoped<LaboratoryHandler>();
+
+// 添加 IUserHandler 的實現
+builder.Services.AddScoped<IUserHandler, UserHandler>(); // 請替換為您實際的實現類
+
+// 註冊 AccountController 為單例服務
+builder.Services.AddSingleton<AccountController>();
+builder.Services.AddSingleton<AccountHandler>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -29,6 +50,7 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
 }
+
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();

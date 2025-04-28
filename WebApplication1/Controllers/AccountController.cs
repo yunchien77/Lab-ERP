@@ -4,30 +4,18 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using WebApplication1.Models.Core;
 using WebApplication1.Models.ViewModels;
-using System.Security.Claims;
+using WebApplication1.Models.Handlers;
 
 namespace WebApplication1.Controllers
 {
     public class AccountController : Controller
     {
-        // 模擬用戶資料庫
-        private static List<User> _users = new List<User>
+        private readonly AccountHandler _accountManager;
+
+        public AccountController(AccountHandler accountManager)
         {
-            new Professor
-            {
-                UserID = "1",
-                Username = "prof1",
-                Password = "password",
-                Email = "prof1@example.com"
-            },
-            new Professor
-            {
-                UserID = "2",
-                Username = "prof2",
-                Password = "password",
-                Email = "prof2@example.com"
-            }
-        };
+            _accountManager = accountManager;
+        }
 
         // 登入頁面
         public IActionResult Login()
@@ -41,22 +29,19 @@ namespace WebApplication1.Controllers
         {
             if (ModelState.IsValid)
             {
-                // 查找用戶
-                var user = _users.Find(u => u.Username == model.Username && u.Password == model.Password);
-
+                var user = _accountManager.AuthenticateUser(model.Username, model.Password);
                 if (user != null)
                 {
                     // 建立身份驗證票據
                     var claims = new List<Claim>
-                    {
-                        new Claim(ClaimTypes.Name, user.Username),
-                        new Claim(ClaimTypes.Email, user.Email),
-                        new Claim(ClaimTypes.Role, user.Role),
-                        new Claim("UserID", user.UserID)
-                    };
+                {
+                    new Claim(ClaimTypes.Name, user.Username),
+                    new Claim(ClaimTypes.Email, user.Email),
+                    new Claim(ClaimTypes.Role, user.Role),
+                    new Claim("UserID", user.UserID)
+                };
 
                     var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-
                     await HttpContext.SignInAsync(
                         CookieAuthenticationDefaults.AuthenticationScheme,
                         new ClaimsPrincipal(claimsIdentity),
@@ -74,23 +59,10 @@ namespace WebApplication1.Controllers
             return View(model);
         }
 
-        // 登出
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Index", "Home");
         }
-
-        // 添加新用戶 (模擬用於添加學生)
-        public void AddUser(User user)
-        {
-            _users.Add(user);
-        }
-
-        // 獲取用戶
-        public User GetUser(string userID)
-        {
-            return _users.Find(u => u.UserID == userID);
-        }
-    }
+}
 }

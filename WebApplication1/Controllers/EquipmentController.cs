@@ -1,33 +1,48 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using WebApplication1.Interface;
 using WebApplication1.Models.Core;
+using WebApplication1.Models.Handlers;
 using WebApplication1.Models.ViewModels;
-
-
 
 namespace WebApplication1.Controllers
 {
     [Authorize]
     public class EquipmentController : Controller
     {
-        private AccountController _accountController;
-        private static List<Equipment> _equipments = new List<Equipment>();
+        private readonly EquipmentHandler _equipmentHandler;
+        private readonly ILaboratoryRepository _laboratoryRepository; // 新增
 
-        public EquipmentController(AccountController accountController)
+        public EquipmentController(
+            EquipmentHandler equipmentHandler,
+            ILaboratoryRepository laboratoryRepository) // 新增參數
         {
-            _accountController = accountController;
+            _equipmentHandler = equipmentHandler;
+            _laboratoryRepository = laboratoryRepository; // 新增
         }
 
-        // 顯示實驗室設備列表
+        /// 顯示實驗室設備列表
         public IActionResult Index(string labID)
         {
-            var lab = LaboratoryController._laboratories.Find(l => l.LabID == labID);
-            if (lab == null)
-                return NotFound();
+            if (string.IsNullOrEmpty(labID))
+            {
+                TempData["ErrorMessage"] = "實驗室ID不能為空";
+                return RedirectToAction("Dashboard", "User");
+            }
 
-            ViewBag.Laboratory = lab;
-            var equipments = _equipments.Where(e => e.LaboratoryID == labID).ToList();
+            var laboratory = _laboratoryRepository.GetById(labID);
+            if (laboratory == null)
+            {
+                TempData["ErrorMessage"] = "實驗室不存在";
+                return RedirectToAction("Dashboard", "User");
+            }
+
+            var equipments = _equipmentHandler.GetEquipmentsByLab(labID);
+
+            ViewBag.Laboratory = laboratory; // 設置完整的Laboratory對象
+            ViewBag.LaboratoryID = labID;    // 保留原有的ID設置
+
             return View(equipments);
         }
 
@@ -35,21 +50,11 @@ namespace WebApplication1.Controllers
         [Authorize(Roles = "Professor")]
         public IActionResult Create(string labID)
         {
-            var lab = LaboratoryController._laboratories.Find(l => l.LabID == labID);
-            if (lab == null)
-                return NotFound();
-
-            // 檢查是否是實驗室的創建者
-            var userID = User.FindFirstValue("UserID");
-            if (lab.Creator.UserID != userID)
-                return Forbid();
-
             var model = new CreateEquipmentViewModel
             {
                 LaboratoryID = labID,
                 PurchaseDate = DateTime.Now
             };
-
             return View(model);
         }
 
@@ -60,28 +65,25 @@ namespace WebApplication1.Controllers
         {
             if (ModelState.IsValid)
             {
-                var lab = LaboratoryController._laboratories.Find(l => l.LabID == model.LaboratoryID);
-                if (lab == null)
-                    return NotFound();
-
-                // 檢查是否是實驗室的創建者
-                var userID = User.FindFirstValue("UserID");
-                if (lab.Creator.UserID != userID)
-                    return Forbid();
-
-                var equipment = new Equipment
+                try
                 {
-                    Name = model.Name,
-                    Description = model.Description,
-                    TotalQuantity = model.TotalQuantity,
-                    AvailableQuantity = model.TotalQuantity,
-                    PurchaseDate = model.PurchaseDate,
-                    LaboratoryID = model.LaboratoryID
-                };
+                    var userID = User.FindFirstValue("UserID");
+                    var equipmentInfo = new CreateEquipmentDto
+                    {
+                        Name = model.Name,
+                        Description = model.Description,
+                        TotalQuantity = model.TotalQuantity,
+                        PurchaseDate = model.PurchaseDate,
+                        LaboratoryID = model.LaboratoryID
+                    };
 
-                _equipments.Add(equipment);
-
-                return RedirectToAction("Index", new { labID = model.LaboratoryID });
+                    _equipmentHandler.CreateEquipment(userID, equipmentInfo);
+                    return RedirectToAction("Index", new { labID = model.LaboratoryID });
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("", ex.Message);
+                }
             }
 
             return View(model);
@@ -92,43 +94,55 @@ namespace WebApplication1.Controllers
         [Authorize(Roles = "Professor")]
         public IActionResult Delete(string id)
         {
-            var equipment = _equipments.Find(e => e.EquipmentID == id);
-            if (equipment == null)
-                return NotFound();
+            try
+            {
+                var userID = User.FindFirstValue("UserID");
 
-            var lab = LaboratoryController._laboratories.Find(l => l.LabID == equipment.LaboratoryID);
-            if (lab == null)
-                return NotFound();
+                // 在刪除前獲取設備以取得laboratoryID
+                var equipment = _equipmentHandler.GetEquipmentById(id);
+                if (equipment == null)
+                {
+                    TempData["ErrorMessage"] = "設備不存在";
+                    return RedirectToAction("Dashboard", "User");
+                }
 
-            // 檢查是否是實驗室的創建者
-            var userID = User.FindFirstValue("UserID");
-            if (lab.Creator.UserID != userID)
-                return Forbid();
+                string labID = equipment.LaboratoryID; // 獲取設備所屬的實驗室ID
 
-            _equipments.Remove(equipment);
+                _equipmentHandler.DeleteEquipment(userID, id);
 
-            return RedirectToAction("Index", new { labID = equipment.LaboratoryID });
+                // 刪除後重定向回實驗室的設備列表
+                return RedirectToAction("Index", new { labID = labID });
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = ex.Message;
+                return RedirectToAction("Dashboard", "User");
+            }
         }
 
         // 顯示借用設備頁面
         [Authorize(Roles = "Student")]
         public IActionResult Borrow(string id)
         {
-            var equipment = _equipments.Find(e => e.EquipmentID == id);
+            var equipment = _equipmentHandler.GetEquipmentById(id);
             if (equipment == null)
-                return NotFound();
+            {
+                TempData["ErrorMessage"] = "設備不存在";
+                return RedirectToAction("Dashboard", "User");
+            }
 
             if (equipment.AvailableQuantity <= 0)
             {
-                TempData["ErrorMessage"] = "該設備已無可借用數量";
+                TempData["ErrorMessage"] = "該設備當前沒有可用數量";
                 return RedirectToAction("Index", new { labID = equipment.LaboratoryID });
             }
 
-            ViewBag.Equipment = equipment;
             var model = new BorrowEquipmentViewModel
             {
                 EquipmentID = id
             };
+
+            ViewBag.Equipment = equipment;
 
             return View(model);
         }
@@ -140,56 +154,29 @@ namespace WebApplication1.Controllers
         {
             if (ModelState.IsValid)
             {
-                var equipment = _equipments.Find(e => e.EquipmentID == model.EquipmentID);
-                if (equipment == null)
-                    return NotFound();
-
-                // 查找設備所屬的實驗室
-                var lab = LaboratoryController._laboratories.Find(l => l.LabID == equipment.LaboratoryID);
-                if (lab != null)
+                try
                 {
-                    equipment.Laboratory = lab;
+                    var userID = User.FindFirstValue("UserID");
+                    var borrowInfo = new BorrowEquipmentDto
+                    {
+                        EquipmentID = model.EquipmentID,
+                        Quantity = model.Quantity,
+                        Notes = model.Notes
+                    };
+
+                    _equipmentHandler.BorrowEquipment(userID, borrowInfo);
+                    return RedirectToAction("MyEquipments");
                 }
-
-                if (equipment.AvailableQuantity < model.Quantity)
+                catch (Exception ex)
                 {
-                    ModelState.AddModelError("", "借用數量超過可用數量");
-                    ViewBag.Equipment = equipment;
-                    return View(model);
+                    ModelState.AddModelError("", ex.Message);
                 }
-
-                // 獲取當前用戶ID
-                var userID = User.FindFirstValue("UserID");
-                var student = _accountController.GetUser(userID) as Student;
-
-                if (student == null)
-                    return NotFound();
-
-                // 創建借用記錄
-                var record = new BorrowRecord
-                {
-                    StudentID = student.UserID,
-                    Student = student,
-                    EquipmentID = equipment.EquipmentID,
-                    Equipment = equipment,
-                    Quantity = model.Quantity,
-                    Notes = model.Notes
-                };
-
-                // 更新設備可用數量
-                equipment.AvailableQuantity -= model.Quantity;
-                if (equipment.AvailableQuantity == 0)
-                {
-                    equipment.Status = "Unavailable";
-                }
-                equipment.BorrowRecords.Add(record);
-                student.BorrowRecords.Add(record);
-
-                return RedirectToAction("MyEquipments");
             }
 
-            var equipmentForView = _equipments.Find(e => e.EquipmentID == model.EquipmentID);
-            ViewBag.Equipment = equipmentForView;
+            // 如果模型無效或發生異常，需要重新設置ViewBag.Equipment
+            var equipment = _equipmentHandler.GetEquipmentById(model.EquipmentID);
+            ViewBag.Equipment = equipment;
+
             return View(model);
         }
 
@@ -197,22 +184,8 @@ namespace WebApplication1.Controllers
         [Authorize(Roles = "Student")]
         public IActionResult MyEquipments()
         {
-            // 獲取當前用戶ID
             var userID = User.FindFirstValue("UserID");
-            var student = _accountController.GetUser(userID) as Student;
-
-            if (student == null)
-                return NotFound();
-
-            // 獲取學生的借用記錄，包括當前和歷史記錄
-            var records = student.BorrowRecords.ToList(); // 包含所有借用記錄，不僅是"Borrowed"狀態的
-
-            // 添加實驗室信息到ViewBag
-            var labs = LaboratoryController._laboratories.Where(
-                lab => lab.Members.Any(m => m.UserID == userID)
-            ).ToList();
-            ViewBag.Laboratories = labs;
-
+            var records = _equipmentHandler.GetStudentBorrowRecords(userID);
             return View(records);
         }
 
@@ -221,35 +194,16 @@ namespace WebApplication1.Controllers
         [Authorize(Roles = "Student")]
         public IActionResult Return(string id)
         {
-            // 獲取當前用戶ID
-            var userID = User.FindFirstValue("UserID");
-            var student = _accountController.GetUser(userID) as Student;
-
-            if (student == null)
-                return NotFound();
-
-            // 查找借用記錄
-            var record = student.BorrowRecords.Find(r => r.RecordID == id && r.Status == "Borrowed");
-            if (record == null)
-                return NotFound();
-
-            // 更新記錄狀態
-            record.Status = "Returned";
-            record.ReturnDate = DateTime.Now;
-
-            // 更新設備可用數量
-            var equipment = _equipments.Find(e => e.EquipmentID == record.EquipmentID);
-            if (equipment != null)
+            try
             {
-                equipment.AvailableQuantity += record.Quantity;
-
-                if (equipment.Status == "Unavailable" && equipment.AvailableQuantity > 0)
-                {
-                    equipment.Status = "Available";
-                }
+                var userID = User.FindFirstValue("UserID");
+                _equipmentHandler.ReturnEquipment(userID, id);
+                return RedirectToAction("MyEquipments");
             }
-
-            return RedirectToAction("MyEquipments");
+            catch (Exception)
+            {
+                return Forbid();
+            }
         }
     }
 }

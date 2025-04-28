@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using WebApplication1.Models.Core;
-using WebApplication1.Models.Services;
+using WebApplication1.Models.Handlers;
 using WebApplication1.Models.ViewModels;
 
 namespace WebApplication1.Controllers
@@ -10,14 +10,11 @@ namespace WebApplication1.Controllers
     [Authorize]
     public class LaboratoryController : Controller
     {
-        private AccountController _accountController;
-        private NotificationService _notificationService;
-        public static List<Laboratory> _laboratories = new List<Laboratory>();
+        private readonly LaboratoryHandler _laboratoryService;
 
-        public LaboratoryController(AccountController accountController)
+        public LaboratoryController(LaboratoryHandler laboratoryService)
         {
-            _accountController = accountController;
-            _notificationService = new NotificationService();
+            _laboratoryService = laboratoryService;
         }
 
         // 顯示創建實驗室頁面
@@ -34,69 +31,66 @@ namespace WebApplication1.Controllers
         {
             if (ModelState.IsValid)
             {
-                // 獲取當前用戶ID
-                var userID = User.FindFirstValue("UserID");
-                // 獲取用戶資料
-                var professor = _accountController.GetUser(userID) as Professor;
-
-                if (professor != null)
+                try
                 {
+                    // 獲取當前用戶ID
+                    var userID = User.FindFirstValue("UserID");
+
                     // 創建實驗室
-                    var lab = professor.CreateLaboratory(new
+                    var labInfo = new LaboratoryCreateDto
                     {
                         Name = model.Name,
                         Description = model.Description,
                         Website = model.Website,
                         ContactInfo = model.ContactInfo
-                    });
+                    };
 
-                    // 添加實驗室到列表
-                    _laboratories.Add(lab);
-
+                    var lab = _laboratoryService.CreateLaboratory(userID, labInfo);
                     return RedirectToAction("Details", new { id = lab.LabID });
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("", ex.Message);
                 }
             }
 
             return View(model);
         }
 
-        public IActionResult RemoveMember(string labID, string memberID)
-        {
-            // 獲取當前用戶ID
-            var userID = User.FindFirstValue("UserID");
-            // 獲取用戶資料
-            var professor = _accountController.GetUser(userID) as Professor;
-
-            if (professor != null)
-            {
-                // 檢查是否為該實驗室的創建者
-                var lab = _laboratories.Find(l => l.LabID == labID);
-                if (lab != null && lab.Creator.UserID == userID)
-                {
-                    // 刪除成員
-                    professor.RemoveMember(labID, memberID);
-                    return RedirectToAction("Details", new { id = labID });
-                }
-            }
-
-            return Forbid();
-        }
-
         // 顯示實驗室詳情
         public IActionResult Details(string id)
         {
-            var lab = _laboratories.Find(l => l.LabID == id);
+            var lab = _laboratoryService.GetLaboratoryDetails(id);
             if (lab == null)
                 return NotFound();
 
             return View(lab);
         }
 
+        // 處理刪除成員
+        [Authorize(Roles = "Professor")]
+        public IActionResult RemoveMember(string labID, string memberID)
+        {
+            try
+            {
+                // 獲取當前用戶ID
+                var userID = User.FindFirstValue("UserID");
+
+                // 刪除成員
+                _laboratoryService.RemoveMember(userID, labID, memberID);
+                return RedirectToAction("Details", new { id = labID });
+            }
+            catch (Exception)
+            {
+                return Forbid();
+            }
+        }
+
         // 顯示編輯實驗室頁面
         [Authorize(Roles = "Professor")]
         public IActionResult Edit(string id)
         {
-            var lab = _laboratories.Find(l => l.LabID == id);
+            var lab = _laboratoryService.GetLaboratoryDetails(id);
             if (lab == null)
                 return NotFound();
 
@@ -124,28 +118,26 @@ namespace WebApplication1.Controllers
         {
             if (ModelState.IsValid)
             {
-                // 獲取當前用戶ID
-                var userID = User.FindFirstValue("UserID");
-                // 獲取用戶資料
-                var professor = _accountController.GetUser(userID) as Professor;
-
-                if (professor != null)
+                try
                 {
-                    // 檢查是否是實驗室的創建者
-                    var lab = _laboratories.Find(l => l.LabID == model.LabID);
-                    if (lab != null && lab.Creator.UserID == userID)
-                    {
-                        // 更新實驗室資訊
-                        professor.UpdateLaboratory(model.LabID, new
-                        {
-                            Name = model.Name,
-                            Description = model.Description,
-                            Website = model.Website,
-                            ContactInfo = model.ContactInfo
-                        });
+                    // 獲取當前用戶ID
+                    var userID = User.FindFirstValue("UserID");
 
-                        return RedirectToAction("Details", new { id = model.LabID });
-                    }
+                    // 更新實驗室
+                    var labInfo = new LaboratoryUpdateDto
+                    {
+                        Name = model.Name,
+                        Description = model.Description,
+                        Website = model.Website,
+                        ContactInfo = model.ContactInfo
+                    };
+
+                    _laboratoryService.UpdateLaboratory(userID, model.LabID, labInfo);
+                    return RedirectToAction("Details", new { id = model.LabID });
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("", ex.Message);
                 }
             }
 
@@ -167,31 +159,24 @@ namespace WebApplication1.Controllers
         {
             if (ModelState.IsValid)
             {
-                // 獲取當前用戶ID
-                var userID = User.FindFirstValue("UserID");
-                // 獲取用戶資料
-                var professor = _accountController.GetUser(userID) as Professor;
-
-                if (professor != null)
+                try
                 {
-                    // 添加成員
-                    professor.AddMember(model.LabID, new
+                    // 獲取當前用戶ID
+                    var userID = User.FindFirstValue("UserID");
+
+                    // 創建成員
+                    var memberInfo = new MemberCreateDto
                     {
                         Username = model.Username,
                         Email = model.Email
-                    });
+                    };
 
-                    // 找到新添加的學生
-                    var lab = _laboratories.Find(l => l.LabID == model.LabID);
-                    var student = lab.Members[lab.Members.Count - 1] as Student;
-
-                    // 將學生添加到 AccountController 的用戶列表
-                    _accountController.AddUser(student);
-
-                    // 發送通知給新學生
-                    _notificationService.NotifyNewMember(student, new { Password = student.Password });
-
+                    _laboratoryService.AddMember(userID, model.LabID, memberInfo);
                     return RedirectToAction("Details", new { id = model.LabID });
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("", ex.Message);
                 }
             }
 

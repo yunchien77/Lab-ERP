@@ -1,4 +1,4 @@
-﻿@model WebApplication1.Models.Core.Laboratory
+﻿@model LabERP.Models.Core.Laboratory
 
 @{
     ViewData["Title"] = "實驗室詳情";
@@ -72,7 +72,7 @@
                                 @if (User.IsInRole("Professor") && User.FindFirst("UserID").Value == Model.Creator.UserID)
                                 {
                                     <td>
-                                        @if (member is WebApplication1.Models.Core.Student student)
+                                        @if (member is LabERP.Models.Core.Student student)
                                         {
                                             @(string.IsNullOrEmpty(student.StudentID) ? "-" : student.StudentID)
                                         }
@@ -82,7 +82,7 @@
                                         }
                                     </td>
                                     <td>
-                                        @if (member is WebApplication1.Models.Core.Student student2)
+                                        @if (member is LabERP.Models.Core.Student student2)
                                         {
                                             @(string.IsNullOrEmpty(student2.PhoneNumber) ? "-" : student2.PhoneNumber)
                                         }

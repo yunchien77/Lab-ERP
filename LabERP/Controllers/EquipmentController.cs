@@ -1,21 +1,21 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
-using WebApplication1.Interface;
-using WebApplication1.Models.Core;
-using WebApplication1.Models.Handlers;
-using WebApplication1.Models.ViewModels;
+using LabERP.Interface;
+using LabERP.Models.Core;
+using LabERP.Models.Handlers;
+using LabERP.Models.ViewModels;
 
-namespace WebApplication1.Controllers
+namespace LabERP.Controllers
 {
     [Authorize]
     public class EquipmentController : Controller
     {
-        private readonly EquipmentHandler _equipmentHandler;
+        private readonly IEquipmentHandler _equipmentHandler;
         private readonly ILaboratoryRepository _laboratoryRepository; // 新增
 
         public EquipmentController(
-            EquipmentHandler equipmentHandler,
+            IEquipmentHandler equipmentHandler,
             ILaboratoryRepository laboratoryRepository) // 新增參數
         {
             _equipmentHandler = equipmentHandler;

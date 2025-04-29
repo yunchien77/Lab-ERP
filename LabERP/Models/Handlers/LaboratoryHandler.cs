@@ -1,7 +1,7 @@
-﻿using WebApplication1.Interface;
-using WebApplication1.Models.Core;
+﻿using LabERP.Interface;
+using LabERP.Models.Core;
 
-namespace WebApplication1.Models.Handlers
+namespace LabERP.Models.Handlers
 {
     public class LaboratoryHandler
     {

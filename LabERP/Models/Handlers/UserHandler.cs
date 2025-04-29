@@ -1,7 +1,7 @@
-﻿using WebApplication1.Models.Core;
-using WebApplication1.Interface;
+﻿using LabERP.Models.Core;
+using LabERP.Interface;
 
-namespace WebApplication1.Models.Handlers
+namespace LabERP.Models.Handlers
 {
     public class UserHandler : IUserHandler
     {

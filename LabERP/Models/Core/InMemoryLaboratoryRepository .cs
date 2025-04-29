@@ -1,6 +1,6 @@
-﻿using WebApplication1.Interface;
+﻿using LabERP.Interface;
 
-namespace WebApplication1.Models.Core
+namespace LabERP.Models.Core
 {
     public class InMemoryLaboratoryRepository : ILaboratoryRepository
     {

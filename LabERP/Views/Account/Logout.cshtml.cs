@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace WebApplication1.Views.Accounts
+namespace LabERP.Views.Accounts
 {
     public class LogoutModel : PageModel
     {

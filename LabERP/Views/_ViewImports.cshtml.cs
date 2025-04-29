@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace WebApplication1.Views
+namespace LabERP.Views
 {
     public class _ViewImportsModel : PageModel
     {

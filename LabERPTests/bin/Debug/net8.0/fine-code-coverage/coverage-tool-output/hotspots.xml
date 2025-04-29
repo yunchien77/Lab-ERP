@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Hotspots>
+  <Hotspot>
+    <Assembly>LabERP</Assembly>
+    <Class>AspNetCoreGeneratedDocument.Views_Equipment_MyEquipments</Class>
+    <MethodName>ExecuteAsync()</MethodName>
+    <ShortName />
+    <Line>4</Line>
+    <FileIndex>0</FileIndex>
+    <Metrics>
+      <Metric>
+        <Name>Cyclomatic complexity</Name>
+        <Exceeded>true</Exceeded>
+        <Value>56</Value>
+      </Metric>
+    </Metrics>
+  </Hotspot>
+  <Hotspot>
+    <Assembly>LabERP</Assembly>
+    <Class>AspNetCoreGeneratedDocument.Views_User_Dashboard</Class>
+    <MethodName>ExecuteAsync()</MethodName>
+    <ShortName />
+    <Line>4</Line>
+    <FileIndex>0</FileIndex>
+    <Metrics>
+      <Metric>
+        <Name>Cyclomatic complexity</Name>
+        <Exceeded>true</Exceeded>
+        <Value>46</Value>
+      </Metric>
+    </Metrics>
+  </Hotspot>
+  <Hotspot>
+    <Assembly>LabERP</Assembly>
+    <Class>AspNetCoreGeneratedDocument.Views_Laboratory_Details</Class>
+    <MethodName>ExecuteAsync()</MethodName>
+    <ShortName />
+    <Line>4</Line>
+    <FileIndex>0</FileIndex>
+    <Metrics>
+      <Metric>
+        <Name>Cyclomatic complexity</Name>
+        <Exceeded>true</Exceeded>
+        <Value>44</Value>
+      </Metric>
+    </Metrics>
+  </Hotspot>
+  <Hotspot>
+    <Assembly>LabERP</Assembly>
+    <Class>AspNetCoreGeneratedDocument.Views_Equipment_Index</Class>
+    <MethodName>ExecuteAsync()</MethodName>
+    <ShortName />
+    <Line>4</Line>
+    <FileIndex>0</FileIndex>
+    <Metrics>
+      <Metric>
+        <Name>Cyclomatic complexity</Name>
+        <Exceeded>true</Exceeded>
+        <Value>36</Value>
+      </Metric>
+    </Metrics>
+  </Hotspot>
+  <Hotspot>
+    <Assembly>LabERP</Assembly>
+    <Class>LabERP.Models.Core.Professor</Class>
+    <MethodName>UpdateLaboratory(...)</MethodName>
+    <ShortName />
+    <Line>86</Line>
+    <FileIndex>0</FileIndex>
+    <Metrics>
+      <Metric>
+        <Name>Cyclomatic complexity</Name>
+        <Exceeded>true</Exceeded>
+        <Value>34</Value>
+      </Metric>
+    </Metrics>
+  </Hotspot>
+</Hotspots>

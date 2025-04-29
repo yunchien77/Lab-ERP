@@ -2,19 +2,21 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
-using WebApplication1.Models.Core;
-using WebApplication1.Models.ViewModels;
-using WebApplication1.Models.Handlers;
+using LabERP.Models.Core;
+using LabERP.Models.ViewModels;
+using LabERP.Interface;
+using LabERP.Models.Handlers;
+using LabERP.Interface;
 
-namespace WebApplication1.Controllers
+namespace LabERP.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly AccountHandler _accountManager;
+        private readonly IAccountHandler _accountHandler;
 
-        public AccountController(AccountHandler accountManager)
+        public AccountController(IAccountHandler accountHandler)
         {
-            _accountManager = accountManager;
+            _accountHandler = accountHandler;
         }
 
         // 登入頁面
@@ -29,7 +31,7 @@ namespace WebApplication1.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = _accountManager.AuthenticateUser(model.Username, model.Password);
+                var user = _accountHandler.AuthenticateUser(model.Username, model.Password);
                 if (user != null)
                 {
                     // 建立身份驗證票據

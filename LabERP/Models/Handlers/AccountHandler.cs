@@ -1,9 +1,10 @@
-﻿using WebApplication1.Interface;
-using WebApplication1.Models.Core;
+﻿using LabERP.Interface;
+using LabERP.Interface;
+using LabERP.Models.Core;
 
-namespace WebApplication1.Models.Handlers
+namespace LabERP.Models.Handlers
 {
-    public class AccountHandler
+    public class AccountHandler : IAccountHandler
     {
         private readonly IUserRepository _userRepository;
 
@@ -12,7 +13,7 @@ namespace WebApplication1.Models.Handlers
             _userRepository = userRepository;
         }
 
-        public User AuthenticateUser(string username, string password)
+        public User? AuthenticateUser(string username, string password)
         {
             return _userRepository.FindUser(username, password);
         }

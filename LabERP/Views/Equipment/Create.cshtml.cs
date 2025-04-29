@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace WebApplication1.Views.Equipment
+namespace LabERP.Views.Equipment
 {
     public class CreateModel : PageModel
     {

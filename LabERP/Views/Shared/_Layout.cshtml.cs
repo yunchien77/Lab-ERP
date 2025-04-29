@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace WebApplication1.Views.Shared
+namespace LabERP.Views.Shared
 {
     public class _LayoutModel : PageModel
     {

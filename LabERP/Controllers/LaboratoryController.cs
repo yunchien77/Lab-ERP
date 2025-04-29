@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
-using WebApplication1.Models.Core;
-using WebApplication1.Models.Handlers;
-using WebApplication1.Models.ViewModels;
+using LabERP.Models.Core;
+using LabERP.Models.Handlers;
+using LabERP.Models.ViewModels;
 
-namespace WebApplication1.Controllers
+namespace LabERP.Controllers
 {
     [Authorize]
     public class LaboratoryController : Controller

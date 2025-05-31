@@ -20,7 +20,6 @@ namespace LabERP.Models.Handlers
 
         public void RegisterUser(User user)
         {
-            // 可以在這裡添加業務邏輯，如密碼加密、驗證等
             _userRepository.Add(user);
         }
 

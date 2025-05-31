@@ -181,7 +181,6 @@ namespace LabERPTests.Controllers
                 RememberMe = false
             };
 
-            // 設置 _mockUserRepository 而不是 _mockAccountHandler
             _mockUserRepository
                 .Setup(m => m.FindUser(model.Username, model.Password))
                 .Returns((User)null);

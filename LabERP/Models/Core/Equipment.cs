@@ -74,15 +74,15 @@ namespace LabERP.Models.Core
         }
 
         // 獲取所有借用記錄
-        public List<BorrowRecord> GetAllBorrowRecords()
+        /*public List<BorrowRecord> GetAllBorrowRecords()
         {
             return BorrowRecords;
-        }
+        }*/
 
         // 查找特定借用記錄
-        public BorrowRecord FindBorrowRecord(string recordID)
+        /*public BorrowRecord FindBorrowRecord(string recordID)
         {
             return BorrowRecords.FirstOrDefault(r => r.RecordID == recordID);
-        }
+        }*/
     }
 }

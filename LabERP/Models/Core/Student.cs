@@ -1,5 +1,4 @@
-﻿// Models/Core/Student.cs
-namespace LabERP.Models.Core
+﻿namespace LabERP.Models.Core
 {
     public class Student : User
     {

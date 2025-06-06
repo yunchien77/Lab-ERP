@@ -1,0 +1,146 @@
+/* 全局樣式 */
+html {
+    font-size: 14px;
+    font-family: 'Arial', sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+body {
+    margin-bottom: 60px;
+    line-height: 1.6;
+}
+
+/* 標題樣式 */
+h1, h2, h3 {
+    color: #0056b3;
+    font-weight: bold;
+}
+
+/* 按鈕樣式 */
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: #fff;
+}
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+        border-color: #004085;
+    }
+
+.btn-secondary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+    color: #fff;
+}
+
+    .btn-secondary:hover {
+        background-color: #5a6268;
+        border-color: #545b62;
+    }
+
+/* 表單樣式 */
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+input.form-control, textarea.form-control {
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    padding: 0.5rem;
+}
+
+    input.form-control:focus, textarea.form-control:focus {
+        border-color: #80bdff;
+        outline: none;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    }
+
+/* 卡片樣式 */
+.card {
+    margin-bottom: 1.5rem;
+    border: 1px solid #ddd;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+    font-weight: bold;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #ddd;
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+/* 表格樣式 */
+.table {
+    width: 100%;
+    margin-bottom: 1rem;
+    background-color: #fff;
+    border-collapse: collapse;
+}
+
+    .table th, .table td {
+        padding: 0.75rem;
+        text-align: left;
+        border-top: 1px solid #dee2e6;
+    }
+
+    .table thead th {
+        background-color: #f8f9fa;
+        font-weight: bold;
+    }
+
+/* 導航欄樣式 */
+.navbar {
+    background-color: #007bff;
+    color: #fff;
+}
+
+    .navbar a.navbar-brand {
+        color: #fff;
+        font-weight: bold;
+    }
+
+        .navbar a.navbar-brand:hover {
+            color: #d4d4d4;
+        }
+
+    .navbar .navbar-toggler {
+        border-color: #fff;
+    }
+
+    .navbar .navbar-toggler-icon {
+        background-color: #fff;
+    }
+
+/* 頁腳樣式 */
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background-color: #343a40;
+    color: #fff;
+    text-align: center;
+    line-height: 60px;
+    padding: 0;
+}
+
+    .footer a {
+        color: #007bff;
+        text-decoration: none;
+    }
+
+        .footer a:hover {
+            color: #0056b3;
+            text-decoration: underline;
+        }

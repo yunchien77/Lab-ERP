@@ -1,0 +1,19 @@
+﻿@{
+    ViewData["Title"] = "首頁";
+}
+
+<link rel="stylesheet" href="~/css/site.css" />
+
+<div class="text-center">
+    <h1 class="display-4">實驗室管理系統</h1>
+    <p>歡迎使用實驗室管理系統，請登入繼續。</p>
+
+    @if (!User.Identity.IsAuthenticated)
+    {
+        <a asp-controller="Account" asp-action="Login" class="btn btn-primary">登入</a>
+    }
+    else
+    {
+        <a asp-controller="User" asp-action="Dashboard" class="btn btn-primary">前往儀表板</a>
+    }
+</div>

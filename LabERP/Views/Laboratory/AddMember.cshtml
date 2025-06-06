@@ -1,0 +1,38 @@
+﻿@model LabERP.Models.ViewModels.AddMemberViewModel
+
+@{
+    ViewData["Title"] = "添加成員";
+}
+
+<link rel="stylesheet" href="~/css/site.css" />
+
+<h2>添加新成員</h2>
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="AddMember">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input asp-for="LabID" type="hidden" />
+            <div class="form-group">
+                <label asp-for="Username"></label>
+                <input asp-for="Username" class="form-control" />
+                <span asp-validation-for="Username" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">添加</button>
+                <a asp-controller="Laboratory" asp-action="Details" asp-route-id="@Model.LabID" class="btn btn-secondary">返回</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

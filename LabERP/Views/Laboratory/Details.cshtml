@@ -31,80 +31,139 @@
                     <p><strong>聯絡資訊:</strong> @Model.ContactInfo</p>
                 }
                 <p><strong>創建者:</strong> @Model.Creator.Username</p>
-
-                @if (User.IsInRole("Professor") && User.FindFirst("UserID").Value == Model.Creator.UserID)
-                {
-                    <a asp-controller="Laboratory" asp-action="AddMember" asp-route-id="@Model.LabID" class="btn btn-primary">添加成員</a>
-                    <a asp-controller="Laboratory" asp-action="Edit" asp-route-id="@Model.LabID" class="btn btn-info">編輯實驗室</a>
-                }
-                <a asp-controller="Equipment" asp-action="Index" asp-route-labID="@Model.LabID" class="btn btn-success mt-2">設備管理</a>
             </div>
         </div>
+
+        <!-- 管理功能區塊 -->
+        @if (User.IsInRole("Professor") && User.FindFirst("UserID").Value == Model.Creator.UserID)
+        {
+            <div class="card mt-3">
+                <div class="card-header">
+                    <i class="fas fa-cogs"></i> 管理功能
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <a asp-controller="Laboratory" asp-action="AddMember" asp-route-id="@Model.LabID" class="btn btn-primary">
+                            <i class="fas fa-user-plus"></i> 添加成員
+                        </a>
+                        <a asp-controller="Laboratory" asp-action="Edit" asp-route-id="@Model.LabID" class="btn btn-info">
+                            <i class="fas fa-edit"></i> 編輯實驗室
+                        </a>
+                        <a asp-controller="Equipment" asp-action="Index" asp-route-labID="@Model.LabID" class="btn btn-success">
+                            <i class="fas fa-tools"></i> 設備管理
+                        </a>
+                        <a asp-controller="Finance" asp-action="Index" asp-route-labID="@Model.LabID" class="btn btn-warning">
+                            <i class="fas fa-chart-line"></i> 財務管理
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="card mt-3">
+                <div class="card-header">
+                    <i class="fas fa-eye"></i> 檢視功能
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <a asp-controller="Equipment" asp-action="Index" asp-route-labID="@Model.LabID" class="btn btn-success">
+                            <i class="fas fa-tools"></i> 設備管理
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
     </div>
 
     <div class="col-md-8">
         <div class="card">
             <div class="card-header">
-                成員列表
+                <i class="fas fa-users"></i> 成員列表
             </div>
             <div class="card-body">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>用戶名稱</th>
-                            <th>電子郵件</th>
-                            <th>角色</th>
-                            @if (User.IsInRole("Professor") && User.FindFirst("UserID").Value == Model.Creator.UserID)
-                            {
-                                <th>學號</th>
-                                <th>手機號碼</th>
-                                <th>操作</th>
-                            }
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var member in Model.Members)
-                        {
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="table-light">
                             <tr>
-                                <td>@member.Username</td>
-                                <td>@member.Email</td>
-                                <td>@member.Role</td>
+                                <th>用戶名稱</th>
+                                <th>電子郵件</th>
+                                <th>角色</th>
                                 @if (User.IsInRole("Professor") && User.FindFirst("UserID").Value == Model.Creator.UserID)
                                 {
-                                    <td>
-                                        @if (member is LabERP.Models.Core.Student student)
-                                        {
-                                            @(string.IsNullOrEmpty(student.StudentID) ? "-" : student.StudentID)
-                                        }
-                                        else
-                                        {
-                                            @("-")
-                                        }
-                                    </td>
-                                    <td>
-                                        @if (member is LabERP.Models.Core.Student student2)
-                                        {
-                                            @(string.IsNullOrEmpty(student2.PhoneNumber) ? "-" : student2.PhoneNumber)
-                                        }
-                                        else
-                                        {
-                                            @("-")
-                                        }
-                                    </td>
-                                    <td>
-                                        <form asp-controller="Laboratory" asp-action="RemoveMember" method="post">
-                                            <input type="hidden" name="labID" value="@Model.LabID" />
-                                            <input type="hidden" name="memberID" value="@member.UserID" />
-                                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('確定要刪除此成員嗎？');">刪除</button>
-                                        </form>
-                                    </td>
+                                    <th>學號</th>
+                                    <th>手機號碼</th>
+                                    <th>操作</th>
                                 }
                             </tr>
-                        }
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            @foreach (var member in Model.Members)
+                            {
+                                <tr>
+                                    <td>
+                                        <i class="fas @(member.Role == "Professor" ? "fa-graduation-cap" : "fa-user-graduate")"></i>
+                                        @member.Username
+                                    </td>
+                                    <td>@member.Email</td>
+                                    <td>
+                                        <span class="badge @(member.Role == "Professor" ? "bg-primary" : "bg-success")">
+                                            @member.Role
+                                        </span>
+                                    </td>
+                                    @if (User.IsInRole("Professor") && User.FindFirst("UserID").Value == Model.Creator.UserID)
+                                    {
+                                        <td>
+                                            @if (member is LabERP.Models.Core.Student student)
+                                            {
+                                                @(string.IsNullOrEmpty(student.StudentID) ? "-" : student.StudentID)
+                                            }
+                                            else
+                                            {
+                                                @("-")
+                                            }
+                                        </td>
+                                        <td>
+                                            @if (member is LabERP.Models.Core.Student student2)
+                                            {
+                                                @(string.IsNullOrEmpty(student2.PhoneNumber) ? "-" : student2.PhoneNumber)
+                                            }
+                                            else
+                                            {
+                                                @("-")
+                                            }
+                                        </td>
+                                        <td>
+                                            @if (member.UserID != Model.Creator.UserID)
+                                            {
+                                                <form asp-controller="Laboratory" asp-action="RemoveMember" method="post" class="d-inline">
+                                                    <input type="hidden" name="labID" value="@Model.LabID" />
+                                                    <input type="hidden" name="memberID" value="@member.UserID" />
+                                                    <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('確定要刪除此成員嗎？');">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </form>
+                                            }
+                                            else
+                                            {
+                                                <span class="text-muted">創建者</span>
+                                            }
+                                        </td>
+                                    }
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
-    <a asp-controller="User" asp-action="Dashboard" class="btn btn-secondary">返回</a>
+</div>
+
+<div class="row mt-3">
+    <div class="col-12">
+        <a asp-controller="User" asp-action="Dashboard" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> 返回
+        </a>
+    </div>
 </div>

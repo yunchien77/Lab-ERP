@@ -1,0 +1,174 @@
+﻿@page
+@model LabERP.Models.ViewModels.SalaryManagementViewModel
+
+@{
+    ViewData["Title"] = "薪資管理";
+}
+
+<link rel="stylesheet" href="~/css/site.css" />
+
+<!-- 頁面標題 -->
+<div class="row mb-4">
+    <div class="col-12">
+        <h2><i class="fas fa-users text-warning"></i> @Model.LaboratoryName - 薪資管理</h2>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a asp-controller="Laboratory" asp-action="Details" asp-route-id="@Model.LaboratoryId">實驗室</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a asp-action="Index" asp-route-laboratoryId="@Model.LaboratoryId">財務管理</a>
+                </li>
+                <li class="breadcrumb-item active">薪資管理</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<!-- 提示訊息 -->
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class="fas fa-check-circle"></i> @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <i class="fas fa-exclamation-circle"></i> @TempData["ErrorMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+<!-- 薪資概覽 -->
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card text-white bg-info">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h6 class="card-title">總人數</h6>
+                        <h4>@Model.TotalMembers 人</h4>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="fas fa-users fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-success">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h6 class="card-title">已設定薪資</h6>
+                        <h4>@Model.SalariesSet 人</h4>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="fas fa-check-circle fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-warning">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h6 class="card-title">未設定薪資</h6>
+                        <h4>@(Model.TotalMembers - Model.SalariesSet) 人</h4>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="fas fa-exclamation-triangle fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-danger">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h6 class="card-title">月薪資總額</h6>
+                        <h4>NT$ @Model.TotalMonthlySalary.ToString("N0")</h4>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="fas fa-money-bill-wave fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 薪資歷史記錄 -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <i class="fas fa-history"></i> 薪資發放記錄
+            </div>
+            <div class="card-body">
+                @if (Model.SalaryItems != null && Model.SalaryItems.Any())
+                {
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>發放日期</th>
+                                    <th>成員</th>
+                                    <th>薪資金額</th>
+                                    <th>狀態</th>
+                                    <th>備註</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.SalaryItems.Take(10))
+                                {
+                                    <tr>
+                                        <td>@item.PaymentDate.ToString("yyyy/MM/dd")</td>
+                                        <td>@item.UserName</td>
+                                        <td class="fw-bold text-danger">NT$ @item.CurrentAmount.ToString("N0")</td>
+                                        <td>
+                                            <span class="badge @(item.Status == "Paid" ? "bg-success" : "bg-warning")">
+                                                @(item.Status == "Paid" ? "已發放" : "待發放")
+                                            </span>
+                                        </td>
+                                        <td>無</td> <!-- 如果需要備註，可以擴充 SalaryItem -->
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    @if (Model.SalaryItems.Count > 10)
+                    {
+                        <div class="text-center mt-3">
+                            <small class="text-muted">顯示最近 10 筆記錄，共 @Model.SalaryItems.Count 筆</small>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="text-center py-4">
+                        <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
+                        <p class="text-muted">目前沒有薪資發放記錄</p>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 返回按鈕 -->
+<div class="row">
+    <div class="col-12">
+        <a asp-action="Index" asp-route-laboratoryId="@Model.LaboratoryId" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> 返回財務管理
+        </a>
+    </div>
+</div>

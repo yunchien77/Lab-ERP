@@ -1,0 +1,632 @@
+﻿@page
+@model LabERP.Models.ViewModels.BankAccountViewModel
+
+@{
+    ViewData["Title"] = "銀行帳戶設定";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #64748b;
+            --success-color: #10b981;
+            --danger-color: #ef4444;
+            --warning-color: #f59e0b;
+            --light-bg: #f8fafc;
+            --border-color: #e2e8f0;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .main-container {
+            padding: 2rem 0;
+            min-height: 100vh;
+        }
+
+        .card {
+            border: none;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.95);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, var(--primary-color), #3b82f6);
+            border-radius: 20px 20px 0 0 !important;
+            color: white;
+            padding: 1.5rem 2rem;
+            border: none;
+        }
+
+        .card-header h3 {
+            margin: 0;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .card-body {
+            padding: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: var(--secondary-color);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .form-control {
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 0.75rem 1rem;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(37, 99, 235, 0.25);
+            background: white;
+        }
+
+        .form-control.is-invalid {
+            border-color: var(--danger-color);
+            box-shadow: 0 0 0 0.2rem rgba(239, 68, 68, 0.25);
+        }
+
+        .invalid-feedback {
+            display: block;
+            font-size: 0.875rem;
+            color: var(--danger-color);
+            margin-top: 0.25rem;
+        }
+
+        .btn {
+            border-radius: 12px;
+            padding: 0.75rem 2rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+            border: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), #3b82f6);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #1d4ed8, var(--primary-color));
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(37, 99, 235, 0.3);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, var(--secondary-color), #475569);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: linear-gradient(135deg, #475569, var(--secondary-color));
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(100, 116, 139, 0.3);
+        }
+
+        .alert {
+            border: none;
+            border-radius: 12px;
+            padding: 1rem 1.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: 500;
+        }
+
+        .alert-success {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(34, 197, 94, 0.1));
+            color: var(--success-color);
+            border-left: 4px solid var(--success-color);
+        }
+
+        .alert-danger {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(220, 38, 38, 0.1));
+            color: var(--danger-color);
+            border-left: 4px solid var(--danger-color);
+        }
+
+        .input-group {
+            position: relative;
+        }
+
+        .input-group-text {
+            background: var(--light-bg);
+            border: 2px solid var(--border-color);
+            border-right: none;
+            border-radius: 12px 0 0 12px;
+            color: var(--secondary-color);
+        }
+
+        .form-control.with-icon {
+            border-left: none;
+            border-radius: 0 12px 12px 0;
+            padding-left: 1rem;
+        }
+
+        .breadcrumb {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 1rem 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .breadcrumb-item a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .breadcrumb-item.active {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .floating-label {
+            position: relative;
+        }
+
+        .floating-label input {
+            padding-top: 1.625rem;
+            padding-bottom: 0.625rem;
+        }
+
+        .floating-label label {
+            position: absolute;
+            top: 0;
+            left: 1rem;
+            height: 100%;
+            padding: 1rem 0;
+            pointer-events: none;
+            border: 1px solid transparent;
+            transform-origin: 0 0;
+            transition: opacity 0.1s ease-in-out, transform 0.1s ease-in-out;
+            color: var(--secondary-color);
+        }
+
+        .floating-label input:focus ~ label,
+        .floating-label input:not(:placeholder-shown) ~ label {
+            opacity: 0.65;
+            transform: scale(0.85) translateY(-0.5rem) translateX(0.15rem);
+        }
+
+        .form-section {
+            background: var(--light-bg);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .section-title {
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .loading-spinner {
+            display: none;
+            margin-left: 0.5rem;
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="container">
+            <!-- 麵包屑導航 -->
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="@Url.Action("Index", "Laboratory")">
+                            <i class="fas fa-home"></i> 首頁
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="@Url.Action("Index", "Finance", new { laboratoryId = Model.LaboratoryId })">
+                            <i class="fas fa-chart-line"></i> 財務管理
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item active">
+                        <i class="fas fa-university"></i> 銀行帳戶設定
+                    </li>
+                </ol>
+            </nav>
+
+            <div class="row justify-content-center">
+                <div class="col-lg-8 col-md-10">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>
+                                <i class="fas fa-university"></i>
+                                銀行帳戶設定
+                            </h3>
+                        </div>
+                        <div class="card-body">
+                            <!-- 顯示成功訊息 -->
+                            @if (TempData["SuccessMessage"] != null)
+                            {
+                                <div class="alert alert-success">
+                                    <i class="fas fa-check-circle me-2"></i>
+                                    @TempData["SuccessMessage"]
+                                </div>
+                            }
+
+                            <!-- 顯示錯誤訊息 -->
+                            @if (TempData["ErrorMessage"] != null)
+                            {
+                                <div class="alert alert-danger">
+                                    <i class="fas fa-exclamation-circle me-2"></i>
+                                    @TempData["ErrorMessage"]
+                                </div>
+                            }
+
+                            <!-- 表單驗證摘要 -->
+                            @if (!ViewData.ModelState.IsValid)
+                            {
+                                <div class="alert alert-danger">
+                                    <i class="fas fa-exclamation-triangle me-2"></i>
+                                    <strong>請修正以下錯誤：</strong>
+                                    <ul class="mb-0 mt-2">
+                                        @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                                        {
+                                            <li>@error.ErrorMessage</li>
+                                        }
+                                    </ul>
+                                </div>
+                            }
+
+                            @using (Html.BeginForm("BankAccountSettings", "Finance", FormMethod.Post, new { @class = "needs-validation", novalidate = "novalidate", id = "bankAccountForm" }))
+                            {
+                                @Html.AntiForgeryToken()
+                                @Html.HiddenFor(m => m.LaboratoryId)
+
+                                <div class="form-section">
+                                    <h5 class="section-title">
+                                        <i class="fas fa-building"></i>
+                                        銀行基本資訊
+                                    </h5>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-text">
+                                                        <i class="fas fa-university"></i>
+                                                    </span>
+                                                    @Html.TextBoxFor(m => m.BankName, new { 
+                                                        @class = "form-control with-icon", 
+                                                        placeholder = "請輸入銀行名稱",
+                                                        required = "required"
+                                                    })
+                                                </div>
+                                                <label class="form-label" for="BankName">
+                                                    <i class="fas fa-university"></i>
+                                                    銀行名稱 <span class="text-danger">*</span>
+                                                </label>
+                                                @Html.ValidationMessageFor(m => m.BankName, "", new { @class = "invalid-feedback" })
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-text">
+                                                        <i class="fas fa-code-branch"></i>
+                                                    </span>
+                                                    @Html.TextBoxFor(m => m.BranchCode, new { 
+                                                        @class = "form-control with-icon", 
+                                                        placeholder = "請輸入分行代碼"
+                                                    })
+                                                </div>
+                                                <label class="form-label" for="BranchCode">
+                                                    <i class="fas fa-code-branch"></i>
+                                                    分行代碼
+                                                </label>
+                                                @Html.ValidationMessageFor(m => m.BranchCode, "", new { @class = "invalid-feedback" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-section">
+                                    <h5 class="section-title">
+                                        <i class="fas fa-credit-card"></i>
+                                        帳戶資訊
+                                    </h5>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-text">
+                                                        <i class="fas fa-hashtag"></i>
+                                                    </span>
+                                                    @Html.TextBoxFor(m => m.AccountNumber, new { 
+                                                        @class = "form-control with-icon", 
+                                                        placeholder = "請輸入帳戶號碼",
+                                                        required = "required",
+                                                        pattern = "[0-9\\-]+",
+                                                        title = "請輸入有效的帳戶號碼"
+                                                    })
+                                                </div>
+                                                <label class="form-label" for="AccountNumber">
+                                                    <i class="fas fa-hashtag"></i>
+                                                    帳戶號碼 <span class="text-danger">*</span>
+                                                </label>
+                                                @Html.ValidationMessageFor(m => m.AccountNumber, "", new { @class = "invalid-feedback" })
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-text">
+                                                        <i class="fas fa-user"></i>
+                                                    </span>
+                                                    @Html.TextBoxFor(m => m.AccountHolder, new { 
+                                                        @class = "form-control with-icon", 
+                                                        placeholder = "請輸入戶名",
+                                                        required = "required"
+                                                    })
+                                                </div>
+                                                <label class="form-label" for="AccountHolder">
+                                                    <i class="fas fa-user"></i>
+                                                    戶名 <span class="text-danger">*</span>
+                                                </label>
+                                                @Html.ValidationMessageFor(m => m.AccountHolder, "", new { @class = "invalid-feedback" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <a href="@Url.Action("Index", "Finance", new { laboratoryId = Model.LaboratoryId })" 
+                                       class="btn btn-secondary">
+                                        <i class="fas fa-arrow-left me-2"></i>
+                                        返回財務管理
+                                    </a>
+                                    
+                                    <div class="d-flex gap-2">
+                                        <button type="button" class="btn btn-secondary" onclick="resetForm()">
+                                            <i class="fas fa-undo me-2"></i>
+                                            重設
+                                        </button>
+                                        <button type="submit" class="btn btn-primary" id="submitBtn">
+                                            <i class="fas fa-save me-2"></i>
+                                            儲存設定
+                                            <div class="spinner-border spinner-border-sm loading-spinner" role="status">
+                                                <span class="visually-hidden">Loading...</span>
+                                            </div>
+                                        </button>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // 表單驗證
+        (function() {
+            'use strict';
+            window.addEventListener('load', function() {
+                var forms = document.getElementsByClassName('needs-validation');
+                var validation = Array.prototype.filter.call(forms, function(form) {
+                    form.addEventListener('submit', function(event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        } else {
+                            // 顯示載入狀態
+                            showLoading();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
+
+        // 顯示載入狀態
+        function showLoading() {
+            const submitBtn = document.getElementById('submitBtn');
+            const spinner = submitBtn.querySelector('.loading-spinner');
+            
+            submitBtn.disabled = true;
+            spinner.style.display = 'inline-block';
+            submitBtn.innerHTML = submitBtn.innerHTML.replace('儲存設定', '儲存中...');
+        }
+
+        // 重設表單
+        function resetForm() {
+            if (confirm('確定要重設所有欄位嗎？')) {
+                document.getElementById('bankAccountForm').reset();
+                document.getElementById('bankAccountForm').classList.remove('was-validated');
+                
+                // 清除所有驗證狀態
+                const formControls = document.querySelectorAll('.form-control');
+                formControls.forEach(function(control) {
+                    control.classList.remove('is-invalid', 'is-valid');
+                });
+            }
+        }
+
+        // 即時驗證
+        document.addEventListener('DOMContentLoaded', function() {
+            const formControls = document.querySelectorAll('.form-control');
+            
+            formControls.forEach(function(control) {
+                control.addEventListener('blur', function() {
+                    validateField(this);
+                });
+                
+                control.addEventListener('input', function() {
+                    if (this.classList.contains('is-invalid')) {
+                        validateField(this);
+                    }
+                });
+            });
+        });
+
+        function validateField(field) {
+            const isValid = field.checkValidity();
+            
+            if (isValid) {
+                field.classList.remove('is-invalid');
+                field.classList.add('is-valid');
+            } else {
+                field.classList.remove('is-valid');
+                field.classList.add('is-invalid');
+            }
+        }
+
+        // 帳戶號碼格式化
+        document.getElementById('AccountNumber').addEventListener('input', function(e) {
+            // 只允許數字和連字號
+            this.value = this.value.replace(/[^0-9\-]/g, '');
+        });
+
+        // 自動完成建議
+        const bankSuggestions = [
+            '台灣銀行', '土地銀行', '合作金庫', '第一銀行', '華南銀行',
+            '彰化銀行', '兆豐銀行', '台灣企銀', '台新銀行', '國泰世華',
+            '中國信託', '玉山銀行', '富邦銀行', '中華郵政', '農會信用部'
+        ];
+
+        const bankNameInput = document.getElementById('BankName');
+        let suggestionsList = null;
+
+        bankNameInput.addEventListener('input', function() {
+            const value = this.value.toLowerCase();
+            const suggestions = bankSuggestions.filter(bank => 
+                bank.toLowerCase().includes(value) && value.length > 0
+            );
+            
+            showSuggestions(suggestions, this);
+        });
+
+        bankNameInput.addEventListener('blur', function() {
+            setTimeout(() => hideSuggestions(), 200);
+        });
+
+        function showSuggestions(suggestions, input) {
+            hideSuggestions();
+            
+            if (suggestions.length === 0) return;
+            
+            suggestionsList = document.createElement('div');
+            suggestionsList.className = 'suggestions-list';
+            suggestionsList.style.cssText = `
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: white;
+                border: 1px solid var(--border-color);
+                border-radius: 8px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                max-height: 200px;
+                overflow-y: auto;
+                z-index: 1000;
+            `;
+            
+            suggestions.forEach(suggestion => {
+                const item = document.createElement('div');
+                item.textContent = suggestion;
+                item.style.cssText = `
+                    padding: 0.5rem 1rem;
+                    cursor: pointer;
+                    border-bottom: 1px solid var(--border-color);
+                `;
+                
+                item.addEventListener('mouseenter', function() {
+                    this.style.backgroundColor = 'var(--light-bg)';
+                });
+                
+                item.addEventListener('mouseleave', function() {
+                    this.style.backgroundColor = 'white';
+                });
+                
+                item.addEventListener('click', function() {
+                    input.value = suggestion;
+                    hideSuggestions();
+                    validateField(input);
+                });
+                
+                suggestionsList.appendChild(item);
+            });
+            
+            input.parentElement.style.position = 'relative';
+            input.parentElement.appendChild(suggestionsList);
+        }
+
+        function hideSuggestions() {
+            if (suggestionsList) {
+                suggestionsList.remove();
+                suggestionsList = null;
+            }
+        }
+
+        // 頁面動畫
+        document.addEventListener('DOMContentLoaded', function() {
+            const card = document.querySelector('.card');
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(30px)';
+            
+            setTimeout(() => {
+                card.style.transition = 'all 0.6s ease';
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+            }, 100);
+        });
+    </script>
+</body>
+</html>
+

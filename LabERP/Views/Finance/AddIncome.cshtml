@@ -1,0 +1,194 @@
+﻿@page
+@model LabERP.Models.ViewModels.AddIncomeViewModel
+
+@{
+    ViewData["Title"] = "新增收入";
+}
+
+<link rel="stylesheet" href="~/css/site.css" />
+
+<!-- 頁面標題 -->
+<div class="row mb-4">
+    <div class="col-12">
+        <h2><i class="fas fa-plus-circle text-success"></i> 新增收入記錄</h2>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a asp-controller="Laboratory" asp-action="Details" asp-route-id="@Model.LaboratoryId">實驗室</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a asp-action="Index" asp-route-laboratoryId="@Model.LaboratoryId">財務管理</a>
+                </li>
+                <li class="breadcrumb-item active">新增收入</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                <h5 class="mb-0"><i class="fas fa-money-bill-wave"></i> 收入資訊</h5>
+            </div>
+            <div class="card-body">
+                <form asp-action="AddIncome" method="post">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" asp-for="LaboratoryId" />
+
+                    <!-- 金額 -->
+                    <div class="mb-3">
+                        <label asp-for="Amount" class="form-label">
+                            <i class="fas fa-dollar-sign"></i> 收入金額 <span class="text-danger">*</span>
+                        </label>
+                        <div class="input-group">
+                            <span class="input-group-text">NT$</span>
+                            <input asp-for="Amount" class="form-control" placeholder="請輸入收入金額" step="0.01" />
+                        </div>
+                        <span asp-validation-for="Amount" class="text-danger"></span>
+                    </div>
+
+                    <!-- 描述 -->
+                    <div class="mb-3">
+                        <label asp-for="Description" class="form-label">
+                            <i class="fas fa-file-alt"></i> 收入描述 <span class="text-danger">*</span>
+                        </label>
+                        <textarea asp-for="Description" class="form-control" rows="3" placeholder="請描述收入來源或用途"></textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+
+                    <!-- 類別 -->
+                    <div class="mb-3">
+                        <label asp-for="Category" class="form-label">
+                            <i class="fas fa-tags"></i> 收入類別 <span class="text-danger">*</span>
+                        </label>
+                        <select asp-for="Category" class="form-select">
+                            <option value="">請選擇收入類別</option>
+                            <option value="Research">研究計畫</option>
+                            <option value="Grant">政府補助</option>
+                            <option value="Donation">捐贈</option>
+                            <option value="Service">服務收入</option>
+                            <option value="Equipment">設備租借</option>
+                            <option value="Other">其他</option>
+                        </select>
+                        <span asp-validation-for="Category" class="text-danger"></span>
+                    </div>
+
+                    <!-- 記錄日期 -->
+                    <div class="mb-3">
+                        <label asp-for="RecordDate" class="form-label">
+                            <i class="fas fa-calendar-alt"></i> 收入日期 <span class="text-danger">*</span>
+                        </label>
+                        <input asp-for="RecordDate" type="date" class="form-control" />
+                        <span asp-validation-for="RecordDate" class="text-danger"></span>
+                    </div>
+
+                    <!-- 預覽區域 -->
+                    <div class="card bg-light mb-3">
+                        <div class="card-header">
+                            <i class="fas fa-eye"></i> 記錄預覽
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <strong>金額:</strong> <span id="preview-amount" class="text-success">NT$ 0</span>
+                                </div>
+                                <div class="col-md-6">
+                                    <strong>類別:</strong> <span id="preview-category" class="badge bg-secondary">未選擇</span>
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-12">
+                                    <strong>描述:</strong> <span id="preview-description" class="text-muted">尚未輸入</span>
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-12">
+                                    <strong>日期:</strong> <span id="preview-date" class="text-muted">@DateTime.Now.ToString("yyyy-MM-dd")</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 按鈕區域 -->
+                    <div class="d-flex justify-content-between">
+                        <a asp-action="Index" asp-route-laboratoryId="@Model.LaboratoryId" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left"></i> 取消
+                        </a>
+                        <button type="submit" class="btn btn-success">
+                            <i class="fas fa-save"></i> 儲存收入記錄
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    
+    <script>
+        $(document).ready(function() {
+            // 初始化預覽
+            updatePreview();
+            
+            // 監聽表單變化
+            $('#Amount, #Description, #Category, #RecordDate').on('input change', function() {
+                updatePreview();
+            });
+            
+            // 金額格式化
+            $('#Amount').on('blur', function() {
+                var value = parseFloat($(this).val());
+                if (!isNaN(value)) {
+                    $(this).val(value.toFixed(2));
+                }
+            });
+        });
+
+        function updatePreview() {
+            // 更新金額預覽
+            var amount = $('#Amount').val();
+            if (amount) {
+                $('#preview-amount').text('NT$ ' + parseFloat(amount).toLocaleString());
+            } else {
+                $('#preview-amount').text('NT$ 0');
+            }
+
+            // 更新類別預覽
+            var category = $('#Category').val();
+            var categoryText = $('#Category option:selected').text();
+            if (category) {
+                $('#preview-category').removeClass('bg-secondary').addClass('bg-success').text(categoryText);
+            } else {
+                $('#preview-category').removeClass('bg-success').addClass('bg-secondary').text('未選擇');
+            }
+
+            // 更新描述預覽
+            var description = $('#Description').val();
+            if (description) {
+                $('#preview-description').text(description);
+            } else {
+                $('#preview-description').text('尚未輸入');
+            }
+
+            // 更新日期預覽
+            var date = $('#RecordDate').val();
+            if (date) {
+                $('#preview-date').text(date);
+            }
+        }
+
+        // 表單提交驗證
+        $('form').on('submit', function(e) {
+            var amount = parseFloat($('#Amount').val());
+            if (isNaN(amount) || amount <= 0) {
+                e.preventDefault();
+                alert('請輸入有效的收入金額');
+                $('#Amount').focus();
+                return false;
+            }
+        });
+    </script>
+}

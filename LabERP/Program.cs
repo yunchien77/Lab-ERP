@@ -31,10 +31,14 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddSingleton<IUserRepository, InMemoryUserRepository>();
 builder.Services.AddSingleton<ILaboratoryRepository, InMemoryLaboratoryRepository>();
 builder.Services.AddSingleton<IEquipmentRepository, InMemoryEquipmentRepository>();
+builder.Services.AddSingleton<IFinanceRepository, InMemoryFinanceRepository>();
+builder.Services.AddSingleton<IBankAccountRepository, InMemoryBankAccountRepository>();
+builder.Services.AddSingleton<ISalaryRepository, InMemorySalaryRepository>();
 
 // 註冊服務
 builder.Services.AddScoped<INotificationService, NotificationService>();
 builder.Services.AddScoped<LaboratoryHandler>();
+builder.Services.AddScoped<FinanceHandler>();
 
 // 添加 IUserHandler 的實現
 builder.Services.AddScoped<IUserHandler, UserHandler>(); // 請替換為您實際的實現類

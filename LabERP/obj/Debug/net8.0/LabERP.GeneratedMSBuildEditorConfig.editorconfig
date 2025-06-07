@@ -9,95 +9,111 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = LabERP
 build_property.RootNamespace = LabERP
-build_property.ProjectDir = C:\Users\user\Desktop\Lab-ERP\LabERP\
+build_property.ProjectDir = C:\Users\cherr\Desktop\Lab-ERP\LabERP\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 8.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = C:\Users\user\Desktop\Lab-ERP\LabERP
+build_property.MSBuildProjectDirectory = C:\Users\cherr\Desktop\Lab-ERP\LabERP
 build_property._RazorSourceGeneratorDebug = 
 
-[C:/Users/user/Desktop/Lab-ERP/LabERP/Views/Account/Login.cshtml]
+[C:/Users/cherr/Desktop/Lab-ERP/LabERP/Views/Account/Login.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxMb2dpbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/Desktop/Lab-ERP/LabERP/Views/Account/Logout.cshtml]
+[C:/Users/cherr/Desktop/Lab-ERP/LabERP/Views/Account/Logout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxMb2dvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/Desktop/Lab-ERP/LabERP/Views/Equipment/Borrow.cshtml]
+[C:/Users/cherr/Desktop/Lab-ERP/LabERP/Views/Equipment/Borrow.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRXF1aXBtZW50XEJvcnJvdy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/Desktop/Lab-ERP/LabERP/Views/Equipment/Create.cshtml]
+[C:/Users/cherr/Desktop/Lab-ERP/LabERP/Views/Equipment/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRXF1aXBtZW50XENyZWF0ZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/Desktop/Lab-ERP/LabERP/Views/Equipment/Index.cshtml]
+[C:/Users/cherr/Desktop/Lab-ERP/LabERP/Views/Equipment/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRXF1aXBtZW50XEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/Desktop/Lab-ERP/LabERP/Views/Equipment/MyEquipments.cshtml]
+[C:/Users/cherr/Desktop/Lab-ERP/LabERP/Views/Equipment/MyEquipments.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRXF1aXBtZW50XE15RXF1aXBtZW50cy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/Desktop/Lab-ERP/LabERP/Views/Finance/AddIncome.cshtml]
+[C:/Users/cherr/Desktop/Lab-ERP/LabERP/Views/Finance/AddIncome.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmluYW5jZVxBZGRJbmNvbWUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/Desktop/Lab-ERP/LabERP/Views/Finance/BankAccountSettings.cshtml]
+[C:/Users/cherr/Desktop/Lab-ERP/LabERP/Views/Finance/BankAccountSettings.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmluYW5jZVxCYW5rQWNjb3VudFNldHRpbmdzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/Desktop/Lab-ERP/LabERP/Views/Finance/Index.cshtml]
+[C:/Users/cherr/Desktop/Lab-ERP/LabERP/Views/Finance/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmluYW5jZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/Desktop/Lab-ERP/LabERP/Views/Finance/SalaryManagement.cshtml]
+[C:/Users/cherr/Desktop/Lab-ERP/LabERP/Views/Finance/SalaryManagement.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmluYW5jZVxTYWxhcnlNYW5hZ2VtZW50LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/Desktop/Lab-ERP/LabERP/Views/Home/Index.cshtml]
+[C:/Users/cherr/Desktop/Lab-ERP/LabERP/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/Desktop/Lab-ERP/LabERP/Views/Laboratory/AddMember.cshtml]
+[C:/Users/cherr/Desktop/Lab-ERP/LabERP/Views/Laboratory/AddMember.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGFib3JhdG9yeVxBZGRNZW1iZXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/Desktop/Lab-ERP/LabERP/Views/Laboratory/Create.cshtml]
+[C:/Users/cherr/Desktop/Lab-ERP/LabERP/Views/Laboratory/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGFib3JhdG9yeVxDcmVhdGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/Desktop/Lab-ERP/LabERP/Views/Laboratory/Details.cshtml]
+[C:/Users/cherr/Desktop/Lab-ERP/LabERP/Views/Laboratory/Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGFib3JhdG9yeVxEZXRhaWxzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/Desktop/Lab-ERP/LabERP/Views/Laboratory/Edit.cshtml]
+[C:/Users/cherr/Desktop/Lab-ERP/LabERP/Views/Laboratory/Edit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGFib3JhdG9yeVxFZGl0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/Desktop/Lab-ERP/LabERP/Views/Shared/_Layout.cshtml]
+[C:/Users/cherr/Desktop/Lab-ERP/LabERP/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/Desktop/Lab-ERP/LabERP/Views/Shared/_LoginPartial.cshtml]
+[C:/Users/cherr/Desktop/Lab-ERP/LabERP/Views/Shared/_LoginPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9Mb2dpblBhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/Desktop/Lab-ERP/LabERP/Views/User/ChangePassword.cshtml]
+[C:/Users/cherr/Desktop/Lab-ERP/LabERP/Views/User/ChangePassword.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclxDaGFuZ2VQYXNzd29yZC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/Desktop/Lab-ERP/LabERP/Views/User/Dashboard.cshtml]
+[C:/Users/cherr/Desktop/Lab-ERP/LabERP/Views/User/Dashboard.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclxEYXNoYm9hcmQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/Desktop/Lab-ERP/LabERP/Views/User/EditProfile.cshtml]
+[C:/Users/cherr/Desktop/Lab-ERP/LabERP/Views/User/EditProfile.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclxFZGl0UHJvZmlsZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/Desktop/Lab-ERP/LabERP/Views/_ViewImports.cshtml]
+[C:/Users/cherr/Desktop/Lab-ERP/LabERP/Views/WorkSession/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcV29ya1Nlc3Npb25cSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/cherr/Desktop/Lab-ERP/LabERP/Views/WorkSession/LabAttendance.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcV29ya1Nlc3Npb25cTGFiQXR0ZW5kYW5jZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/cherr/Desktop/Lab-ERP/LabERP/Views/WorkSession/Records.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcV29ya1Nlc3Npb25cUmVjb3Jkcy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/cherr/Desktop/Lab-ERP/LabERP/Views/WorkSession/StudentRecords.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcV29ya1Nlc3Npb25cU3R1ZGVudFJlY29yZHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/cherr/Desktop/Lab-ERP/LabERP/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 

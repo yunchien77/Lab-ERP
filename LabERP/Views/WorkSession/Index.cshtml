@@ -1,0 +1,133 @@
+﻿@model LabERP.Models.ViewModels.WorkSessionViewModel
+@{
+    ViewData["Title"] = "打卡 - " + Model.LabName;
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0">
+                        <i class="fas fa-clock"></i> 打卡系統
+                    </h3>
+                    <small>實驗室：@Model.LabName</small>
+                </div>
+                <div class="card-body">
+                    <!-- 顯示成功或錯誤訊息 -->
+                    @if (TempData["SuccessMessage"] != null)
+                    {
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <i class="fas fa-check-circle"></i> @TempData["SuccessMessage"]
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    }
+                    @if (TempData["ErrorMessage"] != null)
+                    {
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <i class="fas fa-exclamation-circle"></i> @TempData["ErrorMessage"]
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    }
+
+                    <!-- 當前狀態顯示 -->
+                    <div class="text-center mb-4">
+                        <div class="status-circle @(Model.IsWorking ? "working" : "not-working") mx-auto mb-3">
+                            <i class="fas @(Model.IsWorking ? "fa-play" : "fa-pause") fa-2x"></i>
+                        </div>
+                        <h4 class="@Model.StatusClass">@Model.StatusText</h4>
+                        @if (Model.IsWorking && Model.CurrentStartTime.HasValue)
+                        {
+                            <p class="text-muted">開始時間：@Model.CurrentStartTime.Value.ToString("yyyy-MM-dd HH:mm:ss")</p>
+                            <p class="text-info">目前工作時數：<span id="current-hours">@Model.CurrentWorkHours.ToString("F2")</span> 小時</p>
+                        }
+                    </div>
+
+                    <!-- 打卡按鈕 -->
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            @using (Html.BeginForm("StartWork", "WorkSession", new { labId = Model.LabID }, FormMethod.Post))
+                            {
+                                <button type="submit" class="btn btn-success btn-lg w-100"
+                                @(Model.CanStartWork ? "" : "disabled")>
+                                    <i class="fas fa-play"></i> 開始工作
+                                </button>
+                            }
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            @using (Html.BeginForm("EndWork", "WorkSession", new { labId = Model.LabID }, FormMethod.Post))
+                            {
+                                <button type="submit" class="btn btn-danger btn-lg w-100"
+                                @(Model.CanEndWork ? "" : "disabled")>
+                                    <i class="fas fa-stop"></i> 結束工作
+                                </button>
+                            }
+                        </div>
+                    </div>
+
+                    <!-- 功能按鈕 -->
+                    <div class="mt-4">
+                        <a href="@Url.Action("Records", new { labId = Model.LabID })" class="btn btn-outline-primary">
+                            <i class="fas fa-history"></i> 查看打卡記錄
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .status-circle {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+    }
+
+        .status-circle.working {
+            background: linear-gradient(45deg, #28a745, #20c997);
+            color: white;
+            animation: pulse 2s infinite;
+        }
+
+        .status-circle.not-working {
+            background: #f8f9fa;
+            border: 3px solid #dee2e6;
+            color: #6c757d;
+        }
+
+    @@keyframes pulse {
+        0% {
+            transform: scale(1);
+        }
+
+        50% {
+            transform: scale(1.05);
+        }
+
+        100% {
+            transform: scale(1);
+        }
+    }
+</style>
+
+@* 修正：加入 null 檢查，只有在 CurrentStartTime 有值時才執行 JavaScript *@
+@if (Model.IsWorking && Model.CurrentStartTime.HasValue)
+{
+    <script>
+        // 即時更新工作時數
+        let startTime = new Date('@Model.CurrentStartTime.Value.ToString("yyyy-MM-ddTHH:mm:ss")');
+
+        function updateWorkHours() {
+            let now = new Date();
+            let diff = (now - startTime) / (1000 * 60 * 60); // 轉換為小時
+            document.getElementById('current-hours').textContent = diff.toFixed(2);
+        }
+
+        setInterval(updateWorkHours, 60000); // 每分鐘更新一次
+    </script>
+}

@@ -2,4 +2,7 @@
 /.vs
 ./WebApplication1/obj/.
 ./WebApplication1/bin/.
-/WebApplication1/obj/Debug/net8.0
+./LabERP/obj
+./LabERP/bin
+./LabERPTests/obj
+./LabERPTests/bin

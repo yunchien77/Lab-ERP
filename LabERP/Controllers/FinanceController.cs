@@ -80,7 +80,8 @@ namespace LabERP.Controllers
                 Balance = balance,
                 RecentRecords = recentRecords,
                 BankAccount = bankAccount,
-                Salaries = salaries
+                Salaries = salaries,
+                Creator = laboratory.Creator
             };
 
             Console.WriteLine($"ViewModel created successfully");

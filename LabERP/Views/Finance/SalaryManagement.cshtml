@@ -1,5 +1,4 @@
-﻿@page
-@model LabERP.Models.ViewModels.SalaryManagementViewModel
+﻿@model LabERP.Models.ViewModels.SalaryManagementViewModel
 
 @{
     ViewData["Title"] = "薪資管理";
@@ -164,11 +163,129 @@
     </div>
 </div>
 
+<!-- 在 SalaryManagement.cshtml 中添加這個表格和表單 -->
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title">成員薪資管理</h5>
+            </div>
+            <div class="card-body">
+                @if (Model.SalaryItems != null && Model.SalaryItems.Any())
+                {
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>學生姓名</th>
+                                    <th>目前薪資</th>
+                                    <th>發放日期</th>
+                                    <th>狀態</th>
+                                    <th>新薪資</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.SalaryItems)
+                                {
+                                    <tr>
+                                        <td>@item.UserName</td>
+                                        <td>NT$ @item.CurrentAmount.ToString("N0")</td>
+                                        <td>@item.PaymentDate.ToString("yyyy/MM/dd")</td>
+                                        <td>
+                                            <span class="badge @(item.Status == "已設定" ? "bg-success" : "bg-secondary")">
+                                                @item.Status
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <div class="input-group input-group-sm" style="width: 150px;">
+                                                <span class="input-group-text">NT$</span>
+                                                <input type="number"
+                                                       id="amount_@item.UserId"
+                                                       value="@item.NewAmount"
+                                                       min="0"
+                                                       step="100"
+                                                       class="form-control"
+                                                       required />
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <form asp-action="UpdateSalary" asp-controller="Finance" method="post" class="d-inline">
+                                                @Html.AntiForgeryToken()
+                                                <input type="hidden" name="LabID" value="@Model.LaboratoryId" />
+                                                <input type="hidden" name="userId" value="@item.UserId" />
+                                                <input type="hidden" name="userName" value="@item.UserName" />
+                                                <input type="hidden" name="amount" id="hidden_amount_@item.UserId" value="@item.NewAmount" />
+                                                <button type="button" onclick="updateSalary('@item.UserId')" class="btn btn-primary btn-sm">
+                                                    <i class="fas fa-save"></i> 更新
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle"></i>
+                        目前沒有學生成員需要設定薪資。
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript 功能 -->
+<script>
+    function applyBatchAmount() {
+        const batchAmount = document.getElementById('batchAmount').value;
+        if (batchAmount && batchAmount > 0) {
+            // 更新所有金額輸入框
+            const amountInputs = document.querySelectorAll('input[id^="amount_"]');
+            amountInputs.forEach(input => {
+                input.value = batchAmount;
+            });
+
+            // 同時更新所有隱藏的金額欄位
+            const hiddenInputs = document.querySelectorAll('input[id^="hidden_amount_"]');
+            hiddenInputs.forEach(input => {
+                input.value = batchAmount;
+            });
+
+            alert('已套用統一薪資金額：NT$ ' + parseInt(batchAmount).toLocaleString());
+        } else {
+            alert('請輸入有效的薪資金額');
+        }
+    }
+
+    function updateSalary(userId) {
+        // 從顯示的輸入框獲取金額
+        const amountInput = document.getElementById('amount_' + userId);
+        const hiddenInput = document.getElementById('hidden_amount_' + userId);
+
+        if (amountInput.value <= 0) {
+            alert('薪資金額必須大於 0');
+            return;
+        }
+
+        // 更新隱藏欄位的值
+        hiddenInput.value = amountInput.value;
+
+        // 提交表單
+        hiddenInput.closest('form').submit();
+    }
+</script>
+
 <!-- 返回按鈕 -->
 <div class="row">
     <div class="col-12">
-        <a asp-action="Index" asp-route-laboratoryId="@Model.LaboratoryId" class="btn btn-secondary">
-            <i class="fas fa-arrow-left"></i> 返回財務管理
+        <a href="@Url.Action("Index", "Finance", new { LabID = Model.LaboratoryId })" class="btn btn-secondary">
+            返回財務管理
         </a>
     </div>
 </div>

@@ -32,6 +32,7 @@ namespace LabERP.Controllers
             }
 
             var laboratory = _laboratoryRepository.GetById(labID);
+            Console.WriteLine(labID);
             if (laboratory == null)
             {
                 TempData["ErrorMessage"] = "實驗室不存在";

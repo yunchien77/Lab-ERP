@@ -1,5 +1,4 @@
-﻿@page
-@model LabERP.Models.ViewModels.AddIncomeViewModel
+﻿@model LabERP.Models.ViewModels.AddIncomeViewModel
 
 @{
     ViewData["Title"] = "新增收入";
@@ -14,10 +13,14 @@
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">
-                    <a asp-controller="Laboratory" asp-action="Details" asp-route-id="@Model.LaboratoryId">實驗室</a>
+                    <a href="@Url.Action("Index", "Laboratory")">
+                        <i class="fas fa-home"></i> 首頁
+                    </a>
                 </li>
                 <li class="breadcrumb-item">
-                    <a asp-action="Index" asp-route-laboratoryId="@Model.LaboratoryId">財務管理</a>
+                    <a href="@Url.Action("Index", "Finance", new { LabID = Model.LaboratoryId })" class="btn btn-secondary">
+                        返回財務管理
+                    </a>
                 </li>
                 <li class="breadcrumb-item active">新增收入</li>
             </ol>

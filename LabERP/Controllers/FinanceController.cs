@@ -1,8 +1,9 @@
 ﻿using LabERP.Interface;
+using LabERP.Models.Core;
 using LabERP.Models.Handlers;
 using LabERP.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using System.Reflection.Emit;
+using System.Security.Claims;
 
 namespace LabERP.Controllers
 {
@@ -21,42 +22,89 @@ namespace LabERP.Controllers
             _userRepository = userRepository;
         }
 
-        // 財務管理主頁面
-        public IActionResult Index(string laboratoryId)
+        // 統一使用 LabID 作為參數名稱
+        public IActionResult Index(string LabID)
         {
-            var laboratory = _laboratoryRepository.GetById(laboratoryId);
+            // 添加調試信息
+            Console.WriteLine($"Received LabID parameter: {LabID}");
+            Console.WriteLine($"All route values: {string.Join(", ", RouteData.Values.Select(x => $"{x.Key}={x.Value}"))}");
+            Console.WriteLine($"All query parameters: {string.Join(", ", Request.Query.Select(x => $"{x.Key}={x.Value}"))}");
+
+            // 參數檢查
+            if (string.IsNullOrEmpty(LabID))
+            {
+                Console.WriteLine("LabID is null or empty");
+                TempData["ErrorMessage"] = "實驗室ID不能為空";
+                return RedirectToAction("Dashboard", "User");
+            }
+
+            var laboratory = _laboratoryRepository.GetById(LabID);
+            Console.WriteLine($"Laboratory found: {laboratory != null}");
+
             if (laboratory == null)
             {
-                return NotFound("找不到指定的實驗室");
+                Console.WriteLine($"Laboratory not found for ID: {LabID}");
+                TempData["ErrorMessage"] = "實驗室不存在";
+                return RedirectToAction("Dashboard", "User");
+            }
+
+            // 安全地獲取財務數據
+            decimal totalIncome = 0;
+            decimal totalExpense = 0;
+            decimal balance = 0;
+            List<FinanceRecord> recentRecords = new List<FinanceRecord>();
+            BankAccount bankAccount = null;
+            List<Salary> salaries = new List<Salary>();
+
+            try
+            {
+                totalIncome = _financeHandler.GetTotalIncome(LabID);
+                totalExpense = _financeHandler.GetTotalExpense(LabID);
+                balance = _financeHandler.GetBalance(LabID);
+                recentRecords = _financeHandler.GetFinanceRecords(LabID)?.Take(10).ToList() ?? new List<FinanceRecord>();
+                bankAccount = _financeHandler.GetBankAccount(LabID);
+                salaries = _financeHandler.GetSalaries(LabID) ?? new List<Salary>();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error getting finance data: {ex.Message}");
+                // 繼續使用預設值
             }
 
             var viewModel = new FinanceManagementViewModel
             {
-                LaboratoryId = laboratoryId,
-                LaboratoryName = laboratory.Name,
-                TotalIncome = _financeHandler.GetTotalIncome(laboratoryId),
-                TotalExpense = _financeHandler.GetTotalExpense(laboratoryId),
-                Balance = _financeHandler.GetBalance(laboratoryId),
-                RecentRecords = _financeHandler.GetFinanceRecords(laboratoryId).Take(10).ToList(),
-                BankAccount = _financeHandler.GetBankAccount(laboratoryId),
-                Salaries = _financeHandler.GetSalaries(laboratoryId)
+                LaboratoryId = LabID,
+                LaboratoryName = laboratory.Name ?? "未知實驗室",
+                TotalIncome = totalIncome,
+                TotalExpense = totalExpense,
+                Balance = balance,
+                RecentRecords = recentRecords,
+                BankAccount = bankAccount,
+                Salaries = salaries
             };
 
+            Console.WriteLine($"ViewModel created successfully");
             return View(viewModel);
         }
 
-        // 新增收入 - GET
-        public IActionResult AddIncome(string laboratoryId)
+        public IActionResult AddIncome(string LabID)
         {
+            Console.WriteLine($"AddIncome - Received LabID parameter: {LabID}");
+
+            if (string.IsNullOrEmpty(LabID))
+            {
+                TempData["ErrorMessage"] = "實驗室ID不能為空";
+                return RedirectToAction("Dashboard", "User");
+            }
+
             var viewModel = new AddIncomeViewModel
             {
-                LaboratoryId = laboratoryId
+                LaboratoryId = LabID
             };
 
             return View(viewModel);
         }
 
-        // 新增收入 - POST
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult AddIncome(AddIncomeViewModel model)
@@ -68,14 +116,19 @@ namespace LabERP.Controllers
 
             try
             {
-                // 假設從Session或Claims取得教授ID
                 var professorId = GetCurrentProfessorId();
+
+                if (string.IsNullOrEmpty(professorId))
+                {
+                    TempData["ErrorMessage"] = "無法取得當前用戶資訊";
+                    return View(model);
+                }
 
                 _financeHandler.AddIncome(model.LaboratoryId, model.Amount,
                                         model.Description, model.Category, professorId);
 
                 TempData["SuccessMessage"] = "收入記錄新增成功";
-                return RedirectToAction("Index", new { laboratoryId = model.LaboratoryId });
+                return RedirectToAction("Index", new { LabID = model.LaboratoryId });
             }
             catch (Exception ex)
             {
@@ -84,25 +137,34 @@ namespace LabERP.Controllers
             }
         }
 
-        // 薪資管理頁面
-        public IActionResult SalaryManagement(string laboratoryId)
+        public IActionResult SalaryManagement(string LabID)
         {
-            var laboratory = _laboratoryRepository.GetById(laboratoryId.ToString());
-            if (laboratory == null)
+            Console.WriteLine($"SalaryManagement - Received LabID parameter: {LabID}");
+
+            if (string.IsNullOrEmpty(LabID))
             {
-                return NotFound("找不到指定的實驗室");
+                TempData["ErrorMessage"] = "實驗室ID不能為空";
+                return RedirectToAction("Dashboard", "User");
             }
 
-            var salaries = _financeHandler.GetSalaries(laboratoryId);
-            var labMembers = laboratory.Members;
+            var laboratory = _laboratoryRepository.GetById(LabID);
+            if (laboratory == null)
+            {
+                TempData["ErrorMessage"] = "找不到指定的實驗室";
+                return RedirectToAction("Dashboard", "User");
+            }
+
+            var salaries = _financeHandler.GetSalaries(LabID) ?? new List<Salary>();
+            var labMembers = laboratory.Members ?? new List<User>();
 
             var viewModel = new SalaryManagementViewModel
             {
-                LaboratoryId = laboratoryId,
-                LaboratoryName = laboratory.Name,
-                TotalMembers = labMembers.Count, // 計算總人數
-                SalariesSet = salaries.Count, // 計算已設定薪資的人數
-                TotalMonthlySalary = salaries.Sum(s => s.Amount) // 計算月薪資總額
+                LaboratoryId = LabID,
+                LaboratoryName = laboratory.Name ?? "未知實驗室",
+                TotalMembers = labMembers.Count,
+                SalariesSet = salaries.Count,
+                TotalMonthlySalary = salaries.Sum(s => s.Amount),
+                SalaryItems = new List<SalaryItem>()
             };
 
             foreach (var member in labMembers.Where(m => m.Role == "Student"))
@@ -112,7 +174,7 @@ namespace LabERP.Controllers
                 {
                     SalaryId = existingSalary?.Id ?? 0,
                     UserId = member.UserID,
-                    UserName = member.Username,
+                    UserName = member.Username ?? "未知用戶",
                     CurrentAmount = existingSalary?.Amount ?? 0,
                     PaymentDate = existingSalary?.PaymentDate ?? DateTime.Now.AddMonths(1),
                     Status = existingSalary?.Status ?? "未設定",
@@ -123,41 +185,52 @@ namespace LabERP.Controllers
             return View(viewModel);
         }
 
-
-        // 更新薪資 - POST
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult UpdateSalary(string laboratoryId, string userId, string userName, decimal amount)
+        public IActionResult UpdateSalary(string LabID, string userId, string userName, decimal amount)
         {
             if (amount <= 0)
             {
                 TempData["ErrorMessage"] = "薪水須設定大於 0";
-                return RedirectToAction("SalaryManagement", new { laboratoryId });
+                return RedirectToAction("SalaryManagement", new { LabID });
             }
 
             try
             {
                 var professorId = GetCurrentProfessorId();
-                _financeHandler.SetSalary(laboratoryId, userId, userName, amount, professorId);
+                if (string.IsNullOrEmpty(professorId))
+                {
+                    TempData["ErrorMessage"] = "無法取得當前用戶資訊";
+                    return RedirectToAction("SalaryManagement", new { LabID });
+                }
+
+                _financeHandler.SetSalary(LabID, userId, userName, amount, professorId);
 
                 TempData["SuccessMessage"] = $"已成功更新 {userName} 的薪資";
-                return RedirectToAction("SalaryManagement", new { laboratoryId });
+                return RedirectToAction("SalaryManagement", new { LabID });
             }
             catch (Exception ex)
             {
                 TempData["ErrorMessage"] = $"更新薪資失敗: {ex.Message}";
-                return RedirectToAction("SalaryManagement", new { laboratoryId });
+                return RedirectToAction("SalaryManagement", new { LabID });
             }
         }
 
-        // 銀行帳戶設定 - GET
-        public IActionResult BankAccountSettings(string laboratoryId)
+        public IActionResult BankAccountSettings(string LabID)
         {
-            var existingAccount = _financeHandler.GetBankAccount(laboratoryId);
+            Console.WriteLine($"BankAccountSettings - Received LabID parameter: {LabID}");
+
+            if (string.IsNullOrEmpty(LabID))
+            {
+                TempData["ErrorMessage"] = "實驗室ID不能為空";
+                return RedirectToAction("Dashboard", "User");
+            }
+
+            var existingAccount = _financeHandler.GetBankAccount(LabID);
 
             var viewModel = new BankAccountViewModel
             {
-                LaboratoryId = laboratoryId
+                LaboratoryId = LabID
             };
 
             if (existingAccount != null)
@@ -171,7 +244,6 @@ namespace LabERP.Controllers
             return View(viewModel);
         }
 
-        // 銀行帳戶設定 - POST
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult BankAccountSettings(BankAccountViewModel model)
@@ -187,7 +259,7 @@ namespace LabERP.Controllers
                                              model.AccountNumber, model.AccountHolder, model.BranchCode);
 
                 TempData["SuccessMessage"] = "銀行帳戶設定成功";
-                return RedirectToAction("Index", new { laboratoryId = model.LaboratoryId });
+                return RedirectToAction("Index", new { LabID = model.LaboratoryId });
             }
             catch (Exception ex)
             {
@@ -196,12 +268,16 @@ namespace LabERP.Controllers
             }
         }
 
-        // 取得目前登入的教授ID (需要根據實際認證實作調整)
         private string GetCurrentProfessorId()
         {
-            // 這裡需要根據實際的認證實作來取得當前教授ID
-            // 例如從Session、Claims或其他認證機制取得
-            return "PROF001"; // 暫時使用固定值
+            try
+            {
+                return User.FindFirstValue("UserID");
+            }
+            catch
+            {
+                return null;
+            }
         }
     }
 }

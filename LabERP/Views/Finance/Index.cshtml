@@ -1,294 +1,120 @@
-﻿@page
-@model LabERP.Models.ViewModels.FinanceManagementViewModel
+﻿@model LabERP.Models.ViewModels.FinanceManagementViewModel
 
 @{
     ViewData["Title"] = "財務管理";
 }
 
-<link rel="stylesheet" href="~/css/site.css" />
-
-<!-- 頁面標題 -->
-<div class="row mb-4">
-    <div class="col-12">
-        <h2><i class="fas fa-chart-line"></i> @Model.LaboratoryName - 財務管理</h2>
-        <hr />
-    </div>
-</div>
-
-<!-- 提示訊息 -->
-@if (TempData["SuccessMessage"] != null)
+<!-- 添加安全檢查 -->
+@if (Model == null)
 {
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        <i class="fas fa-check-circle"></i> @TempData["SuccessMessage"]
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    <div class="alert alert-danger">
+        <h4>錯誤</h4>
+        <p>無法載入財務管理資料，請稍後再試。</p>
+        <a href="@Url.Action("Dashboard", "User")" class="btn btn-secondary">返回儀表板</a>
     </div>
 }
-
-@if (TempData["ErrorMessage"] != null)
+else
 {
-    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        <i class="fas fa-exclamation-circle"></i> @TempData["ErrorMessage"]
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-    </div>
-}
+    <div class="container-fluid">
+        <h2>@Model.LaboratoryName - 財務管理</h2>
 
-<!-- 財務概覽 -->
-<div class="row mb-4">
-    <div class="col-md-3">
-        <div class="card text-white bg-success">
-            <div class="card-body">
-                <div class="d-flex justify-content-between">
-                    <div>
-                        <h6 class="card-title">總收入</h6>
-                        <h4>NT$ @Model.TotalIncome.ToString("N0")</h4>
+        <!-- 財務概覽 -->
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <div class="card text-white bg-success">
+                    <div class="card-body">
+                        <h4>總收入</h4>
+                        <h2>$@Model.TotalIncome.ToString("N0")</h2>
                     </div>
-                    <div class="align-self-center">
-                        <i class="fas fa-arrow-up fa-2x"></i>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card text-white bg-danger">
+                    <div class="card-body">
+                        <h4>總支出</h4>
+                        <h2>$@Model.TotalExpense.ToString("N0")</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card text-white bg-info">
+                    <div class="card-body">
+                        <h4>餘額</h4>
+                        <h2>$@Model.Balance.ToString("N0")</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 快速操作 -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <a asp-controller="Finance" asp-action="AddIncome" asp-route-labID="@Model.LaboratoryId" class="btn btn-success">
+                    <i class="fas fa-plus"></i> 新增收入
+                </a>
+                <a asp-controller="Finance" asp-action="SalaryManagement" asp-route-labID="@Model.LaboratoryId" class="btn btn-warning">
+                    <i class="fas fa-users"></i> 薪資管理
+                </a>
+                <a asp-controller="Finance" asp-action="BankAccountSettings" asp-route-labID="@Model.LaboratoryId" class="btn btn-info">
+                    <i class="fas fa-university"></i> 銀行帳戶設定
+                </a>
+            </div>
+        </div>
+
+        <!-- 最近記錄 -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>最近交易記錄</h5>
+                    </div>
+                    <div class="card-body">
+                        @if (Model.RecentRecords?.Any() == true)
+                        {
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>日期</th>
+                                            <th>類型</th>
+                                            <th>金額</th>
+                                            <th>描述</th>
+                                            <th>分類</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var record in Model.RecentRecords)
+                                        {
+                                            <tr>
+                                                <td>@record.RecordDate.ToString("yyyy-MM-dd")</td>
+                                                <td>
+                                                    <span class="badge @(record.Type == "Income" ? "bg-success" : "bg-danger")">
+                                                        @(record.Type == "Income" ? "收入" : "支出")
+                                                    </span>
+                                                </td>
+                                                <td>$@record.Amount.ToString("N0")</td>
+                                                <td>@record.Description</td>
+                                                <td>@record.Category</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                        else
+                        {
+                            <p class="text-muted">尚無交易記錄</p>
+                        }
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="col-md-3">
-        <div class="card text-white bg-danger">
-            <div class="card-body">
-                <div class="d-flex justify-content-between">
-                    <div>
-                        <h6 class="card-title">總支出</h6>
-                        <h4>NT$ @Model.TotalExpense.ToString("N0")</h4>
-                    </div>
-                    <div class="align-self-center">
-                        <i class="fas fa-arrow-down fa-2x"></i>
-                    </div>
-                </div>
-            </div>
+    <div class="row mt-3">
+        <div class="col-12">
+            <a asp-controller="User" asp-action="Dashboard" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> 返回
+            </a>
         </div>
     </div>
-    <div class="col-md-3">
-        <div class="card text-white @(Model.Balance >= 0 ? "bg-primary" : "bg-warning")">
-            <div class="card-body">
-                <div class="d-flex justify-content-between">
-                    <div>
-                        <h6 class="card-title">餘額</h6>
-                        <h4>NT$ @Model.Balance.ToString("N0")</h4>
-                    </div>
-                    <div class="align-self-center">
-                        <i class="fas fa-wallet fa-2x"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="card text-white bg-info">
-            <div class="card-body">
-                <div class="d-flex justify-content-between">
-                    <div>
-                        <h6 class="card-title">銀行帳戶</h6>
-                        <h6>@(Model.BankAccount != null ? "已設定" : "未設定")</h6>
-                    </div>
-                    <div class="align-self-center">
-                        <i class="fas fa-university fa-2x"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- 功能按鈕 -->
-<div class="row mb-4">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-header">
-                <i class="fas fa-tools"></i> 快速操作
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-3 col-sm-6 mb-2">
-                        <a asp-action="AddIncome" asp-route-laboratoryId="@Model.LaboratoryId" class="btn btn-success w-100">
-                            <i class="fas fa-plus-circle"></i> 新增收入
-                        </a>
-                    </div>
-                    <div class="col-md-3 col-sm-6 mb-2">
-                        <a asp-action="SalaryManagement" asp-route-laboratoryId="@Model.LaboratoryId" class="btn btn-warning w-100">
-                            <i class="fas fa-users"></i> 薪資管理
-                        </a>
-                    </div>
-                    <div class="col-md-3 col-sm-6 mb-2">
-                        <a asp-action="BankAccountSettings" asp-route-laboratoryId="@Model.LaboratoryId" class="btn btn-info w-100">
-                            <i class="fas fa-university"></i> 銀行設定
-                        </a>
-                    </div>
-                    <div class="col-md-3 col-sm-6 mb-2">
-                        <button class="btn btn-primary w-100" onclick="exportFinanceData()">
-                            <i class="fas fa-download"></i> 匯出資料
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- 最近交易記錄 -->
-<div class="row mb-4">
-    <div class="col-md-8">
-        <div class="card">
-            <div class="card-header d-flex justify-content-between align-items-center">
-                <span><i class="fas fa-history"></i> 最近交易記錄</span>
-                <small class="text-muted">顯示最近 10 筆</small>
-            </div>
-            <div class="card-body">
-                @if (Model.RecentRecords.Any())
-                {
-                    <div class="table-responsive">
-                        <table class="table table-hover">
-                            <thead class="table-light">
-                                <tr>
-                                    <th>日期</th>
-                                    <th>類型</th>
-                                    <th>說明</th>
-                                    <th>類別</th>
-                                    <th class="text-end">金額</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var record in Model.RecentRecords)
-                                {
-                                    <tr>
-                                        <td>@record.RecordDate.ToString("yyyy/MM/dd")</td>
-                                        <td>
-                                            <span class="badge @(record.Type == "Income" ? "bg-success" : "bg-danger")">
-                                                <i class="fas @(record.Type == "Income" ? "fa-arrow-up" : "fa-arrow-down")"></i>
-                                                @(record.Type == "Income" ? "收入" : "支出")
-                                            </span>
-                                        </td>
-                                        <td>@record.Description</td>
-                                        <td>
-                                            <span class="badge bg-secondary">@record.Category</span>
-                                        </td>
-                                        <td class="text-end fw-bold @(record.Type == "Income" ? "text-success" : "text-danger")">
-                                            @(record.Type == "Income" ? "+" : "-")NT$ @record.Amount.ToString("N0")
-                                        </td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
-                    </div>
-                }
-                else
-                {
-                    <div class="text-center py-4">
-                        <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
-                        <p class="text-muted">目前沒有任何交易記錄</p>
-                        <a asp-action="AddIncome" asp-route-laboratoryId="@Model.LaboratoryId" class="btn btn-success">
-                            <i class="fas fa-plus"></i> 新增第一筆收入
-                        </a>
-                    </div>
-                }
-            </div>
-        </div>
-    </div>
-
-    <!-- 銀行帳戶資訊 -->
-    <div class="col-md-4">
-        <div class="card">
-            <div class="card-header">
-                <i class="fas fa-university"></i> 銀行帳戶資訊
-            </div>
-            <div class="card-body">
-                @if (Model.BankAccount != null)
-                {
-                    <div class="mb-3">
-                        <strong>銀行名稱:</strong><br>
-                        <span class="text-muted">@Model.BankAccount.BankName</span>
-                    </div>
-                    <div class="mb-3">
-                        <strong>帳戶號碼:</strong><br>
-                        <span class="text-muted">@Model.BankAccount.AccountNumber</span>
-                    </div>
-                    <div class="mb-3">
-                        <strong>戶名:</strong><br>
-                        <span class="text-muted">@Model.BankAccount.AccountHolder</span>
-                    </div>
-                    @if (!string.IsNullOrEmpty(Model.BankAccount.BranchCode))
-                    {
-                        <div class="mb-3">
-                            <strong>分行代碼:</strong><br>
-                            <span class="text-muted">@Model.BankAccount.BranchCode</span>
-                        </div>
-                    }
-                    <a asp-action="BankAccountSettings" asp-route-laboratoryId="@Model.LaboratoryId" class="btn btn-outline-primary btn-sm">
-                        <i class="fas fa-edit"></i> 編輯
-                    </a>
-                }
-                else
-                {
-                    <div class="text-center py-3">
-                        <i class="fas fa-university fa-3x text-muted mb-3"></i>
-                        <p class="text-muted">尚未設定銀行帳戶</p>
-                        <a asp-action="BankAccountSettings" asp-route-laboratoryId="@Model.LaboratoryId" class="btn btn-info">
-                            <i class="fas fa-plus"></i> 立即設定
-                        </a>
-                    </div>
-                }
-            </div>
-        </div>
-
-        <!-- 薪資概覽 -->
-        <div class="card mt-3">
-            <div class="card-header">
-                <i class="fas fa-users"></i> 薪資概覽
-            </div>
-            <div class="card-body">
-                @if (Model.Salaries.Any())
-                {
-                    <div class="mb-3">
-                        <strong>已設定薪資人數:</strong> @Model.Salaries.Count 人
-                    </div>
-                    <div class="mb-3">
-                        <strong>月薪資總額:</strong><br>
-                        <span class="text-danger fw-bold">NT$ @Model.Salaries.Sum(s => s.Amount).ToString("N0")</span>
-                    </div>
-                    <a asp-action="SalaryManagement" asp-route-laboratoryId="@Model.LaboratoryId" class="btn btn-outline-warning btn-sm w-100">
-                        <i class="fas fa-cog"></i> 管理薪資
-                    </a>
-                }
-                else
-                {
-                    <div class="text-center py-3">
-                        <i class="fas fa-users fa-3x text-muted mb-3"></i>
-                        <p class="text-muted">尚未設定任何薪資</p>
-                        <a asp-action="SalaryManagement" asp-route-laboratoryId="@Model.LaboratoryId" class="btn btn-warning">
-                            <i class="fas fa-plus"></i> 開始設定
-                        </a>
-                    </div>
-                }
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- 返回按鈕 -->
-<div class="row">
-    <div class="col-12">
-        <a asp-controller="Laboratory" asp-action="Details" asp-route-id="@Model.LaboratoryId" class="btn btn-secondary">
-            <i class="fas fa-arrow-left"></i> 返回實驗室
-        </a>
-    </div>
-</div>
-
-@section Scripts {
-    <script>
-        function exportFinanceData() {
-            // 這裡可以實作匯出功能
-            alert('匯出功能開發中...');
-        }
-
-        // 自動隱藏提示訊息
-        setTimeout(function() {
-            $('.alert').fadeOut('slow');
-        }, 5000);
-    </script>
 }

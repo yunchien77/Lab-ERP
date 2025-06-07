@@ -260,13 +260,11 @@
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">
-                        <a href="@Url.Action("Index", "Laboratory")">
-                            <i class="fas fa-home"></i> 首頁
-                        </a>
+                        <a asp-controller="Laboratory" asp-action="Details" asp-route-id="@Model.LaboratoryId">實驗室</a>
                     </li>
                     <li class="breadcrumb-item">
-                        <a href="@Url.Action("Index", "Finance", new { laboratoryId = Model.LaboratoryId })">
-                            <i class="fas fa-chart-line"></i> 財務管理
+                        <a href="@Url.Action("Index", "Finance", new { LabID = Model.LaboratoryId })" class="btn btn-secondary">
+                            返回財務管理
                         </a>
                     </li>
                     <li class="breadcrumb-item active">

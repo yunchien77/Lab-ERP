@@ -10,7 +10,7 @@ namespace LabERP.Models.Core
         {
             UserID = "1",
             Username = "prof1",
-            Password = "password",
+            Password = "111",
             Email = "prof1@example.com"
         },
         new Professor

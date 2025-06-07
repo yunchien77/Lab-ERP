@@ -16,7 +16,9 @@
                     <a asp-controller="Laboratory" asp-action="Details" asp-route-id="@Model.LaboratoryId">實驗室</a>
                 </li>
                 <li class="breadcrumb-item">
-                    <a asp-action="Index" asp-route-laboratoryId="@Model.LaboratoryId">財務管理</a>
+                    <a href="@Url.Action("Index", "Finance", new { LabID = Model.LaboratoryId })" class="btn btn-secondary">
+                        返回財務管理
+                    </a>
                 </li>
                 <li class="breadcrumb-item active">薪資管理</li>
             </ol>

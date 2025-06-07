@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("LabERP")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+77461fefde4f180008fd63e2d08292f808fd8f0a")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7278858ff51abc95ceb35d2bd2ca52701aae4141")]
 [assembly: System.Reflection.AssemblyProductAttribute("LabERP")]
 [assembly: System.Reflection.AssemblyTitleAttribute("LabERP")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

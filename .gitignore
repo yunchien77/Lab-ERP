@@ -2,3 +2,7 @@
 /.vs
 ./WebApplication1/obj/.
 ./WebApplication1/bin/.
+./LabERP/obj
+./LabERP/bin
+./LabERPTests/obj
+./LabERPTests/bin

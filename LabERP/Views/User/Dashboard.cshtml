@@ -35,7 +35,7 @@
     <div class="col-md-8">
         @if (User.IsInRole("Professor"))
         {
-            <div class="card">
+            <div class="card mb-3">
                 <div class="card-header">
                     教授功能
                 </div>
@@ -53,6 +53,8 @@
                                     <div>
                                         <a asp-controller="Laboratory" asp-action="Details" asp-route-id="@lab.LabID" class="btn btn-sm btn-info">查看</a>
                                         <a asp-controller="Laboratory" asp-action="AddMember" asp-route-id="@lab.LabID" class="btn btn-sm btn-primary">添加成員</a>
+                                        <!-- 添加打卡管理按鈕 -->
+                                        <a asp-controller="WorkSession" asp-action="LabAttendance" asp-route-labId="@lab.LabID" class="btn btn-sm btn-warning">打卡管理</a>
                                     </div>
                                 </li>
                             }
@@ -61,11 +63,12 @@
                 </div>
             </div>
         }
+
         @if (User.IsInRole("Student"))
         {
-            <div class="card">
+            <div class="card mb-3">
                 <div class="card-header">
-                    學生資訊
+                    學生功能
                 </div>
                 <div class="card-body">
                     <!-- 添加直接連結到借用記錄頁面 -->
@@ -87,6 +90,14 @@
                                     <div><strong>指導教授:</strong> @lab.Creator.Username</div>
                                     <div class="mt-2">
                                         <a asp-controller="Laboratory" asp-action="Details" asp-route-id="@lab.LabID" class="btn btn-sm btn-info">查看詳細資訊</a>
+                                        <!-- 添加打卡按鈕 -->
+                                        <a asp-controller="WorkSession" asp-action="Index" asp-route-labId="@lab.LabID" class="btn btn-sm btn-success">
+                                            <i class="fas fa-clock"></i> 打卡
+                                        </a>
+                                        <!-- 添加查看打卡記錄按鈕 -->
+                                        <a asp-controller="WorkSession" asp-action="Records" asp-route-labId="@lab.LabID" class="btn btn-sm btn-outline-primary">
+                                            <i class="fas fa-history"></i> 打卡記錄
+                                        </a>
                                     </div>
                                 </li>
                             }
@@ -96,6 +107,66 @@
                     {
                         <p>您目前不屬於任何實驗室。</p>
                     }
+                </div>
+            </div>
+        }
+
+        <!-- 通用打卡功能區塊 -->
+        @{
+            var allLabs = new List<LabERP.Models.Core.Laboratory>();
+            if (User.IsInRole("Professor") && Model is LabERP.Models.Core.Professor prof)
+            {
+                allLabs = prof.Laboratories.ToList();
+            }
+            else if (User.IsInRole("Student"))
+            {
+                var studentLabs = ViewBag.StudentLaboratories as List<LabERP.Models.Core.Laboratory>;
+                if (studentLabs != null)
+                {
+                    allLabs = studentLabs;
+                }
+            }
+        }
+
+        @if (allLabs.Any())
+        {
+            <div class="card">
+                <div class="card-header bg-info text-white">
+                    <i class="fas fa-clock"></i> 打卡系統快速入口
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        @foreach (var lab in allLabs)
+                        {
+                            <div class="col-md-6 mb-2">
+                                <div class="card border-left-primary">
+                                    <div class="card-body p-3">
+                                        <h6 class="card-title">@lab.Name</h6>
+                                        <div class="btn-group-sm">
+                                            @if (User.IsInRole("Student"))
+                                            {
+                                                <a asp-controller="WorkSession" asp-action="Index" asp-route-labId="@lab.LabID" class="btn btn-success btn-sm">
+                                                    <i class="fas fa-play"></i> 打卡
+                                                </a>
+                                                <a asp-controller="WorkSession" asp-action="Records" asp-route-labId="@lab.LabID" class="btn btn-outline-primary btn-sm">
+                                                    記錄
+                                                </a>
+                                            }
+                                            @if (User.IsInRole("Professor"))
+                                            {
+                                                <a asp-controller="WorkSession" asp-action="LabAttendance" asp-route-labId="@lab.LabID" class="btn btn-warning btn-sm">
+                                                    <i class="fas fa-users"></i> 管理
+                                                </a>
+                                                <a asp-controller="WorkSession" asp-action="StudentRecords" asp-route-labId="@lab.LabID" class="btn btn-outline-info btn-sm">
+                                                    統計
+                                                </a>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
                 </div>
             </div>
         }

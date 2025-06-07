@@ -1,0 +1,134 @@
+﻿@model LabERP.Models.ViewModels.StudentWorkRecordsViewModel
+@{
+    ViewData["Title"] = Model.StudentName + " 的工作記錄";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2><i class="fas fa-user-clock"></i> @Model.StudentName 的工作記錄</h2>
+            <small class="text-muted">實驗室：@Model.LabName</small>
+        </div>
+        <a href="@Url.Action("LabAttendance", new { labId = Model.LabID })" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> 返回出勤管理
+        </a>
+    </div>
+
+    <!-- 統計摘要 -->
+    @if (Model.Summary != null)
+    {
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <div class="card bg-primary text-white">
+                    <div class="card-body text-center">
+                        <h4>@Model.Summary.TotalHours.ToString("F1")</h4>
+                        <p class="mb-0">總工作時數</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card bg-success text-white">
+                    <div class="card-body text-center">
+                        <h4>@Model.Summary.TotalSessions</h4>
+                        <p class="mb-0">打卡次數</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card bg-info text-white">
+                    <div class="card-body text-center">
+                        <h4>@Model.WorkSessions.Where(ws => ws.Status == LabERP.Models.Core.WorkStatus.Completed).Count()</h4>
+                        <p class="mb-0">工作天數</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card bg-warning text-white">
+                    <div class="card-body text-center">
+                        <h4>@Model.Summary.AverageHoursPerSession.ToString("F1")</h4>
+                        <p class="mb-0">平均時數/次</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    <!-- 詳細記錄 -->
+    <div class="card">
+        <div class="card-header">
+            <h5 class="mb-0">詳細工作記錄 (@Model.StartDate.ToString("yyyy-MM-dd") ~ @Model.EndDate.ToString("yyyy-MM-dd"))</h5>
+        </div>
+        <div class="card-body">
+            @if (Model.WorkSessions.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>日期</th>
+                                <th>開始時間</th>
+                                <th>結束時間</th>
+                                <th>工作時數</th>
+                                <th>狀態</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var session in Model.WorkSessions.OrderByDescending(s => s.StartTime))
+                            {
+                                <tr>
+                                    <td>@session.StartTime.ToString("yyyy-MM-dd")</td>
+                                    <td>@session.StartTime.ToString("HH:mm:ss")</td>
+                                    <td>
+                                        @if (session.EndTime.HasValue)
+                                        {
+                                            @session.EndTime.Value.ToString("HH:mm:ss")
+                                        }
+                                        else
+                                        {
+                                            <span class="text-warning">進行中</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (session.Status == LabERP.Models.Core.WorkStatus.Completed)
+                                        {
+                                            <span class="badge bg-success">@session.GetWorkHours().ToString("F2") 小時</span>
+                                        }
+                                        else if (session.Status == LabERP.Models.Core.WorkStatus.Working)
+                                        {
+                                            <span class="badge bg-warning">@session.GetWorkHours().ToString("F2") 小時</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">-</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        @switch (session.Status)
+                                        {
+                                            case LabERP.Models.Core.WorkStatus.Working:
+                                                <span class="badge bg-success">工作中</span>
+                                                break;
+                                            case LabERP.Models.Core.WorkStatus.Completed:
+                                                <span class="badge bg-secondary">已完成</span>
+                                                break;
+                                            default:
+                                                <span class="badge bg-light text-dark">未開始</span>
+                                                break;
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="text-center py-5">
+                    <i class="fas fa-calendar-times fa-3x text-muted mb-3"></i>
+                    <p class="text-muted">此期間沒有工作記錄</p>
+                </div>
+            }
+        </div>
+    </div>
+</div>

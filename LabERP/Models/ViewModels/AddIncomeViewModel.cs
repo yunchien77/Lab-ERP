@@ -7,6 +7,8 @@ namespace LabERP.Models.ViewModels
     {
         public string LaboratoryId { get; set; } = "";
 
+        public string LaboratoryName { get; set; } = "";
+
         [Required(ErrorMessage = "請輸入收入金額")]
         [Range(0.01, double.MaxValue, ErrorMessage = "金額必須大於0")]
         public decimal Amount { get; set; } = 0;
@@ -25,5 +27,6 @@ namespace LabERP.Models.ViewModels
         {
             RecordDate = DateTime.Now;
         }
+
     }
 }

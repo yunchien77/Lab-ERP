@@ -11,16 +11,16 @@ namespace LabERP.Controllers
     public class WorkSessionController : Controller
     {
         private readonly IWorkSessionHandler _workSessionHandler;
-        private readonly IUserHandler _userHandler;
+        //private readonly IUserHandler _userHandler;
         private readonly ILaboratoryRepository _laboratoryRepository;
 
         public WorkSessionController(
             IWorkSessionHandler workSessionHandler,
-            IUserHandler userHandler,
+            //IUserHandler userHandler,
             ILaboratoryRepository laboratoryRepository)
         {
             _workSessionHandler = workSessionHandler;
-            _userHandler = userHandler;
+            //_userHandler = userHandler;
             _laboratoryRepository = laboratoryRepository;
         }
 

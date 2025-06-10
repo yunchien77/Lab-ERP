@@ -17,7 +17,7 @@ namespace LabERP.Tests.Controllers
     public class WorkSessionControllerTests
     {
         private readonly Mock<IWorkSessionHandler> _mockWorkSessionHandler;
-        private readonly Mock<IUserHandler> _mockUserHandler;
+        //private readonly Mock<IUserHandler> _mockUserHandler;
         private readonly Mock<ILaboratoryRepository> _mockLabRepository;
         private readonly WorkSessionController _controller;
         private readonly Mock<ITempDataProvider> _tempDataProvider;
@@ -26,11 +26,11 @@ namespace LabERP.Tests.Controllers
         public WorkSessionControllerTests()
         {
             _mockWorkSessionHandler = new Mock<IWorkSessionHandler>(MockBehavior.Strict);
-            _mockUserHandler = new Mock<IUserHandler>();
+           // _mockUserHandler = new Mock<IUserHandler>();
             _mockLabRepository = new Mock<ILaboratoryRepository>();
             _controller = new WorkSessionController(
                 _mockWorkSessionHandler.Object,
-                _mockUserHandler.Object,
+                //_mockUserHandler.Object,
                 _mockLabRepository.Object);
 
             // Setup controller context

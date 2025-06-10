@@ -119,7 +119,7 @@
                                         <li class="list-group-item">
                                             <div><strong>實驗室名稱:</strong> @lab.Name</div>
                                             <div><strong>指導教授:</strong> @lab.Creator.Username</div>
-                                            <div class="mt-2 d-flex gap-2">
+                                            <div class="btn-group btn-group-sm" role="group" aria-label="實驗室操作">
                                                 <a asp-controller="Laboratory" asp-action="Details" asp-route-id="@lab.LabID" class="btn btn-sm btn-info">
                                                     <i class="fas fa-info-circle"></i>
                                                     <!---/* 查看詳細資訊 */ --->

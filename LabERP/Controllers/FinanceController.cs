@@ -223,6 +223,8 @@ namespace LabERP.Controllers
 
         public IActionResult BankAccountSettings(string LabID)
         {
+            TempData["ErrorMessage"] = null;
+            TempData["SuccessMessage"] = null;
             Console.WriteLine($"BankAccountSettings - Received LabID parameter: {LabID}");
 
             if (string.IsNullOrEmpty(LabID))
@@ -253,6 +255,9 @@ namespace LabERP.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult BankAccountSettings(BankAccountViewModel model)
         {
+            TempData["ErrorMessage"] = null;
+            TempData["SuccessMessage"] = null;
+
             if (!ModelState.IsValid)
             {
                 return View(model);

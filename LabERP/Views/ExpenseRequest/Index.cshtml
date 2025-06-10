@@ -134,7 +134,7 @@
                                                 @if (request.CanDelete)
                                                 {
                                                     <form asp-action="Delete" asp-route-id="@request.Id" method="post" class="d-inline">
-                                                        <input type="hidden" name="laboratoryId" value="@Model.LaboratoryId" />
+                                                        <input type="hidden" name="LabID" value="@Model.LaboratoryId" />
                                                         <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('確定要刪除此報帳申請嗎？');">
                                                             <i class="fas fa-trash me-1"></i> 刪除
                                                         </button>

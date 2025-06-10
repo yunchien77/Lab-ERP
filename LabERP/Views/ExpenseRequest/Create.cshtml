@@ -1,0 +1,203 @@
+﻿@model LabERP.Models.ViewModels.CreateExpenseRequestViewModel
+
+@{
+    ViewData["Title"] = "新增報帳申請";
+}
+
+<link rel="stylesheet" href="~/css/site.css" />
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="utf-8" />
+    <title>財務管理 - @Model.LaboratoryName</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+</head>
+<body>
+
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-12 mb-3">
+                <h2 class="fw-bold text-primary">
+                    <i class="fas fa-plus-circle me-2"></i>新增報帳申請 - @Model.LaboratoryName
+                </h2>
+                <hr />
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-lg-8">
+                <div class="card shadow rounded-4">
+                    <div class="card-header bg-primary text-white rounded-top-4">
+                        <i class="fas fa-file-invoice me-2"></i>報帳申請表單
+                    </div>
+                    <div class="card-body p-4">
+                        <form asp-action="Create" method="post" enctype="multipart/form-data">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" asp-for="LaboratoryId" />
+                            <input type="hidden" asp-for="LaboratoryName" />
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label asp-for="Amount" class="form-label fw-semibold">
+                                        <i class="fas fa-dollar-sign me-1"></i>金額 <span class="text-danger">*</span>
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">NT$</span>
+                                        <input asp-for="Amount" class="form-control" type="number" step="0.01" min="0.01" required />
+                                    </div>
+                                    <span asp-validation-for="Amount" class="text-danger small"></span>
+                                </div>
+                                <div class="col-md-6">
+                                    <label asp-for="InvoiceNumber" class="form-label fw-semibold">
+                                        <i class="fas fa-receipt me-1"></i>發票號碼 <span class="text-danger">*</span>
+                                    </label>
+                                    <input asp-for="InvoiceNumber" class="form-control" required placeholder="請輸入發票號碼" />
+                                    <span asp-validation-for="InvoiceNumber" class="text-danger small"></span>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="Category" class="form-label fw-semibold">
+                                    <i class="fas fa-tags me-1"></i>報帳類別 <span class="text-danger">*</span>
+                                </label>
+                                <select asp-for="Category" class="form-select" required>
+                                    <option value="">請選擇類別</option>
+                                    <option value="設備採購">設備採購</option>
+                                    <option value="材料費">材料費</option>
+                                    <option value="差旅費">差旅費</option>
+                                    <option value="其他">其他</option>
+                                </select>
+                                <span asp-validation-for="Category" class="text-danger small"></span>
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="Description" class="form-label fw-semibold">
+                                    <i class="fas fa-align-left me-1"></i>描述 <span class="text-danger">*</span>
+                                </label>
+                                <input asp-for="Description" class="form-control" maxlength="200" required placeholder="請簡述報帳項目" />
+                                <span asp-validation-for="Description" class="text-danger small"></span>
+                                <div class="form-text">最多200個字元</div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="Purpose" class="form-label fw-semibold">
+                                    <i class="fas fa-info-circle me-1"></i>用途說明 <span class="text-danger">*</span>
+                                </label>
+                                <textarea asp-for="Purpose" class="form-control" rows="4" maxlength="500" required placeholder="請詳細說明此項支出的用途"></textarea>
+                                <span asp-validation-for="Purpose" class="text-danger small"></span>
+                                <div class="form-text">最多500個字元</div>
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="form-label fw-semibold">
+                                    <i class="fas fa-paperclip me-1"></i>附件 (發票/收據圖片或PDF)
+                                </label>
+                                <input type="file" name="Attachments" class="form-control" multiple accept="image/jpeg,image/jpg,image/png,application/pdf" />
+                                <div class="form-text">
+                                    <i class="fas fa-info-circle me-1"></i>支援格式：JPG, PNG, PDF，單個檔案最大5MB
+                                </div>
+                            </div>
+
+                            <div class="d-flex justify-content-end">
+                                <a asp-action="Index" asp-route-laboratoryId="@Model.LaboratoryId" class="btn btn-secondary me-2 rounded-pill px-4">
+                                    <i class="fas fa-times me-1"></i>取消
+                                </a>
+                                <button type="submit" class="btn btn-primary rounded-pill px-4">
+                                    <i class="fas fa-save me-1"></i>提交申請
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="card shadow rounded-4">
+                    <div class="card-header bg-light fw-semibold rounded-top-4">
+                        <i class="fas fa-lightbulb me-2 text-warning"></i>填寫提示
+                    </div>
+                    <div class="card-body">
+                        <h6 class="text-success fw-bold"><i class="fas fa-check-circle me-2"></i>填寫要點：</h6>
+                        <ul class="list-unstyled ps-3">
+                            <li><i class="fas fa-arrow-right text-primary me-2"></i>請確實填寫所有必填欄位</li>
+                            <li><i class="fas fa-arrow-right text-primary me-2"></i>金額請與發票一致</li>
+                            <li><i class="fas fa-arrow-right text-primary me-2"></i>請清楚說明支出用途</li>
+                            <li><i class="fas fa-arrow-right text-primary me-2"></i>建議上傳發票圖片</li>
+                        </ul>
+
+                        <hr />
+
+                        <h6 class="text-warning fw-bold"><i class="fas fa-exclamation-triangle me-2"></i>注意事項：</h6>
+                        <ul class="list-unstyled ps-3">
+                            <li><i class="fas fa-arrow-right text-warning me-2"></i>提交後將通知教授審核</li>
+                            <li><i class="fas fa-arrow-right text-warning me-2"></i>未審核前可以刪除申請</li>
+                            <li><i class="fas fa-arrow-right text-warning me-2"></i>審核通過後將從預算中扣除</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @section Scripts {
+        <partial name="_ValidationScriptsPartial" />
+
+        <script>
+            $('input[type="file"]').on('change', function () {
+                var files = this.files;
+                var maxSize = 5 * 1024 * 1024;
+                var allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf'];
+
+                for (var i = 0; i < files.length; i++) {
+                    var file = files[i];
+                    if (file.size > maxSize) {
+                        alert('檔案 "' + file.name + '" 超過5MB限制');
+                        this.value = '';
+                        return;
+                    }
+                    if (!allowedTypes.includes(file.type)) {
+                        alert('檔案 "' + file.name + '" 格式不支援');
+                        this.value = '';
+                        return;
+                    }
+                }
+            });
+
+            $('#Description, #Purpose').on('input', function () {
+                var maxLength = $(this).attr('maxlength');
+                var length = $(this).val().length;
+                $(this).toggleClass('is-invalid', length > maxLength);
+            });
+
+            $('form').on('submit', function (e) {
+                var isValid = true;
+                $('input[required], select[required], textarea[required]').each(function () {
+                    if (!$(this).val().trim()) {
+                        $(this).addClass('is-invalid');
+                        isValid = false;
+                    } else {
+                        $(this).removeClass('is-invalid');
+                    }
+                });
+
+                if (!isValid) {
+                    e.preventDefault();
+                    showAlert('danger', '請填寫所有必填欄位');
+                } else {
+                    $(this).find('button[type="submit"]').prop('disabled', true).text('提交中...');
+                }
+            });
+
+            function showAlert(type, message) {
+                var html = `<div class="alert alert-${type} alert-dismissible fade show mt-3" role="alert">
+                                ${message}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>`;
+                $('.card:first').before(html);
+            }
+        </script>
+    }
+</body>
+</html>

@@ -1,0 +1,494 @@
+﻿@model LabERP.Models.ViewModels.FinanceManagementViewModel
+
+@{
+    ViewData["Title"] = "財務管理";
+}
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+<style>
+    :root {
+        --primary-color: #2563eb;
+        --success-color: #10b981;
+        --warning-color: #f59e0b;
+        --danger-color: #ef4444;
+        --info-color: #06b6d4;
+        --bg-light: #f8fafc;
+        --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        --hover-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    body {
+        /*background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);*/
+        background: white;
+        min-height: 100vh;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .main-container {
+        background: var(--bg-light);
+        border-radius: 20px;
+        margin: 20px;
+        padding: 30px;
+        /*box-shadow: var(--hover-shadow);*/
+        backdrop-filter: blur(10px);
+        background: rgba(255, 255, 255, 0.95);
+    }
+
+    .header-section {
+        /*background: linear-gradient(135deg, var(--primary-color), #3b82f6);*/
+        background: var(--primary-color);
+        color: white;
+        padding: 30px;
+        border-radius: 15px;
+        margin-bottom: 30px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    /*.header-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: -50%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(45deg, rgba(255,255,255,0.1), transparent);
+        transform: skew(-15deg);
+    }*/
+
+    .stats-card {
+        background: white;
+        border-radius: 15px;
+        padding: 20px; /* 從 25px 調小 */
+        /*box-shadow: var(--card-shadow);*/
+        transition: all 0.3s ease;
+        border: none;
+        position: relative;
+        overflow: hidden;
+        height: auto; /* 原本是 100%，改為自動高度 */
+        min-height: 160px; /* 你可以微調這個高度 */
+    }
+
+    .stats-card:hover {
+        /*transform: translateY(-5px);*/
+        /*box-shadow: var(--hover-shadow);*/
+    }
+
+    .stats-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 4px;
+        height: 100%;
+        background: var(--primary-color);
+    }
+
+    .stats-card.income::before { background: var(--success-color); }
+    .stats-card.expense::before { background: var(--danger-color); }
+    .stats-card.balance::before { background: var(--info-color); }
+
+    .stats-icon {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        color: white;
+        margin-bottom: 15px;
+    }
+
+    .income .stats-icon {
+        /*background: linear-gradient(135deg, var(--success-color), #059669);*/ 
+        background: var(--success-color);
+    }
+
+    .expense .stats-icon { 
+       /*background: linear-gradient(135deg, var(--danger-color), #dc2626);*/
+        background: var(--danger-color);
+    }
+
+    .balance .stats-icon { 
+        /*background: linear-gradient(135deg, var(--info-color), #0891b2); */
+        background: var(--info-color);
+    }
+
+    .stats-value {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #1f2937;
+        margin: 0;
+    }
+
+    .stats-label {
+        color: #6b7280;
+        font-size: 1rem;
+        font-weight: 500;
+        margin: 0;
+    }
+
+    .action-btn {
+        padding: 12px 24px;
+        border-radius: 12px;
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.3s ease;
+        border: none;
+        cursor: pointer;
+        margin-right: 10px;
+        margin-bottom: 10px;
+    }
+
+    .action-btn:hover {
+        /*transform: translateY(-2px);*/
+        text-decoration: none;
+    }
+
+    .btn-add-income {
+        background: linear-gradient(135deg, var(--success-color), #059669);
+        background: var(--success-color);
+        color: white;
+    }
+
+    .btn-add-income:hover { color: white; }
+
+    .btn-salary {
+        background: linear-gradient(135deg, var(--warning-color), #d97706);
+        background: var(--warning-color);
+        color: white;
+    }
+
+    .btn-salary:hover { color: white; }
+
+    .btn-bank {
+        background: linear-gradient(135deg, var(--info-color), #0891b2);
+        background: var(--info-color);
+        color: white;
+    }
+
+    .btn-bank:hover { color: white; }
+
+    .records-section {
+        background: white;
+        border-radius: 15px;
+        padding: 25px;
+        /*box-shadow: var(--card-shadow);*/
+        margin-top: 30px;
+    }
+
+    .section-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #1f2937;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .table-modern {
+        border: none;
+        border-radius: 10px;
+        overflow: hidden;
+        /*box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);*/
+    }
+
+    .table-modern thead {
+        background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+    }
+
+    .table-modern th {
+        border: none;
+        padding: 15px;
+        font-weight: 600;
+        color: #374151;
+    }
+
+    .table-modern td {
+        border: none;
+        padding: 15px;
+        vertical-align: middle;
+    }
+
+    .table-modern tbody tr {
+        transition: all 0.2s ease;
+    }
+
+    .table-modern tbody tr:hover {
+        background: #f8fafc;
+        transform: scale(1.01);
+    }
+
+    .badge-modern {
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 0.875rem;
+        font-weight: 500;
+    }
+
+    .badge-income {
+        background: linear-gradient(135deg, var(--success-color), #059669);
+        background: var(--success-color);
+        color: white;
+    }
+
+    .badge-expense {
+        background: linear-gradient(135deg, var(--danger-color), #dc2626);
+        background: var(--danger-color);
+        color: white;
+    }
+
+    .amount-positive {
+        color: var(--success-color);
+        font-weight: 600;
+    }
+
+    .amount-negative {
+        color: var(--danger-color);
+        font-weight: 600;
+    }
+
+    .no-records {
+        text-align: center;
+        padding: 40px;
+        color: #6b7280;
+    }
+
+    .no-records i {
+        font-size: 3rem;
+        margin-bottom: 20px;
+        opacity: 0.5;
+    }
+
+    .back-btn {
+        /*background: linear-gradient(135deg, #6b7280, #4b5563);*/
+        background: #6b7280;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 10px;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 20px;
+        transition: all 0.3s ease;
+    }
+
+    .back-btn:hover {
+        transform: translateY(-2px);
+        color: white;
+        text-decoration: none;
+    }
+
+    .error-container {
+        background: white;
+        border-radius: 15px;
+        padding: 30px;
+        /*box-shadow: var(--card-shadow);*/
+        text-align: center;
+        margin: 20px;
+    }
+
+    .error-icon {
+        font-size: 4rem;
+        color: var(--danger-color);
+        margin-bottom: 20px;
+    }
+
+ 
+    .animate-fade-in {
+        animation: fadeIn 0.6s ease-out;
+    }
+
+  
+</style>
+
+@if (Model == null)
+{
+    <div class="error-container animate-fade-in">
+        <i class="fas fa-exclamation-triangle error-icon"></i>
+        <h4>載入錯誤</h4>
+        <p>無法載入財務管理資料，請稍後再試。</p>
+        <a href="@Url.Action("Dashboard", "User")" class="back-btn">
+            <i class="fas fa-arrow-left"></i>
+            返回儀表板
+        </a>
+    </div>
+}
+else
+{
+    <div class="main-container animate-fade-in">
+        <!-- Header Section -->
+        <div class="header-section">
+            <h1 class="mb-0">
+                <i class="fas fa-chart-line me-3"></i>
+                @Model.LaboratoryName Lab- 財務管理
+            </h1>
+            <p class="mb-0 mt-2 opacity-75">完整的財務管理解決方案</p>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="row g-4 mb-4">
+            <div class="col-lg-4 col-md-6">
+                <div class="stats-card income">
+                    <div class="stats-icon">
+                        <i class="fas fa-arrow-up"></i>
+                    </div>
+                    <h3 class="stats-value" data-value="@Model.TotalIncome">$@Model.TotalIncome.ToString("N0")</h3>
+                    <p class="stats-label">總收入</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="stats-card expense">
+                    <div class="stats-icon">
+                        <i class="fas fa-arrow-down"></i>
+                    </div>
+                    <h3 class="stats-value" data-value="@Model.TotalExpense">$@Model.TotalExpense.ToString("N0")</h3>
+                    <p class="stats-label">總支出</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-12">
+                <div class="stats-card balance">
+                    <div class="stats-icon">
+                        <i class="fas fa-balance-scale"></i>
+                    </div>
+                    <h3 class="stats-value" data-value="@Model.Balance">$@Model.Balance.ToString("N0")</h3>
+                    <p class="stats-label">餘額</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 快速操作 -->
+        @if (User.IsInRole("Professor") && User.FindFirst("UserID").Value == Model.Creator.UserID)
+        {
+            <div class="row mb-4">
+                <div class="col-12">
+                  <div class="d-flex flex-wrap">
+                    <a asp-controller="Finance" asp-action="AddIncome" asp-route-LabID="@Model.LaboratoryId" class="action-btn btn-add-income">
+                        <i class="fas fa-plus"></i>
+                        新增收入
+                    </a>
+                    <a asp-controller="Finance" asp-action="SalaryManagement" asp-route-LabID="@Model.LaboratoryId" class="action-btn btn-salary">
+                        <i class="fas fa-users"></i>
+                        薪資管理
+                    </a>
+                    <a asp-controller="Finance" asp-action="BankAccountSettings" asp-route-LabID="@Model.LaboratoryId" class="action-btn btn-bank">
+                        <i class="fas fa-university"></i>
+                        銀行帳戶設定
+                    </a>
+                </div>
+            </div>
+        </div>
+        }
+
+        <!-- Recent Records Section -->
+        <div class="records-section">
+            <h3 class="section-title">
+                <i class="fas fa-history"></i>
+                最近交易記錄
+            </h3>
+            
+            @if (Model.RecentRecords?.Any() == true)
+            {
+                <div class="table-responsive">
+                    <table class="table table-modern">
+                        <thead>
+                            <tr>
+                                <th>日期</th>
+                                <th>類型</th>
+                                <th>金額</th>
+                                <th>描述</th>
+                                <th>分類</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var record in Model.RecentRecords)
+                            {
+                                <tr>
+                                    <td>@record.RecordDate.ToString("yyyy-MM-dd")</td>
+                                    <td>
+                                        <span class="badge-modern @(record.Type == "Income" ? "badge-income" : "badge-expense")">
+                                            @(record.Type == "Income" ? "收入" : "支出")
+                                        </span>
+                                    </td>
+                                    <td class="@(record.Type == "Income" ? "amount-positive" : "amount-negative")">
+                                        $@record.Amount.ToString("N0")
+                                    </td>
+                                    <td>@record.Description</td>
+                                    <td>@record.Category</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="no-records">
+                    <i class="fas fa-inbox"></i>
+                    <h4>尚無交易記錄</h4>
+                    <p>開始新增收入或支出來建立您的財務記錄</p>
+                </div>
+            }
+        </div>
+
+        <!-- Back Button -->
+        <a asp-controller="Laboratory" asp-action="Details" asp-route-id="@Model.LaboratoryId" class="back-btn">
+            <i class="fas fa-arrow-left"></i>
+            返回實驗室
+        </a>
+    </div>
+}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // 數字動畫效果
+        const valueElements = document.querySelectorAll('.stats-value[data-value]');
+        
+        valueElements.forEach(element => {
+            const finalValue = parseInt(element.getAttribute('data-value').replace(/,/g, ''));
+            animateValue(element, 0, finalValue, 1500);
+        });
+        
+        // 表格行懸停效果
+        const tableRows = document.querySelectorAll('.table-modern tbody tr');
+        tableRows.forEach(row => {
+            row.addEventListener('mouseenter', function() {
+                this.style.transform = 'scale(1.02)';
+            });
+            
+            row.addEventListener('mouseleave', function() {
+                this.style.transform = 'scale(1)';
+            });
+        });
+    });
+
+    function animateValue(element, start, end, duration) {
+        const startTime = Date.now();
+        
+        function update() {
+            const now = Date.now();
+            const progress = Math.min((now - startTime) / duration, 1);
+            const current = Math.floor(start + (end - start) * progress);
+            
+            element.textContent = '$' + current.toLocaleString();
+            
+            if (progress < 1) {
+                requestAnimationFrame(update);
+            }
+        }
+        
+        requestAnimationFrame(update);
+    }
+
+    // 錯誤處理
+    window.addEventListener('error', function(e) {
+        console.error('頁面載入錯誤:', e.error);
+    });
+</script>

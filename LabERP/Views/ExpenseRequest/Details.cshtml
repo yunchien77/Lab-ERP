@@ -1,0 +1,304 @@
+﻿@model LabERP.Models.ViewModels.ExpenseRequestDetailViewModel
+
+@{
+    ViewData["Title"] = "報帳詳情";
+}
+
+<link rel="stylesheet" href="~/css/site.css" />
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="utf-8" />
+    <title>財務管理 - @Model.LaboratoryName</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+</head>
+
+<style>
+    body{
+        margin: 0.9rem;
+    }
+</style>
+
+<body>
+
+<div class="row">
+    <div class="col-md-12">
+        <h2>
+            <i class="fas fa-file-invoice-dollar"></i> 報帳詳情 - @Model.LaboratoryName
+        </h2>
+        <hr />
+    </div>
+</div>
+
+<!-- 操作按鈕區 -->
+<div class="row mb-3">
+    <div class="col-md-12">
+        <a asp-action="Index" asp-route-LabID="@Model.ExpenseRequest.LaboratoryId" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> 返回列表
+        </a>
+        @if (Model.CanReview)
+        {
+            <a asp-action="Review" asp-route-id="@Model.ExpenseRequest.Id" class="btn btn-primary">
+                <i class="fas fa-gavel"></i> 進行審核
+            </a>
+        }
+        @if (Model.CanDelete)
+        {
+            <form asp-action="Delete" asp-route-id="@Model.ExpenseRequest.Id" method="post" class="d-inline">
+                <input type="hidden" name="LabID" value="@Model.ExpenseRequest.LaboratoryId" />
+                <button type="submit" class="btn btn-danger" onclick="return confirm('確定要刪除此報帳申請嗎？');">
+                    <i class="fas fa-trash"></i> 刪除申請
+                </button>
+            </form>
+        }
+    </div>
+</div>
+
+<!-- 預算提醒區 -->
+@if (Model.ExpenseRequest.Status == LabERP.Models.Core.ExpenseRequestStatus.Pending && Model.ExpenseRequest.Amount > Model.AvailableBudget)
+{
+    <div class="alert alert-warning" role="alert">
+        <i class="fas fa-exclamation-triangle"></i>
+        <strong>預算不足提醒：</strong>申請金額 NT$@Model.ExpenseRequest.Amount.ToString("N0") 超過可用預算 NT$@Model.AvailableBudget.ToString("N0")
+    </div>
+}
+
+<!-- 報帳詳情卡片 -->
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <i class="fas fa-info-circle"></i> 報帳申請詳情
+            </div>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <strong><i class="fas fa-user"></i> 申請人：</strong>
+                        <span class="ms-2">@Model.ExpenseRequest.RequesterName</span>
+                    </div>
+                    <div class="col-md-6">
+                        <strong><i class="fas fa-calendar"></i> 申請日期：</strong>
+                        <span class="ms-2">@Model.ExpenseRequest.RequestDate.ToString("yyyy-MM-dd HH:mm")</span>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <strong><i class="fas fa-dollar-sign"></i> 申請金額：</strong>
+                        <span class="ms-2 text-primary fs-5">NT$@Model.ExpenseRequest.Amount.ToString("N0")</span>
+                    </div>
+                    <div class="col-md-6">
+                        <strong><i class="fas fa-receipt"></i> 發票號碼：</strong>
+                        <span class="ms-2">@Model.ExpenseRequest.InvoiceNumber</span>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <strong><i class="fas fa-tag"></i> 報帳類別：</strong>
+                        <span class="badge bg-info ms-2">@Model.ExpenseRequest.Category</span>
+                    </div>
+                    <div class="col-md-6">
+                        <strong><i class="fas fa-flag"></i> 審核狀態：</strong>
+                        <span class="badge @(Model.ExpenseRequest.Status == LabERP.Models.Core.ExpenseRequestStatus.Pending ? "bg-warning" :
+                                        Model.ExpenseRequest.Status == LabERP.Models.Core.ExpenseRequestStatus.Approved ? "bg-success" : "bg-danger") ms-2">
+                            @(Model.ExpenseRequest.Status == LabERP.Models.Core.ExpenseRequestStatus.Pending ? "未審核" :
+                                Model.ExpenseRequest.Status == LabERP.Models.Core.ExpenseRequestStatus.Approved ? "已通過" : "不通過")
+                        </span>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <strong><i class="fas fa-align-left"></i> 費用描述：</strong>
+                        <div class="mt-2 p-3 bg-light rounded">
+                            @Model.ExpenseRequest.Description
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <strong><i class="fas fa-bullseye"></i> 用途說明：</strong>
+                        <div class="mt-2 p-3 bg-light rounded">
+                            @Model.ExpenseRequest.Purpose
+                        </div>
+                    </div>
+                </div>
+
+                @if (Model.ExpenseRequest.Status != LabERP.Models.Core.ExpenseRequestStatus.Pending)
+                {
+                    <hr />
+                    <h5 class="text-muted"><i class="fas fa-gavel"></i> 審核資訊</h5>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <strong><i class="fas fa-calendar-check"></i> 審核日期：</strong>
+                            <span class="ms-2">@Model.ExpenseRequest.ReviewDate?.ToString("yyyy-MM-dd HH:mm")</span>
+                        </div>
+                        <div class="col-md-6">
+                            <strong><i class="fas fa-user-tie"></i> 審核者：</strong>
+                            <span class="ms-2">@Model.ExpenseRequest.ReviewedBy</span>
+                        </div>
+                    </div>
+
+                    @if (!string.IsNullOrEmpty(Model.ExpenseRequest.ReviewNotes))
+                    {
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                <strong><i class="fas fa-comment"></i> 審核備註：</strong>
+                                <div class="mt-2 p-3 bg-light rounded">
+                                    @Model.ExpenseRequest.ReviewNotes
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+
+    <!-- 附件和預算資訊側邊欄 -->
+    <div class="col-md-4">
+        <!-- 可用預算資訊 -->
+        <div class="card mb-3">
+            <div class="card-header bg-info text-white">
+                <i class="fas fa-wallet"></i> 預算資訊
+            </div>
+            <div class="card-body text-center">
+                <h4 class="text-info">NT$@Model.AvailableBudget.ToString("N0")</h4>
+                <small class="text-muted">目前可用預算</small>
+            </div>
+        </div>
+
+        <!-- 附件區域 -->
+        <div class="card">
+            <div class="card-header">
+                <i class="fas fa-paperclip"></i>
+                附件 (@(Model.ExpenseRequest.Attachments?.Count ?? 0))
+            </div>
+            <div class="card-body">
+                @if (Model.ExpenseRequest.Attachments != null && Model.ExpenseRequest.Attachments.Any())
+                {
+                    @foreach (var attachment in Model.ExpenseRequest.Attachments)
+                    {
+                        <div class="attachment-item mb-3 p-3 border rounded">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div class="flex-grow-1">
+                                    <h6 class="mb-1">
+                                        @if (attachment.FileType.StartsWith("image/"))
+                                        {
+                                            <i class="fas fa-image text-primary"></i>
+                                        }
+                                        else if (attachment.FileType == "application/pdf")
+                                        {
+                                            <i class="fas fa-file-pdf text-danger"></i>
+                                        }
+                                        else
+                                        {
+                                            <i class="fas fa-file text-muted"></i>
+                                        }
+                                        @attachment.FileName
+                                    </h6>
+                                    <small class="text-muted">
+                                        大小: @(attachment.FileSize / 1024)KB |
+                                        上傳時間: @attachment.UploadedAt.ToString("yyyy-MM-dd HH:mm")
+                                    </small>
+                                </div>
+                            </div>
+
+                            @if (attachment.FileType.StartsWith("image/"))
+                            {
+                                <div class="mt-2">
+                                    <img src="@attachment.FilePath" class="img-fluid rounded cursor-pointer"
+                                         style="max-height: 200px; width: auto;"
+                                         onclick="showImageModal('@attachment.FilePath', '@attachment.FileName')"
+                                         alt="@attachment.FileName" />
+                                </div>
+                            }
+
+                            <div class="mt-2">
+                                <a href="@attachment.FilePath" target="_blank" class="btn btn-sm btn-outline-primary">
+                                    <i class="fas fa-eye"></i> 查看
+                                </a>
+                                <a href="@attachment.FilePath" download="@attachment.FileName" class="btn btn-sm btn-outline-secondary">
+                                    <i class="fas fa-download"></i> 下載
+                                </a>
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="text-center text-muted py-3">
+                        <i class="fas fa-file fa-2x mb-2"></i>
+                        <p>沒有附件</p>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 圖片查看模態框 -->
+<div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="imageModalLabel">附件預覽</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <img id="modalImage" src="" class="img-fluid" alt="附件預覽" />
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // 顯示提示訊息
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <text>
+                    $(document).ready(function() {
+                        showAlert('success', '@TempData["SuccessMessage"]');
+                    });
+            </text>
+        }
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <text>
+                    $(document).ready(function() {
+                        showAlert('danger', '@TempData["ErrorMessage"]');
+                    });
+            </text>
+        }
+
+        function showAlert(type, message) {
+            var alertHtml = '<div class="alert alert-' + type + ' alert-dismissible fade show" role="alert">' +
+                           message +
+                           '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+                           '</div>';
+            $('.card:first').before(alertHtml);
+        }
+
+        function showImageModal(imagePath, fileName) {
+            document.getElementById('modalImage').src = imagePath;
+            document.getElementById('imageModalLabel').textContent = fileName;
+            var imageModal = new bootstrap.Modal(document.getElementById('imageModal'));
+            imageModal.show();
+        }
+
+        // 添加點擊圖片的CSS樣式
+        document.addEventListener('DOMContentLoaded', function() {
+            var style = document.createElement('style');
+            style.textContent = '.cursor-pointer { cursor: pointer; transition: transform 0.2s; } .cursor-pointer:hover { transform: scale(1.05); }';
+            document.head.appendChild(style);
+        });
+    </script>
+}
+</body>
+</html>

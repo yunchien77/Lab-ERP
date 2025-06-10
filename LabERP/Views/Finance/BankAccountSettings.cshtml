@@ -1,0 +1,323 @@
+﻿@model LabERP.Models.ViewModels.BankAccountViewModel
+
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>銀行帳戶設定</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+    <style>
+        .body{
+            margin: 0.9rem;
+        }
+
+        /* 可自行加上你原本CSS或簡單調整 */
+        .with-icon {
+            padding-left: 2.5rem;
+        }
+
+        .form-label i {
+            margin-right: 0.3rem;
+        }
+
+        .invalid-feedback {
+            display: block;
+        }
+
+        .suggestions-list {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 1000;
+        }
+
+            .suggestions-list div {
+                padding: 0.5rem 1rem;
+                cursor: pointer;
+                border-bottom: 1px solid #ddd;
+            }
+
+                .suggestions-list div:hover {
+                    background-color: #f8f9fa;
+                }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="container">
+            <!-- 麵包屑導航 -->
+            <nav aria-label="breadcrumb" class="mt-3">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a asp-controller="Laboratory" asp-action="Details" asp-route-id="@Model.LaboratoryId">實驗室</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="@Url.Action("Index", "Finance", new { LabID = Model.LaboratoryId })" >
+                            財務管理
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">
+                        <i class="fas fa-university"></i> 銀行帳戶設定
+                    </li>
+                </ol>
+            </nav>
+
+            <div class="row justify-content-center my-4">
+                <div class="col-lg-8 col-md-10">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-university"></i> 銀行帳戶設定</h3>
+                        </div>
+                        <div class="card-body">
+
+                            <!-- 成功訊息 -->
+                            @if (TempData["SuccessMessage"] != null)
+                            {
+                                <div class="alert alert-success">
+                                    <i class="fas fa-check-circle me-2"></i>
+                                    @TempData["SuccessMessage"]
+                                </div>
+                            }
+
+                            <!-- 錯誤訊息 -->
+                            @if (TempData["ErrorMessage"] != null)
+                            {
+                                <div class="alert alert-danger">
+                                    <i class="fas fa-exclamation-circle me-2"></i>
+                                    @TempData["ErrorMessage"]
+                                </div>
+                            }
+
+                            <!-- 表單驗證摘要 -->
+                            @if (!ViewData.ModelState.IsValid)
+                            {
+                                <div class="alert alert-danger">
+                                    <i class="fas fa-exclamation-triangle me-2"></i>
+                                    <strong>請修正以下錯誤：</strong>
+                                    <ul class="mb-0 mt-2">
+                                        @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                                        {
+                                            <li>@error.ErrorMessage</li>
+                                        }
+                                    </ul>
+                                </div>
+                            }
+
+                            <form asp-action="BankAccountSettings" asp-controller="Finance" method="post" class="needs-validation" novalidate id="bankAccountForm">
+                                @Html.AntiForgeryToken()
+                                <!-- 隱藏欄位 -->
+                                <input type="hidden" name="LaboratoryId" value="@Model.LaboratoryId" />
+
+                                <div class="form-section mb-4">
+                                    <h5 class="section-title">
+                                        <i class="fas fa-building"></i> 銀行基本資訊
+                                    </h5>
+                                    <div class="row g-3">
+                                        <div class="col-md-6 position-relative">
+                                            <label for="BankName" class="form-label">
+                                                <i class="fas fa-university"></i> 銀行名稱 <span class="text-danger">*</span>
+                                            </label>
+                                            <div class="input-group">
+                                                <span class="input-group-text"><i class="fas fa-university"></i></span>
+                                                <input type="text"
+                                                       class="form-control with-icon @(ViewData.ModelState["BankName"]?.Errors.Count > 0 ? "is-invalid" : "")"
+                                                       id="BankName"
+                                                       name="BankName"
+                                                       placeholder="請輸入銀行名稱"
+                                                       value="@Model.BankName"
+                                                       required />
+                                                <div class="invalid-feedback">
+                                                    @if (ViewData.ModelState["BankName"]?.Errors.Count > 0)
+                                                    {
+                                                        @ViewData.ModelState["BankName"].Errors[0].ErrorMessage
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 position-relative">
+                                            <label for="BranchCode" class="form-label">
+                                                <i class="fas fa-code-branch"></i> 分行代碼
+                                            </label>
+                                            <div class="input-group">
+                                                <span class="input-group-text"><i class="fas fa-code-branch"></i></span>
+                                                <input type="text"
+                                                       class="form-control with-icon @(ViewData.ModelState["BranchCode"]?.Errors.Count > 0 ? "is-invalid" : "")"
+                                                       id="BranchCode"
+                                                       name="BranchCode"
+                                                       placeholder="請輸入分行代碼"
+                                                       value="@Model.BranchCode" />
+                                                <div class="invalid-feedback">
+                                                    @if (ViewData.ModelState["BranchCode"]?.Errors.Count > 0)
+                                                    {
+                                                        @ViewData.ModelState["BranchCode"].Errors[0].ErrorMessage
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-section mb-4">
+                                    <h5 class="section-title">
+                                        <i class="fas fa-credit-card"></i> 帳戶資訊
+                                    </h5>
+                                    <div class="row g-3">
+                                        <div class="col-md-6 position-relative">
+                                            <label for="AccountNumber" class="form-label">
+                                                <i class="fas fa-hashtag"></i> 帳戶號碼 <span class="text-danger">*</span>
+                                            </label>
+                                            <div class="input-group">
+                                                <span class="input-group-text"><i class="fas fa-hashtag"></i></span>
+                                                <input type="text"
+                                                       class="form-control with-icon @(ViewData.ModelState["AccountNumber"]?.Errors.Count > 0 ? "is-invalid" : "")"
+                                                       id="AccountNumber"
+                                                       name="AccountNumber"
+                                                       placeholder="請輸入帳戶號碼"
+                                                       pattern="[0-9\-]+"
+                                                       title="請輸入有效的帳戶號碼"
+                                                       value="@Model.AccountNumber"
+                                                       required />
+                                                <div class="invalid-feedback">
+                                                    @if (ViewData.ModelState["AccountNumber"]?.Errors.Count > 0)
+                                                    {
+                                                        @ViewData.ModelState["AccountNumber"].Errors[0].ErrorMessage
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 position-relative">
+                                            <label for="AccountHolder" class="form-label">
+                                                <i class="fas fa-user"></i> 戶名 <span class="text-danger">*</span>
+                                            </label>
+                                            <div class="input-group">
+                                                <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                                <input type="text"
+                                                       class="form-control with-icon @(ViewData.ModelState["AccountHolder"]?.Errors.Count > 0 ? "is-invalid" : "")"
+                                                       id="AccountHolder"
+                                                       name="AccountHolder"
+                                                       placeholder="請輸入戶名"
+                                                       value="@Model.AccountHolder"
+                                                       required />
+                                                <div class="invalid-feedback">
+                                                    @if (ViewData.ModelState["AccountHolder"]?.Errors.Count > 0)
+                                                    {
+                                                        @ViewData.ModelState["AccountHolder"].Errors[0].ErrorMessage
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <a href="@Url.Action("Index", "Finance", new { LabID = Model.LaboratoryId })" class="btn btn-secondary">
+                                        <i class="fas fa-arrow-left me-2"></i> 返回財務管理
+                                    </a>
+
+                                    <div class="d-flex gap-2">
+                                        <button type="button" class="btn btn-secondary" onclick="resetForm()">
+                                            <i class="fas fa-undo me-2"></i> 重設
+                                        </button>
+                                        <button type="submit" class="btn btn-primary" id="submitBtn">
+                                            <i class="fas fa-save me-2"></i> 儲存設定
+                                            <div class="spinner-border spinner-border-sm loading-spinner" role="status" style="display:none;">
+                                                <span class="visually-hidden">Loading...</span>
+                                            </div>
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        (function () {
+            'use strict';
+            window.addEventListener('load', function () {
+                var forms = document.getElementsByClassName('needs-validation');
+                Array.prototype.filter.call(forms, function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (!form.checkValidity()) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        } else {
+                            showLoading();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
+
+        function showLoading() {
+            const submitBtn = document.getElementById('submitBtn');
+            const spinner = submitBtn.querySelector('.loading-spinner');
+
+            submitBtn.disabled = true;
+            spinner.style.display = 'inline-block';
+
+            // 保留 icon ，改文字：
+            submitBtn.childNodes.forEach(node => {
+                if (node.nodeType === 3) { // text node
+                    node.textContent = '儲存中...';
+                }
+            });
+        }
+
+        function resetForm() {
+            if (confirm('確定要重設所有欄位嗎？')) {
+                const form = document.getElementById('bankAccountForm');
+                form.reset();
+                form.classList.remove('was-validated');
+                // 移除輸入框驗證狀態
+                const controls = form.querySelectorAll('.form-control');
+                controls.forEach(c => {
+                    c.classList.remove('is-invalid', 'is-valid');
+                });
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const formControls = document.querySelectorAll('.form-control');
+
+            formControls.forEach(function (control) {
+                control.addEventListener('blur', function () {
+                    validateField(this);
+                });
+                control.addEventListener('input', function () {
+                    if (this.classList.contains('is-invalid')) {
+                        validateField(this);
+                    }
+                });
+            });
+        });
+
+        function validateField(field) {
+            if (field.checkValidity()) {
+                field.classList.remove('is-invalid');
+                field.classList.add('is-valid');
+            } else {
+                field.classList.remove('is-valid');
+                field.classList.add('is-invalid');
+            }
+        }
+
+        // 這裡可以擴充其他 JS 行為，比如建議清單、動畫等
+    </script>
+</body>
+</html>

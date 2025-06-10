@@ -3,17 +3,26 @@
 }
 
 <link rel="stylesheet" href="~/css/site.css" />
-
-<div class="text-center">
-    <h1 class="display-4">實驗室管理系統</h1>
-    <p>歡迎使用實驗室管理系統，請登入繼續。</p>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+</head>
+<div class="d-flex flex-column justify-content-center align-items-center vh-100 text-center bg-light">
+    <h1 class="display-3 mb-3">實驗室管理系統</h1>
+    <p class="lead mb-4">歡迎使用實驗室管理系統，請登入繼續。</p>
 
     @if (!User.Identity.IsAuthenticated)
     {
-        <a asp-controller="Account" asp-action="Login" class="btn btn-primary">登入</a>
+        <a asp-controller="Account" asp-action="Login" class="btn btn-primary btn-lg px-4 shadow">
+            <i class="fas fa-sign-in-alt me-2"></i> 登入
+        </a>
     }
     else
     {
-        <a asp-controller="User" asp-action="Dashboard" class="btn btn-primary">前往儀表板</a>
+        <a asp-controller="User" asp-action="Dashboard" class="btn btn-success btn-lg px-4 shadow">
+            <i class="fas fa-tachometer-alt me-2"></i> 前往儀表板
+        </a>
     }
 </div>

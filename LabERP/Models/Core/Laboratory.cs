@@ -24,14 +24,11 @@ namespace LabERP.Models.Core
 
         public List<User> Members { get; set; }
 
-        //public List<Equipment> Equipments { get; set; }
-
         // 建構子
         public Laboratory()
         {
             LabID = Guid.NewGuid().ToString();
             Members = new List<User>();
-            //Equipments = new List<Equipment>();
         }
 
         // 添加成員
@@ -57,28 +54,5 @@ namespace LabERP.Models.Core
 
             return Members.Remove(member);
         }
-
-        // 更新成員資訊
-        /*public bool UpdateMember(string memberID, object memberInfo)
-        {
-            var member = Members.Find(m => m.UserID == memberID);
-            if (member == null)
-                return false;
-
-            // 在實際應用中，這裡會更新成員資訊
-            return true;
-        }*/
-
-        // 查找成員
-        /*public User FindMember(string memberID)
-        {
-            return Members.Find(m => m.UserID == memberID);
-        }*/
-
-        // 獲取所有成員
-        /*public List<User> GetAllMembers()
-        {
-            return Members;
-        }*/
     }
 }

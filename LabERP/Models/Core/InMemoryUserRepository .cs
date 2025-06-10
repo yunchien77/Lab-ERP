@@ -4,23 +4,59 @@ namespace LabERP.Models.Core
 {
     public class InMemoryUserRepository : IUserRepository
     {
-        private static List<User> _users = new List<User>
-    {
-        new Professor
+        private static List<User> _users = new List<User>();
+        private static bool _initialized = false;
+
+        public InMemoryUserRepository()
         {
-            UserID = "1",
-            Username = "prof1",
-            Password = "password",
-            Email = "prof1@example.com"
-        },
-        new Professor
-        {
-            UserID = "2",
-            Username = "prof2",
-            Password = "password",
-            Email = "prof2@example.com"
+            if (!_initialized)
+            {
+                InitializeData();
+                _initialized = true;
+            }
         }
-    };
+
+        private void InitializeData()
+        {
+            // 創建教授
+            var prof1 = new Professor
+            {
+                UserID = "1",
+                Username = "prof1",
+                Password = "111",
+                Email = "prof1@example.com"
+            };
+
+            var prof2 = new Professor
+            {
+                UserID = "2",
+                Username = "prof2",
+                Password = "password",
+                Email = "prof2@example.com"
+            };
+
+            // 為 prof1 創建初始實驗室
+            var initialLab = new Laboratory
+            {
+                Name = "人工智慧實驗室",
+                Description = "專注於機器學習與深度學習研究",
+                Website = "https://ai-lab.example.com",
+                ContactInfo = "ai-lab@example.com",
+                Creator = prof1
+            };
+
+            // 將實驗室加入教授的實驗室列表
+            prof1.Laboratories.Add(initialLab);
+
+            // 將教授加入用戶列表
+            _users.Add(prof1);
+            _users.Add(prof2);
+
+            // 同時將實驗室加入到實驗室儲存庫
+            var labRepo = new InMemoryLaboratoryRepository();
+            labRepo.Add(initialLab);
+        }
+
         public User FindUser(string username, string password)
         {
             return _users.Find(u => u.Username == username && u.Password == password);

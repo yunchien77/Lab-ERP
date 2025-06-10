@@ -5,99 +5,150 @@
 }
 
 <link rel="stylesheet" href="~/css/site.css" />
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="utf-8" />
+    <title>儀錶板- @Model.Username</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="container py-4">
 
-<h2>歡迎，@Model.Username!</h2>
-<partial name="_LoginPartial" />
+        <h2 class="mb-4 text-primary fw-bold">
+            <i class="fas fa-tachometer-alt me-2"></i>歡迎，@Model.Username!
+        </h2>
 
-<div class="row">
-    <div class="col-md-4">
-        <div class="card">
-            <div class="card-header">
-                用戶資訊
+        <partial name="_LoginPartial" />
+
+        <div class="row g-4">
+            <!-- 用戶資訊卡片 -->
+            <div class="col-md-4">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-info text-white fw-semibold">
+                        <i class="fas fa-user-circle me-2"></i>用戶資訊
+                    </div>
+                    <div class="card-body">
+                        <p><strong>用戶名稱:</strong> @Model.Username</p>
+                        <p><strong>電子郵件:</strong> @Model.Email</p>
+                        <p><strong>角色:</strong> @Model.Role</p>
+
+                        @if (Model is LabERP.Models.Core.Student student)
+                        {
+                            <p><strong>學號:</strong> @(string.IsNullOrEmpty(student.StudentID) ? "尚未設定" : student.StudentID)</p>
+                            <p><strong>手機號碼:</strong> @(string.IsNullOrEmpty(student.PhoneNumber) ? "尚未設定" : student.PhoneNumber)</p>
+                            <a asp-controller="User" asp-action="EditProfile" class="btn btn-outline-info w-100 mb-2">
+                                <i class="fas fa-edit me-1"></i>編輯個人資料
+                            </a>
+                        }
+
+                        <a asp-controller="User" asp-action="ChangePassword" class="btn btn-primary w-100">
+                            <i class="fas fa-key me-1"></i>修改密碼
+                        </a>
+                    </div>
+                </div>
             </div>
-            <div class="card-body">
-                <p><strong>用戶名稱:</strong> @Model.Username</p>
-                <p><strong>電子郵件:</strong> @Model.Email</p>
-                <p><strong>角色:</strong> @Model.Role</p>
 
-                @if (Model is LabERP.Models.Core.Student student)
+            <!-- 功能區塊 -->
+            <div class="col-md-8">
+                @if (User.IsInRole("Professor"))
                 {
-                    <p><strong>學號:</strong> @(string.IsNullOrEmpty(student.StudentID) ? "尚未設定" : student.StudentID)</p>
-                    <p><strong>手機號碼:</strong> @(string.IsNullOrEmpty(student.PhoneNumber) ? "尚未設定" : student.PhoneNumber)</p>
-                    <a asp-controller="User" asp-action="EditProfile" class="btn btn-info">編輯個人資料</a>
+                    <div class="card shadow-sm mb-4">
+                        <div class="card-header bg-success text-white fw-semibold">
+                            <i class="fas fa-chalkboard-teacher me-2"></i>教授功能
+                        </div>
+                        <div class="card-body">
+                            <a asp-controller="Laboratory" asp-action="Create" class="btn btn-success mb-3 w-100">
+                                <i class="fas fa-plus me-1"></i>創建實驗室
+                            </a>
+
+                            @if (Model is LabERP.Models.Core.Professor professor && professor.Laboratories.Any())
+                            {
+                                <h5>我的實驗室</h5>
+                                <ul class="list-group">
+                                    @foreach (var lab in professor.Laboratories)
+                                    {
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <span>@lab.Name</span>
+                                            <div class="btn-group btn-group-sm" role="group" aria-label="實驗室操作">
+                                                <a asp-controller="Laboratory" asp-action="Details" asp-route-id="@lab.LabID" class="btn btn-info" title="查看">
+                                                    <i class="fas fa-eye"></i>@* 查看 *@
+                                                </a>
+                                                <a asp-controller="Laboratory" asp-action="AddMember" asp-route-id="@lab.LabID" class="btn btn-primary" title="添加成員">
+                                                    <i class="fas fa-user-plus"></i>@* 添加成員 *@
+                                                </a>
+                                                <a asp-controller="WorkSession" asp-action="LabAttendance" asp-route-labId="@lab.LabID" class="btn btn-warning" title="打卡管理">
+                                                    <i class="fas fa-clock"></i>@* 打卡管理 *@
+                                                </a>
+                                            </div>
+                                        </li>
+                                    }
+                                </ul>
+                            }
+                            else
+                            {
+                                <p>您尚未擁有任何實驗室。</p>
+                            }
+                        </div>
+                    </div>
                 }
 
-                <a asp-controller="User" asp-action="ChangePassword" class="btn btn-primary mt-2">修改密碼</a>
+                @if (User.IsInRole("Student"))
+                {
+                    <div class="card shadow-sm">
+                        <div class="card-header bg-primary text-white fw-semibold">
+                            <i class="fas fa-user-graduate me-2"></i>學生功能
+                        </div>
+                        <div class="card-body">
+                            <a asp-controller="Equipment" asp-action="MyEquipments" class="btn btn-primary mb-3 w-100">
+                                <i class="fas fa-boxes me-1"></i>查看我的借用記錄
+                            </a>
+
+                            @{
+                                var studentLabs = ViewBag.StudentLaboratories as List<LabERP.Models.Core.Laboratory> ?? new List<LabERP.Models.Core.Laboratory>();
+                            }
+
+                            @if (studentLabs.Any())
+                            {
+                                <h5>我所屬的實驗室</h5>
+                                <ul class="list-group">
+                                    @foreach (var lab in studentLabs)
+                                    {
+                                        <li class="list-group-item">
+                                            <div><strong>實驗室名稱:</strong> @lab.Name</div>
+                                            <div><strong>指導教授:</strong> @lab.Creator.Username</div>
+                                            <div class="btn-group btn-group-sm" role="group" aria-label="實驗室操作">
+                                                <a asp-controller="Laboratory" asp-action="Details" asp-route-id="@lab.LabID" class="btn btn-sm btn-info">
+                                                    <i class="fas fa-info-circle"></i>
+                                                    <!---/* 查看詳細資訊 */ --->
+                                                </a>
+                                                <a asp-controller="WorkSession" asp-action="Index" asp-route-labId="@lab.LabID" class="btn btn-sm btn-success">
+                                                    <i class="fas fa-clock"></i> 
+                                                    <!---/* 打卡 */--->
+                                                </a>
+                                                <a asp-controller="WorkSession" asp-action="Records" asp-route-labId="@lab.LabID" class="btn btn-sm btn-outline-primary">
+                                                    <i class="fas fa-history"></i> 
+                                                    <!---/* 打卡記錄 */--->
+                                                </a>
+                                            </div>
+                                        </li>
+                                    }
+                                </ul>
+                            }
+                            else
+                            {
+                                <div class="alert alert-info">您目前不屬於任何實驗室。</div>
+                            }
+                        </div>
+                    </div>
+                }
             </div>
         </div>
+
     </div>
 
-    <div class="col-md-8">
-        @if (User.IsInRole("Professor"))
-        {
-            <div class="card">
-                <div class="card-header">
-                    教授功能
-                </div>
-                <div class="card-body">
-                    <a asp-controller="Laboratory" asp-action="Create" class="btn btn-success">創建實驗室</a>
-
-                    @if (Model is LabERP.Models.Core.Professor professor)
-                    {
-                        <h4 class="mt-3">我的實驗室</h4>
-                        <ul class="list-group">
-                            @foreach (var lab in professor.Laboratories)
-                            {
-                                <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    @lab.Name
-                                    <div>
-                                        <a asp-controller="Laboratory" asp-action="Details" asp-route-id="@lab.LabID" class="btn btn-sm btn-info">查看</a>
-                                        <a asp-controller="Laboratory" asp-action="AddMember" asp-route-id="@lab.LabID" class="btn btn-sm btn-primary">添加成員</a>
-                                    </div>
-                                </li>
-                            }
-                        </ul>
-                    }
-                </div>
-            </div>
-        }
-        @if (User.IsInRole("Student"))
-        {
-            <div class="card">
-                <div class="card-header">
-                    學生資訊
-                </div>
-                <div class="card-body">
-                    <!-- 添加直接連結到借用記錄頁面 -->
-                    <a asp-controller="Equipment" asp-action="MyEquipments" class="btn btn-primary mb-3">查看我的借用記錄</a>
-
-                    @{
-                        var studentLabs = ViewBag.StudentLaboratories as List<LabERP.Models.Core.Laboratory>
-                        ?? new List<LabERP.Models.Core.Laboratory>();
-                    }
-
-                    @if (studentLabs.Any())
-                    {
-                        <h4>我所屬的實驗室</h4>
-                        <ul class="list-group">
-                            @foreach (var lab in studentLabs)
-                            {
-                                <li class="list-group-item">
-                                    <div><strong>實驗室名稱:</strong> @lab.Name</div>
-                                    <div><strong>指導教授:</strong> @lab.Creator.Username</div>
-                                    <div class="mt-2">
-                                        <a asp-controller="Laboratory" asp-action="Details" asp-route-id="@lab.LabID" class="btn btn-sm btn-info">查看詳細資訊</a>
-                                    </div>
-                                </li>
-                            }
-                        </ul>
-                    }
-                    else
-                    {
-                        <p>您目前不屬於任何實驗室。</p>
-                    }
-                </div>
-            </div>
-        }
-    </div>
-</div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

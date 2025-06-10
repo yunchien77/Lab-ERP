@@ -1,0 +1,451 @@
+﻿@model LabERP.Models.ViewModels.WorkSessionViewModel
+@{
+    ViewData["Title"] = "打卡 - " + Model.LabName;
+}
+
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="utf-8" />
+    <title>打卡系統 - @Model.LabName</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="container py-4">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card shadow-lg border-0 animated-card">
+                    <div class="card-header gradient-primary text-white d-flex justify-content-between align-items-center">
+                        <div>
+                            <h4 class="mb-1"><i class="fas fa-clock me-2"></i>打卡系統</h4>
+                            <small>實驗室：@Model.LabName</small>
+                        </div>
+                        <a asp-controller="User" asp-action="Dashboard" class="btn btn-light btn-sm">
+                            <i class="fas fa-arrow-left"></i> 返回
+                        </a>
+                    </div>
+                    <div class="card-body">
+                        @if (TempData["SuccessMessage"] != null)
+                        {
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                <i class="fas fa-check-circle me-1"></i> @TempData["SuccessMessage"]
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        }
+                        @if (TempData["ErrorMessage"] != null)
+                        {
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <i class="fas fa-exclamation-circle me-1"></i> @TempData["ErrorMessage"]
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        }
+
+                        <!-- 狀態區塊 -->
+                        <div class="text-center mb-4">
+                            <div class="status-circle @(Model.IsWorking ? "working" : "not-working") mx-auto mb-3">
+                                <i class="fas @(Model.IsWorking ? "fa-play" : "fa-pause") fa-2x"></i>
+                            </div>
+                            <h5 class="@Model.StatusClass">@Model.StatusText</h5>
+                            @if (Model.IsWorking && Model.CurrentStartTime.HasValue)
+                            {
+                                <p class="text-muted">開始時間：@Model.CurrentStartTime.Value.ToString("yyyy-MM-dd HH:mm:ss")</p>
+                                <p class="text-info">目前工作時數：<span id="current-hours">@Model.CurrentWorkHours.ToString("F2")</span> 小時</p>
+                            }
+                        </div>
+
+                        <!-- 打卡按鈕 -->
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                @using (Html.BeginForm("StartWork", "WorkSession", new { labId = Model.LabID }, FormMethod.Post))
+                                {
+                                    <button type="submit" class="btn btn-success btn-lg w-100 shadow-sm"
+                                    @(Model.CanStartWork ? "" : "disabled")>
+                                        <i class="fas fa-play me-1"></i> 開始工作
+                                    </button>
+                                }
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                @using (Html.BeginForm("EndWork", "WorkSession", new { labId = Model.LabID }, FormMethod.Post))
+                                {
+                                    <button type="submit" class="btn btn-danger btn-lg w-100 shadow-sm"
+                                    @(Model.CanEndWork ? "" : "disabled")>
+                                        <i class="fas fa-stop me-1"></i> 結束工作
+                                    </button>
+                                }
+                            </div>
+                        </div>
+
+                        <!-- 查看記錄 -->
+                        <div class="mt-3 text-center">
+                            <a href="@Url.Action("Records", new { labId = Model.LabID })" class="btn btn-outline-primary">
+                                <i class="fas fa-history me-1"></i> 查看打卡記錄
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> 
+
+<style>
+    .status-circle {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+    }
+
+        .status-circle.working {
+            background: linear-gradient(45deg, #28a745, #20c997);
+            color: white;
+            animation: pulse 2s infinite;
+        }
+
+        .status-circle.not-working {
+            background: #f8f9fa;
+            border: 3px solid #dee2e6;
+            color: #6c757d;
+        }
+
+    @@keyframes pulse {
+        0% {
+            transform: scale(1);
+        }
+
+        50% {
+            transform: scale(1.05);
+        }
+
+        100% {
+            transform: scale(1);
+        }
+    }
+</style>
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --info-color: #06b6d4;
+            --bg-light: #f8fafc;
+            --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            --hover-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .main-container {
+            background: var(--bg-light);
+            border-radius: 20px;
+            margin: 20px;
+            padding: 30px;
+            box-shadow: var(--hover-shadow);
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        .header-section {
+            background: linear-gradient(135deg, var(--primary-color), #3b82f6);
+            background: var(--primary-color);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+            .header-section::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                right: -50%;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(45deg, rgba(255,255,255,0.1), transparent);
+                background: rgba(255,255,255,0.1);
+                transform: skew(-15deg);
+            }
+
+        .stats-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px; /* 從 25px 調小 */
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s ease;
+            border: none;
+            position: relative;
+            overflow: hidden;
+            height: auto; /* 原本是 100%，改為自動高度 */
+            min-height: 160px; /* 你可以微調這個高度 */
+        }
+
+            .stats-card:hover {
+                transform: translateY(-5px);
+                box-shadow: var(--hover-shadow);
+            }
+
+            .stats-card::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 4px;
+                height: 100%;
+                background: var(--primary-color);
+            }
+
+            .stats-card.income::before {
+                background: var(--success-color);
+            }
+
+            .stats-card.expense::before {
+                background: var(--danger-color);
+            }
+
+            .stats-card.balance::before {
+                background: var(--info-color);
+            }
+
+        .stats-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+            margin-bottom: 15px;
+        }
+
+        .income .stats-icon {
+            background: linear-gradient(135deg, var(--success-color), #059669);
+        }
+
+        .expense .stats-icon {
+            background: linear-gradient(135deg, var(--danger-color), #dc2626);
+        }
+
+        .balance .stats-icon {
+            background: linear-gradient(135deg, var(--info-color), #0891b2);
+        }
+
+        .stats-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin: 0;
+        }
+
+        .stats-label {
+            color: #6b7280;
+            font-size: 1rem;
+            font-weight: 500;
+            margin: 0;
+        }
+
+        .action-btn {
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+
+            .action-btn:hover {
+                transform: translateY(-2px);
+                text-decoration: none;
+            }
+
+        .btn-add-income {
+            background: linear-gradient(135deg, var(--success-color), #059669);
+            color: white;
+        }
+
+            .btn-add-income:hover {
+                color: white;
+            }
+
+        .btn-salary {
+            background: linear-gradient(135deg, var(--warning-color), #d97706);
+            color: white;
+        }
+
+            .btn-salary:hover {
+                color: white;
+            }
+
+        .btn-bank {
+            background: linear-gradient(135deg, var(--info-color), #0891b2);
+            color: white;
+        }
+
+            .btn-bank:hover {
+                color: white;
+            }
+
+        .records-section {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: var(--card-shadow);
+            margin-top: 30px;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .table-modern {
+            border: none;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+            .table-modern thead {
+                background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+            }
+
+            .table-modern th {
+                border: none;
+                padding: 15px;
+                font-weight: 600;
+                color: #374151;
+            }
+
+            .table-modern td {
+                border: none;
+                padding: 15px;
+                vertical-align: middle;
+            }
+
+            .table-modern tbody tr {
+                transition: all 0.2s ease;
+            }
+
+                .table-modern tbody tr:hover {
+                    background: #f8fafc;
+                    transform: scale(1.01);
+                }
+
+        .badge-modern {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .badge-income {
+            background: linear-gradient(135deg, var(--success-color), #059669);
+            color: white;
+        }
+
+        .badge-expense {
+            background: linear-gradient(135deg, var(--danger-color), #dc2626);
+            color: white;
+        }
+
+        .amount-positive {
+            color: var(--success-color);
+            font-weight: 600;
+        }
+
+        .amount-negative {
+            color: var(--danger-color);
+            font-weight: 600;
+        }
+
+        .no-records {
+            text-align: center;
+            padding: 40px;
+            color: #6b7280;
+        }
+
+            .no-records i {
+                font-size: 3rem;
+                margin-bottom: 20px;
+                opacity: 0.5;
+            }
+
+        .back-btn {
+            background: linear-gradient(135deg, #6b7280, #4b5563);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 10px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+
+            .back-btn:hover {
+                transform: translateY(-2px);
+                color: white;
+                text-decoration: none;
+            }
+
+        .error-container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: var(--card-shadow);
+            text-align: center;
+            margin: 20px;
+        }
+
+        .error-icon {
+            font-size: 4rem;
+            color: var(--danger-color);
+            margin-bottom: 20px;
+        }
+
+
+        .animate-fade-in {
+            animation: fadeIn 0.6s ease-out;
+        }
+
+    </style>
+@* 修正：加入 null 檢查，只有在 CurrentStartTime 有值時才執行 JavaScript *@
+@if (Model.IsWorking && Model.CurrentStartTime.HasValue)
+{
+    <script>
+        // 即時更新工作時數
+        let startTime = new Date('@Model.CurrentStartTime.Value.ToString("yyyy-MM-ddTHH:mm:ss")');
+
+        function updateWorkHours() {
+            let now = new Date();
+            let diff = (now - startTime) / (1000 * 60 * 60); // 轉換為小時
+            document.getElementById('current-hours').textContent = diff.toFixed(2);
+        }
+
+        setInterval(updateWorkHours, 60000); // 每分鐘更新一次
+    </script>
+}
+</body>
+</html>

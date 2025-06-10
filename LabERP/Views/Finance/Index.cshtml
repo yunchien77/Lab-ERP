@@ -19,7 +19,8 @@
     }
 
     body {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        /*background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);*/
+        background: white;
         min-height: 100vh;
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
@@ -29,13 +30,14 @@
         border-radius: 20px;
         margin: 20px;
         padding: 30px;
-        box-shadow: var(--hover-shadow);
+        /*box-shadow: var(--hover-shadow);*/
         backdrop-filter: blur(10px);
         background: rgba(255, 255, 255, 0.95);
     }
 
     .header-section {
-        background: linear-gradient(135deg, var(--primary-color), #3b82f6);
+        /*background: linear-gradient(135deg, var(--primary-color), #3b82f6);*/
+        background: var(--primary-color);
         color: white;
         padding: 30px;
         border-radius: 15px;
@@ -44,7 +46,7 @@
         overflow: hidden;
     }
 
-    .header-section::before {
+    /*.header-section::before {
         content: '';
         position: absolute;
         top: 0;
@@ -53,13 +55,13 @@
         height: 100%;
         background: linear-gradient(45deg, rgba(255,255,255,0.1), transparent);
         transform: skew(-15deg);
-    }
+    }*/
 
     .stats-card {
         background: white;
         border-radius: 15px;
         padding: 20px; /* 從 25px 調小 */
-        box-shadow: var(--card-shadow);
+        /*box-shadow: var(--card-shadow);*/
         transition: all 0.3s ease;
         border: none;
         position: relative;
@@ -69,8 +71,8 @@
     }
 
     .stats-card:hover {
-        transform: translateY(-5px);
-        box-shadow: var(--hover-shadow);
+        /*transform: translateY(-5px);*/
+        /*box-shadow: var(--hover-shadow);*/
     }
 
     .stats-card::before {
@@ -99,9 +101,20 @@
         margin-bottom: 15px;
     }
 
-    .income .stats-icon { background: linear-gradient(135deg, var(--success-color), #059669); }
-    .expense .stats-icon { background: linear-gradient(135deg, var(--danger-color), #dc2626); }
-    .balance .stats-icon { background: linear-gradient(135deg, var(--info-color), #0891b2); }
+    .income .stats-icon {
+        /*background: linear-gradient(135deg, var(--success-color), #059669);*/ 
+        background: var(--success-color);
+    }
+
+    .expense .stats-icon { 
+       /*background: linear-gradient(135deg, var(--danger-color), #dc2626);*/
+        background: var(--danger-color);
+    }
+
+    .balance .stats-icon { 
+        /*background: linear-gradient(135deg, var(--info-color), #0891b2); */
+        background: var(--info-color);
+    }
 
     .stats-value {
         font-size: 2.5rem;
@@ -133,12 +146,13 @@
     }
 
     .action-btn:hover {
-        transform: translateY(-2px);
+        /*transform: translateY(-2px);*/
         text-decoration: none;
     }
 
     .btn-add-income {
         background: linear-gradient(135deg, var(--success-color), #059669);
+        background: var(--success-color);
         color: white;
     }
 
@@ -146,6 +160,7 @@
 
     .btn-salary {
         background: linear-gradient(135deg, var(--warning-color), #d97706);
+        background: var(--warning-color);
         color: white;
     }
 
@@ -153,6 +168,7 @@
 
     .btn-bank {
         background: linear-gradient(135deg, var(--info-color), #0891b2);
+        background: var(--info-color);
         color: white;
     }
 
@@ -162,7 +178,7 @@
         background: white;
         border-radius: 15px;
         padding: 25px;
-        box-shadow: var(--card-shadow);
+        /*box-shadow: var(--card-shadow);*/
         margin-top: 30px;
     }
 
@@ -180,7 +196,7 @@
         border: none;
         border-radius: 10px;
         overflow: hidden;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        /*box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);*/
     }
 
     .table-modern thead {
@@ -218,11 +234,13 @@
 
     .badge-income {
         background: linear-gradient(135deg, var(--success-color), #059669);
+        background: var(--success-color);
         color: white;
     }
 
     .badge-expense {
         background: linear-gradient(135deg, var(--danger-color), #dc2626);
+        background: var(--danger-color);
         color: white;
     }
 
@@ -249,7 +267,8 @@
     }
 
     .back-btn {
-        background: linear-gradient(135deg, #6b7280, #4b5563);
+        /*background: linear-gradient(135deg, #6b7280, #4b5563);*/
+        background: #6b7280;
         color: white;
         padding: 10px 20px;
         border-radius: 10px;
@@ -271,7 +290,7 @@
         background: white;
         border-radius: 15px;
         padding: 30px;
-        box-shadow: var(--card-shadow);
+        /*box-shadow: var(--card-shadow);*/
         text-align: center;
         margin: 20px;
     }

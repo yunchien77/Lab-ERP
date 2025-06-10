@@ -3,6 +3,7 @@ using LabERP.Models.Core;
 using LabERP.Models.Handlers;
 using LabERP.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using System.Reflection.Emit;
 using System.Security.Claims;
 
 namespace LabERP.Controllers
@@ -90,6 +91,8 @@ namespace LabERP.Controllers
 
         public IActionResult AddIncome(string LabID)
         {
+            var laboratory = _laboratoryRepository.GetById(LabID);
+
             Console.WriteLine($"AddIncome - Received LabID parameter: {LabID}");
 
             if (string.IsNullOrEmpty(LabID))
@@ -100,7 +103,8 @@ namespace LabERP.Controllers
 
             var viewModel = new AddIncomeViewModel
             {
-                LaboratoryId = LabID
+                LaboratoryId = LabID,
+                LaboratoryName = laboratory.Name ?? "未知實驗室"
             };
 
             return View(viewModel);
@@ -280,5 +284,7 @@ namespace LabERP.Controllers
                 return null;
             }
         }
+
+
     }
 }

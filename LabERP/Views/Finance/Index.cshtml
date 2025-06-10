@@ -361,8 +361,28 @@ else
                         銀行帳戶設定
                     </a>
                 </div>
+        <!-- 快速操作 -->
+        @if (User.IsInRole("Professor") && User.FindFirst("UserID").Value == Model.Creator.UserID)
+        {
+            <div class="row mb-4">
+                <div class="col-12">
+                  <div class="d-flex flex-wrap">
+                    <a asp-controller="Finance" asp-action="AddIncome" asp-route-LabID="@Model.LaboratoryId" class="action-btn btn-add-income">
+                        <i class="fas fa-plus"></i>
+                        新增收入
+                    </a>
+                    <a asp-controller="Finance" asp-action="SalaryManagement" asp-route-LabID="@Model.LaboratoryId" class="action-btn btn-salary">
+                        <i class="fas fa-users"></i>
+                        薪資管理
+                    </a>
+                    <a asp-controller="Finance" asp-action="BankAccountSettings" asp-route-LabID="@Model.LaboratoryId" class="action-btn btn-bank">
+                        <i class="fas fa-university"></i>
+                        銀行帳戶設定
+                    </a>
+                </div>
             </div>
         </div>
+        }
 
         <!-- Recent Records Section -->
         <div class="records-section">

@@ -1,0 +1,262 @@
+﻿@model LabERP.Models.ViewModels.ExpenseRequestListViewModel
+
+@{
+    ViewData["Title"] = "報帳管理";
+}
+
+<link rel="stylesheet" href="~/css/site.css" />
+
+<div class="row">
+    <div class="col-md-12">
+        <h2>
+            <i class="fas fa-file-invoice-dollar"></i> 報帳管理 - @Model.LaboratoryName
+        </h2>
+        <hr />
+    </div>
+</div>
+
+<!-- 統計卡片區 -->
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card text-white bg-info">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h5 class="card-title">可用預算</h5>
+                        <h3>NT$@Model.AvailableBudget.ToString("N0")</h3>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="fas fa-wallet fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-warning">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h5 class="card-title">未審核</h5>
+                        <h3>@Model.PendingCount</h3>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="fas fa-clock fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-success">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h5 class="card-title">已通過</h5>
+                        <h3>@Model.ApprovedCount</h3>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="fas fa-check-circle fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-danger">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h5 class="card-title">不通過</h5>
+                        <h3>@Model.RejectedCount</h3>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="fas fa-times-circle fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 操作按鈕區 -->
+<div class="row mb-3">
+    <div class="col-md-12">
+        @if (!Model.IsProfessor)
+        {
+            <a asp-action="Create" asp-route-laboratoryId="@Model.LaboratoryId" class="btn btn-primary">
+                <i class="fas fa-plus"></i> 新增報帳申請
+            </a>
+        }
+        <a asp-controller="Laboratory" asp-action="Details" asp-route-id="@Model.LaboratoryId" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> 返回實驗室
+        </a>
+    </div>
+</div>
+
+<!-- 報帳列表 -->
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <i class="fas fa-list"></i>
+                @if (Model.IsProfessor)
+                {
+                    <text>所有報帳申請</text>
+                }
+                else
+                {
+                    <text>我的報帳申請</text>
+                }
+            </div>
+            <div class="card-body">
+                @if (Model.ExpenseRequests.Any())
+                {
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>申請人</th>
+                                    <th>金額</th>
+                                    <th>類別</th>
+                                    <th>描述</th>
+                                    <th>狀態</th>
+                                    <th>申請日期</th>
+                                    @if (Model.IsProfessor)
+                                    {
+                                        <th>審核日期</th>
+                                    }
+                                    <th>附件</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var request in Model.ExpenseRequests)
+                                {
+                                    <tr>
+                                        <td>
+                                            <i class="fas fa-user"></i>
+                                            @request.RequesterName
+                                        </td>
+                                        <td>
+                                            <strong>NT$@request.Amount.ToString("N0")</strong>
+                                        </td>
+                                        <td>
+                                            <span class="badge bg-info">@request.Category</span>
+                                        </td>
+                                        <td title="@request.Description">
+                                            @(request.Description.Length > 30 ? request.Description.Substring(0, 30) + "..." : request.Description)
+                                        </td>
+                                        <td>
+                                            <span class="badge @request.StatusBadgeClass">
+                                                @request.StatusText
+                                            </span>
+                                        </td>
+                                        <td>@request.RequestDate.ToString("yyyy-MM-dd")</td>
+                                        @if (Model.IsProfessor)
+                                        {
+                                            <td>
+                                                @if (request.ReviewDate.HasValue)
+                                                {
+                                                    @request.ReviewDate.Value.ToString("yyyy-MM-dd")
+                                                }
+                                                else
+                                                {
+                                                    <text>-</text>
+                                                }
+                                            </td>
+                                        }
+                                        <td>
+                                            @if (request.AttachmentCount > 0)
+                                            {
+                                                <i class="fas fa-paperclip"></i> @request.AttachmentCount
+                                            }
+                                            else
+                                            {
+                                                <text>-</text>
+                                            }
+                                        </td>
+                                        <td>
+                                            <div class="btn-group" role="group">
+                                                <a asp-action="Details" asp-route-id="@request.Id" class="btn btn-sm btn-outline-info" title="查看詳情">
+                                                    <i class="fas fa-eye">查看詳情</i>
+                                                </a>
+                                                @if (Model.IsProfessor && Model.IsLabCreator && request.Status == LabERP.Models.Core.ExpenseRequestStatus.Pending)
+                                                {
+                                                    <a asp-action="Review" asp-route-id="@request.Id" class="btn btn-sm btn-outline-primary" title="審核">
+                                                        <i class="fas fa-gavel">審核</i>
+                                                    </a>
+                                                }
+                                                @if (request.CanDelete)
+                                                {
+                                                    <form asp-action="Delete" asp-route-id="@request.Id" method="post" class="d-inline">
+                                                        <input type="hidden" name="laboratoryId" value="@Model.LaboratoryId" />
+                                                        <button type="submit" class="btn btn-sm btn-outline-danger" title="刪除" onclick="return confirm('確定要刪除此報帳申請嗎？');">
+                                                            <i class="fas fa-trash">刪除</i>
+                                                        </button>
+                                                    </form>
+                                                }
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+                else
+                {
+                    <div class="text-center py-5">
+                        <i class="fas fa-file-invoice fa-3x text-muted mb-3"></i>
+                        <h5 class="text-muted">
+                            @if (Model.IsProfessor)
+                            {
+                                <text>目前沒有任何報帳申請</text>
+                            }
+                            else
+                            {
+                                <text>您還沒有提交任何報帳申請</text>
+                            }
+                        </h5>
+                        @if (!Model.IsProfessor)
+                        {
+                            <a asp-action="Create" asp-route-laboratoryId="@Model.LaboratoryId" class="btn btn-primary mt-3">
+                                <i class="fas fa-plus"></i> 新增報帳申請
+                            </a>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // 顯示提示訊息
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <text>
+                $(document).ready(function() {
+                    showAlert('success', '@TempData["SuccessMessage"]');
+                });
+            </text>
+        }
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <text>
+                $(document).ready(function() {
+                    showAlert('danger', '@TempData["ErrorMessage"]');
+                });
+            </text>
+        }
+
+        function showAlert(type, message) {
+            var alertHtml = '<div class="alert alert-' + type + ' alert-dismissible fade show" role="alert">' +
+                           message +
+                           '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+                           '</div>';
+            $('.card:first').before(alertHtml);
+        }
+    </script>
+}

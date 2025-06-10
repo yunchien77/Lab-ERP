@@ -1,0 +1,432 @@
+﻿@model LabERP.Models.ViewModels.ReviewExpenseRequestViewModel
+
+@{
+    ViewData["Title"] = "審核報帳";
+}
+
+<link rel="stylesheet" href="~/css/site.css" />
+
+<div class="row">
+    <div class="col-md-12">
+        <h2>
+            <i class="fas fa-gavel"></i> 審核報帳申請 - @Model.LaboratoryName
+        </h2>
+        <hr />
+    </div>
+</div>
+
+<!-- 操作按鈕區 -->
+<div class="row mb-3">
+    <div class="col-md-12">
+        <a asp-action="Details" asp-route-id="@Model.ExpenseRequestId" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> 返回詳情
+        </a>
+        <a asp-action="Index" asp-route-LabID="@Model.LaboratoryId" class="btn btn-outline-secondary">
+            <i class="fas fa-list"></i> 返回列表
+        </a>
+    </div>
+</div>
+
+<!-- 預算警告 -->
+@if (Model.InsufficientBudget)
+{
+    <div class="alert alert-danger" role="alert">
+        <i class="fas fa-exclamation-triangle"></i>
+        <strong>預算不足警告：</strong>
+        申請金額 NT$@Model.Amount.ToString("N0") 超過可用預算 NT$@Model.AvailableBudget.ToString("N0")，
+        如果通過此申請，將導致預算不足！
+    </div>
+}
+
+<div class="row">
+    <!-- 申請詳情 -->
+    <div class="col-md-8">
+        <div class="card mb-4">
+            <div class="card-header bg-info text-white">
+                <i class="fas fa-file-invoice"></i> 申請詳情
+            </div>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <strong><i class="fas fa-user"></i> 申請人：</strong>
+                        <span class="ms-2">@Model.RequesterName</span>
+                    </div>
+                    <div class="col-md-6">
+                        <strong><i class="fas fa-calendar"></i> 申請日期：</strong>
+                        <span class="ms-2">@Model.RequestDate.ToString("yyyy-MM-dd HH:mm")</span>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <strong><i class="fas fa-dollar-sign"></i> 申請金額：</strong>
+                        <span class="ms-2 text-primary fs-5">NT$@Model.Amount.ToString("N0")</span>
+                    </div>
+                    <div class="col-md-6">
+                        <strong><i class="fas fa-receipt"></i> 發票號碼：</strong>
+                        <span class="ms-2">@Model.InvoiceNumber</span>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <strong><i class="fas fa-tag"></i> 報帳類別：</strong>
+                        <span class="badge bg-info ms-2">@Model.Category</span>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <strong><i class="fas fa-align-left"></i> 費用描述：</strong>
+                        <div class="mt-2 p-3 bg-light rounded">
+                            @Model.Description
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <strong><i class="fas fa-bullseye"></i> 用途說明：</strong>
+                        <div class="mt-2 p-3 bg-light rounded">
+                            @Model.Purpose
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 審核表單 -->
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <i class="fas fa-gavel"></i> 審核決定
+            </div>
+            <div class="card-body">
+                <form asp-action="Review" method="post">
+                    <input type="hidden" asp-for="ExpenseRequestId" />
+                    <input type="hidden" asp-for="LaboratoryId" />
+                    <input type="hidden" asp-for="LaboratoryName" />
+                    <input type="hidden" asp-for="RequesterName" />
+                    <input type="hidden" asp-for="Amount" />
+                    <input type="hidden" asp-for="InvoiceNumber" />
+                    <input type="hidden" asp-for="Category" />
+                    <input type="hidden" asp-for="Description" />
+                    <input type="hidden" asp-for="Purpose" />
+                    <input type="hidden" asp-for="RequestDate" />
+                    <input type="hidden" asp-for="AvailableBudget" />
+                    <input type="hidden" asp-for="InsufficientBudget" />
+
+                    <div class="mb-4">
+                        <label class="form-label"><strong><i class="fas fa-decision"></i> 審核結果</strong></label>
+                        <div class="mt-2">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" asp-for="Approved" value="true" id="approve" />
+                                <label class="form-check-label text-success" for="approve">
+                                    <i class="fas fa-check-circle"></i> 通過
+                                </label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" asp-for="Approved" value="false" id="reject" />
+                                <label class="form-check-label text-danger" for="reject">
+                                    <i class="fas fa-times-circle"></i> 不通過
+                                </label>
+                            </div>
+                        </div>
+                        <span asp-validation-for="Approved" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-4">
+                        <label asp-for="ReviewNotes" class="form-label">
+                            <strong><i class="fas fa-comment"></i> 審核備註</strong>
+                        </label>
+                        <textarea asp-for="ReviewNotes" class="form-control" rows="4"
+                                  placeholder="請輸入審核備註（選填）..."></textarea>
+                        <span asp-validation-for="ReviewNotes" class="text-danger"></span>
+                    </div>
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a asp-action="Details" asp-route-id="@Model.ExpenseRequestId" class="btn btn-secondary me-md-2">
+                            <i class="fas fa-times"></i> 取消
+                        </a>
+                        <button type="submit" class="btn btn-primary" onclick="return confirmSubmit()">
+                            <i class="fas fa-check"></i> 提交審核
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 側邊欄 -->
+    <div class="col-md-4">
+        <!-- 預算資訊卡片 -->
+        <div class="card mb-3">
+            <div class="card-header @(Model.InsufficientBudget ? "bg-danger" : "bg-success") text-white">
+                <i class="fas fa-wallet"></i> 預算狀況
+            </div>
+            <div class="card-body">
+                <div class="text-center">
+                    <h5>可用預算</h5>
+                    <h3 class="@(Model.InsufficientBudget ? "text-danger" : "text-success")">
+                        NT$@Model.AvailableBudget.ToString("N0")
+                    </h3>
+                    <hr />
+                    <p class="mb-1"><strong>申請金額：</strong>NT$@Model.Amount.ToString("N0")</p>
+                    <p class="mb-1">
+                        <strong>審核後餘額：</strong>
+                        <span class="@(Model.InsufficientBudget ? "text-danger" : "text-success")">
+                            NT$@((Model.AvailableBudget - Model.Amount).ToString("N0"))
+                        </span>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 審核提醒 -->
+        <div class="card mb-3">
+            <div class="card-header bg-warning text-dark">
+                <i class="fas fa-info-circle"></i> 審核提醒
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled mb-0">
+                    <li class="mb-2">
+                        <i class="fas fa-check text-success"></i>
+                        請仔細檢查發票/收據內容
+                    </li>
+                    <li class="mb-2">
+                        <i class="fas fa-check text-success"></i>
+                        確認金額與實際支出相符
+                    </li>
+                    <li class="mb-2">
+                        <i class="fas fa-check text-success"></i>
+                        檢查費用類別是否正確
+                    </li>
+                    @if (Model.InsufficientBudget)
+                    {
+                        <li class="mb-2">
+                            <i class="fas fa-exclamation-triangle text-danger"></i>
+                            <strong class="text-danger">注意預算不足</strong>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+
+        <!-- 附件區域 -->
+        <div class="card">
+            <div class="card-header">
+                <i class="fas fa-paperclip"></i>
+                附件 (@(Model.Attachments?.Count ?? 0))
+            </div>
+            <div class="card-body">
+                @if (Model.Attachments != null && Model.Attachments.Any())
+                {
+                    @foreach (var attachment in Model.Attachments)
+                    {
+                        <div class="attachment-item mb-3 p-2 border rounded">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div class="flex-grow-1">
+                                    <h6 class="mb-1">
+                                        @if (attachment.FileType.StartsWith("image/"))
+                                        {
+                                            <i class="fas fa-image text-primary"></i>
+                                        }
+                                        else if (attachment.FileType == "application/pdf")
+                                        {
+                                            <i class="fas fa-file-pdf text-danger"></i>
+                                        }
+                                        else
+                                        {
+                                            <i class="fas fa-file text-muted"></i>
+                                        }
+                                        @attachment.FileName
+                                    </h6>
+                                    <small class="text-muted">
+                                        @(attachment.FileSize / 1024)KB
+                                    </small>
+                                </div>
+                            </div>
+
+                            @if (attachment.FileType.StartsWith("image/"))
+                            {
+                                <div class="mt-2">
+                                    <img src="@attachment.FilePath" class="img-fluid rounded cursor-pointer"
+                                         style="max-height: 150px; width: auto;"
+                                         onclick="showImageModal('@attachment.FilePath', '@attachment.FileName')"
+                                         alt="@attachment.FileName" />
+                                </div>
+                            }
+
+                            <div class="mt-2">
+                                <a href="@attachment.FilePath" target="_blank" class="btn btn-sm btn-outline-primary">
+                                    <i class="fas fa-eye"></i> 查看
+                                </a>
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="text-center text-muted py-3">
+                        <i class="fas fa-file fa-2x mb-2"></i>
+                        <p>沒有附件</p>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 圖片查看模態框 -->
+<div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="imageModalLabel">附件預覽</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <img id="modalImage" src="" class="img-fluid" alt="附件預覽" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // 顯示提示訊息
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <text>
+                    $(document).ready(function() {
+                        showAlert('success', '@TempData["SuccessMessage"]');
+                    });
+        </text>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <text>
+                    $(document).ready(function() {
+                        showAlert('danger', '@TempData["ErrorMessage"]');
+                    });
+        </text>
+    }
+
+    function showAlert(type, message) {
+        var alertHtml = '<div class="alert alert-' + type + ' alert-dismissible fade show" role="alert">' +
+                       message +
+                       '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+                       '</div>';
+        $('.card:first').before(alertHtml);
+    }
+
+    function showImageModal(imagePath, fileName) {
+        document.getElementById('modalImage').src = imagePath;
+        document.getElementById('imageModalLabel').textContent = fileName;
+        var imageModal = new bootstrap.Modal(document.getElementById('imageModal'));
+        imageModal.show();
+    }
+
+    function confirmSubmit() {
+        var approvedRadio = document.querySelector('input[name="Approved"]:checked');
+        if (!approvedRadio) {
+            alert('請選擇審核結果');
+            return false;
+        }
+
+        var result = approvedRadio.value === 'true' ? '通過' : '不通過';
+        var amount = '@Model.Amount.ToString("N0")';
+        var requester = '@Model.RequesterName';
+
+    @if (Model.InsufficientBudget)
+    {
+        <text>
+                    if (approvedRadio.value === 'true') {
+                        if (!confirm('警告：通過此申請將導致預算不足！\n\n申請人：' + requester + '\n申請金額：NT$' + amount + '\n\n確定要通過嗎？')) {
+                            return false;
+                        }
+                    }
+        </text>
+    }
+
+        return confirm('確定要' + result + '此報帳申請嗎？\n\n申請人：' + requester + '\n申請金額：NT$' + amount);
+    }
+
+    // 添加點擊圖片的CSS樣式
+    document.addEventListener('DOMContentLoaded', function() {
+        var style = document.createElement('style');
+        style.textContent = '.cursor-pointer { cursor: pointer; transition: transform 0.2s; } .cursor-pointer:hover { transform: scale(1.05); }';
+        document.head.appendChild(style);
+    });
+</script>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        // 顯示提示訊息
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <text>
+                    $(document).ready(function() {
+                        showAlert('success', '@TempData["SuccessMessage"]');
+                    });
+            </text>
+        }
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <text>
+                    $(document).ready(function() {
+                        showAlert('danger', '@TempData["ErrorMessage"]');
+                    });
+            </text>
+        }
+
+        function showAlert(type, message) {
+            var alertHtml = '<div class="alert alert-' + type + ' alert-dismissible fade show" role="alert">' +
+                           message +
+                           '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+                           '</div>';
+            $('.card:first').before(alertHtml);
+        }
+
+        function showImageModal(imagePath, fileName) {
+            document.getElementById('modalImage').src = imagePath;
+            document.getElementById('imageModalLabel').textContent = fileName;
+            var imageModal = new bootstrap.Modal(document.getElementById('imageModal'));
+            imageModal.show();
+        }
+
+        function confirmSubmit() {
+            var approvedRadio = document.querySelector('input[name="Approved"]:checked');
+            if (!approvedRadio) {
+                alert('請選擇審核結果');
+                return false;
+            }
+
+            var result = approvedRadio.value === 'true' ? '通過' : '不通過';
+            var amount = '@Model.Amount.ToString("N0")';
+            var requester = '@Model.RequesterName';
+
+        @if (Model.InsufficientBudget)
+        {
+            <text>
+                    if (approvedRadio.value === 'true') {
+                        if (!confirm('警告：通過此申請將導致預算不足！\n\n申請人：' + requester + '\n申請金額：NT$' + amount + '\n\n確定要通過嗎？')) {
+                            return false;
+                        }
+                    }
+            </text>
+        }
+
+            return confirm('確定要' + result + '此報帳申請嗎？\n\n申請人：' + requester + '\n申請金額：NT$' + amount);
+        }
+
+        // 添加點擊圖片的CSS樣式
+        document.addEventListener('DOMContentLoaded', function() {
+            var style = document.createElement('style');
+            style.textContent = '.cursor-pointer { cursor: pointer; transition: transform 0.2s; } .cursor-pointer:hover { transform: scale(1.05); }';
+            document.head.appendChild(style);
+        });
+    </script>
+}

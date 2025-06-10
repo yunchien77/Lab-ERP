@@ -63,6 +63,9 @@
                             <a asp-controller="Finance" asp-action="Index" asp-route-LabID="@Model.LabID" class="btn btn-warning">
                                 <i class="fas fa-chart-line"></i> 財務管理
                             </a>
+                            <a asp-controller="ExpenseRequest" asp-action="Index" asp-route-LabID="@Model.LabID" class="btn btn-warning">
+                                <i class="fas fa-chart-line"></i> 報帳管理
+                            </a>
                         }
                         else
                         {
@@ -82,6 +85,19 @@
                     <div class="d-grid gap-2">
                         <a asp-controller="Equipment" asp-action="Index" asp-route-labID="@Model.LabID" class="btn btn-success">
                             <i class="fas fa-tools"></i> 設備管理
+                        </a>
+                        @if (Model?.LabID != null)
+                        {
+                            <a asp-controller="Finance" asp-action="Index" asp-route-LabID="@Model.LabID" class="btn btn-warning">
+                                <i class="fas fa-chart-line"></i> 財務管理
+                            </a>
+                        }
+                        else
+                        {
+                            <div class="alert alert-warning">實驗室ID不存在，無法進入財務管理</div>
+                        }
+                        <a asp-controller="ExpenseRequest" asp-action="Index" asp-route-LabID="@Model.LabID" class="btn btn-warning">
+                            <i class="fas fa-chart-line"></i> 報帳管理
                         </a>
                     </div>
                 </div>

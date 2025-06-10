@@ -4,7 +4,7 @@ using System.Globalization;
 
 namespace LabERP.Models.Handlers
 {
-    public class FinanceHandler
+    public class FinanceHandler : IFinanceHandler
     {
         private readonly IFinanceRepository _financeRepository;
         private readonly IBankAccountRepository _bankAccountRepository;

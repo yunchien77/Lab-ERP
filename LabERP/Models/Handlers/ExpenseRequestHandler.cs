@@ -3,7 +3,7 @@ using LabERP.Models.Core;
 
 namespace LabERP.Models.Handlers
 {
-    public class ExpenseRequestHandler
+    public class ExpenseRequestHandler : IExpenseRequestHandler
     {
         private readonly IExpenseRequestRepository _expenseRequestRepository;
         private readonly IExpenseAttachmentRepository _expenseAttachmentRepository;

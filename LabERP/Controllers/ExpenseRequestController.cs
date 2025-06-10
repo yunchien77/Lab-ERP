@@ -10,13 +10,13 @@ namespace LabERP.Controllers
 {
     public class ExpenseRequestController : Controller
     {
-        private readonly ExpenseRequestHandler _expenseRequestHandler;
+        private readonly IExpenseRequestHandler _expenseRequestHandler;
         private readonly ILaboratoryRepository _laboratoryRepository;
         private readonly IFinanceRepository _financeRepository;
         private readonly IUserRepository _userRepository;
 
         public ExpenseRequestController(
-            ExpenseRequestHandler expenseRequestHandler,
+            IExpenseRequestHandler expenseRequestHandler,
             ILaboratoryRepository laboratoryRepository,
             IFinanceRepository financeRepository,
             IUserRepository userRepository)

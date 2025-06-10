@@ -38,8 +38,8 @@ builder.Services.AddScoped<IWorkSessionHandler, WorkSessionHandler>();
 // 註冊服務
 builder.Services.AddScoped<INotificationService, NotificationService>();
 builder.Services.AddScoped<LaboratoryHandler>();
-builder.Services.AddScoped<FinanceHandler>();
-builder.Services.AddScoped<ExpenseRequestHandler>();
+builder.Services.AddScoped<IFinanceHandler, FinanceHandler>();
+builder.Services.AddScoped<IExpenseRequestHandler, ExpenseRequestHandler>();
 
 // 添加 IUserHandler 的實現
 builder.Services.AddScoped<IUserHandler, UserHandler>(); // 請替換為您實際的實現類

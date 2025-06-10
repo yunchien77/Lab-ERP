@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@model LabERP.Models.ViewModels.BankAccountViewModel
+
+<!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
     <meta charset="utf-8" />
@@ -213,7 +215,7 @@
                                 </div>
 
                                 <div class="d-flex justify-content-between align-items-center">
-                                    <a href="@Url.Action("Index", "Finance", new { laboratoryId = Model.LaboratoryId })" class="btn btn-secondary">
+                                    <a href="@Url.Action("Index", "Finance", new { LabID = Model.LaboratoryId })" class="btn btn-secondary">
                                         <i class="fas fa-arrow-left me-2"></i> 返回財務管理
                                     </a>
 

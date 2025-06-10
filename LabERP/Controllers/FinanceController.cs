@@ -10,11 +10,11 @@ namespace LabERP.Controllers
 {
     public class FinanceController : Controller
     {
-        private readonly FinanceHandler _financeHandler;
+        private readonly IFinanceHandler _financeHandler;
         private readonly ILaboratoryRepository _laboratoryRepository;
         private readonly IUserRepository _userRepository;
 
-        public FinanceController(FinanceHandler financeHandler,
+        public FinanceController(IFinanceHandler financeHandler,
                                ILaboratoryRepository laboratoryRepository,
                                IUserRepository userRepository)
         {

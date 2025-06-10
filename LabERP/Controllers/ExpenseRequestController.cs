@@ -43,18 +43,20 @@ namespace LabERP.Controllers
             }
 
             var currentUserId = User.FindFirst("UserID")?.Value;
-            //Console.WriteLine(currentUserId);
+            Console.WriteLine(currentUserId);
             var currentUserRole = User.FindFirst(ClaimTypes.Role)?.Value;
-            //Console.WriteLine(currentUserRole);
+            Console.WriteLine(currentUserRole);
             var isProfessor = currentUserRole == "Professor";
-            //Console.WriteLine(laboratory.Creator.UserID);
+            Console.WriteLine(laboratory.Creator.UserID);
             var isLabCreator = isProfessor && laboratory.Creator?.UserID == currentUserId;
+            Console.WriteLine(isLabCreator);
+            Console.WriteLine(laboratory.Members.Any(m => m.UserID == currentUserId));
 
             // 檢查用戶是否為實驗室成員
-            if (!laboratory.Members.Any(m => m.UserID == currentUserId))
+            if (!isLabCreator && (!laboratory.Members.Any(m => m.UserID == currentUserId)))
             {
                 TempData["ErrorMessage"] = "您不是此實驗室的成員";
-                //return RedirectToAction("Dashboard", "User");
+                return RedirectToAction("Dashboard", "User");
             }
 
             var expenseRequests = _expenseRequestHandler.GetExpenseRequestsByLaboratory(LabID);

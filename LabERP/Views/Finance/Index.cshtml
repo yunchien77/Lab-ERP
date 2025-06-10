@@ -58,13 +58,14 @@
     .stats-card {
         background: white;
         border-radius: 15px;
-        padding: 25px;
+        padding: 20px; /* 從 25px 調小 */
         box-shadow: var(--card-shadow);
         transition: all 0.3s ease;
         border: none;
         position: relative;
         overflow: hidden;
-        height: 100%;
+        height: auto; /* 原本是 100%，改為自動高度 */
+        min-height: 160px; /* 你可以微調這個高度 */
     }
 
     .stats-card:hover {

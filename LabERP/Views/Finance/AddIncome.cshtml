@@ -159,8 +159,8 @@
 
                                 <!-- 操作按鈕 -->
                                 <div class="d-flex justify-content-between">
-                                    <a asp-action="Index" asp-route-laboratoryId="@Model.LaboratoryId" class="btn btn-secondary">
-                                        <i class="fas fa-arrow-left"></i> 取消
+                                    <a href="@Url.Action("Index", "Finance", new { LabID = Model.LaboratoryId })" class="btn btn-secondary">
+                                        <i class="fas fa-arrow-left me-2"></i> 返回財務管理
                                     </a>
                                     <button type="submit" class="btn btn-success">
                                         <i class="fas fa-save"></i> 儲存收入記錄

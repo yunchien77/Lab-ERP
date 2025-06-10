@@ -5,27 +5,40 @@
 }
 
 <link rel="stylesheet" href="~/css/site.css" />
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+</head>
 
-<h2>添加新成員</h2>
+<h2 class="mb-4">添加新成員</h2>
 
 <div class="row">
     <div class="col-md-6">
         <form asp-action="AddMember">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
             <input asp-for="LabID" type="hidden" />
-            <div class="form-group">
-                <label asp-for="Username"></label>
+
+            <div class="mb-3">
+                <label asp-for="Username" class="form-label"></label>
                 <input asp-for="Username" class="form-control" />
                 <span asp-validation-for="Username" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Email"></label>
+
+            <div class="mb-3">
+                <label asp-for="Email" class="form-label"></label>
                 <input asp-for="Email" class="form-control" />
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <button type="submit" class="btn btn-primary">添加</button>
-                <a asp-controller="Laboratory" asp-action="Details" asp-route-id="@Model.LabID" class="btn btn-secondary">返回</a>
+
+            <div class="d-flex justify-content-between mt-4">
+                <a asp-controller="Laboratory" asp-action="Details" asp-route-id="@Model.LabID" class="btn btn-secondary shadow-sm">
+                    <i class="fas fa-arrow-left me-1"></i> 返回
+                </a>
+                <button type="submit" class="btn btn-primary shadow-sm">
+                    <i class="fas fa-user-plus me-1"></i> 添加
+                </button>
             </div>
         </form>
     </div>

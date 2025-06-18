@@ -1,80 +1,57 @@
 # Laboratory ERP System
 
-## About the Project
-The Laboratory ERP System is a comprehensive management solution designed for academic research laboratories. It integrates personnel management, equipment usage tracking, and financial control features into a unified platform to enhance operational efficiency in laboratory environments.
+A web-based Enterprise Resource Planning (ERP) system designed for academic laboratories to streamline member management, equipment usage, and financial control.
+
+## Overview
+
+Modern laboratories often lack a unified platform for daily operations such as attendance tracking, equipment reservation, and financial reimbursement. This project addresses that gap by providing a centralized Lab ERP system for professors and students. The platform improves operational efficiency and transparency, allowing members to access real-time information about their lab activities.
+
+The system is developed using **C#** for the backend and **HTML/CSS** for the frontend. It adopts object-oriented design principles and incorporates GRASP patterns, MVC architecture, and layered logic for maintainability and scalability.
 
 ## Features
 
-### Personnel Management
-- Add, modify, or remove laboratory members
-- Set member roles (Post-doctoral researchers, Graduate students, Undergraduate students, etc.)
-- View member information and status
+### Professor Functions
 
-### Equipment Management
-- Maintain equipment inventory (add/remove equipment)
-- Track equipment borrowing and returns
-- View available equipment status
+* Create and edit lab profiles
+* Add or remove lab members
+* Manage equipment inventory
+* Configure and manage financial accounts
+* Review and approve expense requests
+* Monitor salary disbursement
+* View member attendance records
 
-### Financial Control
-- Track laboratory funds and expenses
-- Manage bank account information
-- Record and process expense claims
-- Maintain transparent financial records
-- Manage laboratory member salaries
+### Student Functions
 
-### Personal Information Management
-- Allow members to update personal information
-- Manage user credentials securely
+* Edit personal profile and change password
+* Clock in and out for lab attendance
+* Borrow and return equipment
+* Submit and view reimbursement requests
+* View lab financial records and balance
 
-### Attendance Tracking
-- Clock in/out functionality
-- View personal attendance records
-- Automatic notifications for extended absence
+## Core Use Cases
 
-### Expense Claim System
-- Submit expense claims with detailed information
-- Track approval status
-- Automated processing of approved claims
+* UC-01: Manage Laboratory
+* UC-02: Manage Laboratory Members
+* UC-03: Manage Personal Information
+* UC-04: Manage Laboratory Equipment
+* UC-05: Borrow Equipment
+* UC-06: Control Laboratory Funds
+* UC-07: Approve Reimbursement
+* UC-08: Submit Reimbursement
+* UC-09: Record Attendance
 
-### Calendar Management
-- Add, modify, or delete calendar events
-- View other members' calendars (with permission)
-- Set event reminders and notifications
+## Technology Stack
 
-## Domain Model
-
-The system is designed around the following key entities:
-- Professor (Laboratory Manager)
-- Laboratory
-- Student (Laboratory Member)
-- Equipment
-- Fund
-- Bank Account
-- Expected Income
-- Expense Claim Form
-- Attendance Record
-- Expense Record
-- Schedule
-- Calendar
-
-## Use Cases
-
-The system implements seven primary use cases:
-1. Laboratory Personnel Management
-2. Laboratory Equipment Management
-3. Laboratory Fund Control
-4. Personal Information Management
-5. Attendance Tracking
-6. Expense Claim Processing
-7. Calendar Management
-
-## Development Information
-
-- **Front-end**: HTML, CSS
-- **Back-end**: C#
-- **Platform**: Web Application
+| Layer        | Technology          |
+| ------------ | ------------------- |
+| Frontend     | HTML, CSS           |
+| Backend      | C# (.NET Framework) |
+| Platform     | Web Application     |
+| Dev Tool     | Visual Studio       |
+| Data Storage | In-memory repository pattern      |
 
 ## Contributors
-- 113598034 徐家玟
-- B812110004 葉芸茜
-- B812110011 湯青秀
+
+* 徐家玟
+* 葉芸茜
+* 湯青秀
